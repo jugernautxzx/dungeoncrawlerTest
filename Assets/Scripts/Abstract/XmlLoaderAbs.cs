@@ -3,16 +3,62 @@ using System.IO;
 using System.Xml.Serialization;
 using UnityEngine;
 
-public abstract class ListWithDictionary
+public abstract class RealListWithDictionary<T> where T : ClassWithId
 {
+    [XmlElement("Item")]
+    public List<T> list;
+    [XmlIgnore]
     protected Dictionary<string, int> dict;
 
-    public abstract void GenerateDictionary();
+    public void GenerateDictionary()
+    {
+        dict = new Dictionary<string, int>();
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (!DictContains(list[i].id))
+            {
+                dict.Add(list[i].id, i);
+            }
+            else
+            {
+                Debug.Log("Duplicate id: " + list[i].id);
+            }
+        }
+        Debug.Log("Completed");
+    }
+
+    public T Get(string id)
+    {
+        return list[dict[id]];
+    }
 
     public bool DictContains(string id)
     {
         return dict.ContainsKey(id);
     }
+}
+
+public class ClassWithId
+{
+    [XmlAttribute("Id")]
+    public string id;
+
+    public string x = "XX";
+}
+
+public abstract class ListWithDictionary<T>
+{
+    protected Dictionary<string, int> dict;
+
+    public abstract void GenerateDictionary();
+
+    public abstract T Get(string id);
+
+    public bool DictContains(string id)
+    {
+        return dict.ContainsKey(id);
+    }
+
 }
 
 public class XmlLoader
@@ -22,7 +68,7 @@ public class XmlLoader
         return Application.dataPath.Replace("/Assets", "");
     }
 
-    public static T LoadFromXml<T>(string path) where T : ListWithDictionary
+    public static T LoadFromXml<T>(string path) where T : ListWithDictionary<T>
     {
         TextAsset asset = Resources.Load<TextAsset>(path);
         XmlSerializer serial = new XmlSerializer(typeof(T));

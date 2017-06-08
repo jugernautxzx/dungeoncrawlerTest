@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 
 [XmlRoot("Character")]
@@ -24,6 +25,12 @@ public class CharacterModel{
     public BattleAttribute battleAttribute;
     [XmlElement("BattleSetting")]
     public BattleSetting battleSetting;
+    [XmlArray("Actives")]
+    [XmlArrayItem("Active")]
+    public List<string> actives;
+    [XmlArray("Passives")]
+    [XmlArrayItem("Passive")]
+    public List<string> passives;
 
     public void GenerateBasicBattleAttribute()
     {

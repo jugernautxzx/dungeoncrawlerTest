@@ -1,0 +1,14 @@
+<ActiveSkills>
+  <Item Id="Sweep" Name="Sweep" Stamina="35" Weapons="1HS|2HS|Spear" Targetable="allenemy" Row="front">
+    <Effects>
+      <Effect Target="allenemy" Row="front" Type="pdamage" Formula="PAtk" FormulaParam="0.7"/>
+    </Effects>
+    <Info>Deal 70% %damage% to all enemy on %front% row.</Info>
+  </Item>
+  <Item Id="Sweep2" Name="Back Sweep" Stamina="35" Weapons="1HS|2HS|Spear" Targetable="allenemy" Row="back">
+    <Effects>
+      <Effect Target="everyone" Type="pdamage" Formula="PAtk" FormulaParam="0.7"/>
+    </Effects>
+    <Info>Deal 70% %damage% to all enemy on %front% row.</Info>
+  </Item>
+</ActiveSkills>

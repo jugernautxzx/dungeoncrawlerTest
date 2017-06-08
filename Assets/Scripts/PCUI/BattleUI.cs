@@ -5,10 +5,7 @@ using UnityEngine.UI;
 
 public class BattleUI : MonoBehaviour, BattleInterface
 {
-
     const string TURN = "'s turn";
-
-    public static BattleUI instance;
 
     public Text infoText;
     public Text playerTurnText;
@@ -16,42 +13,46 @@ public class BattleUI : MonoBehaviour, BattleInterface
     public GameObject basicActions;
     public GameObject skillActions;
 
-    public Button attackButton;
+    public Toggle attackButton;
     public Button skillBtn;
     public Button cancelSkill;
+    public Toggle[] activeBtns;
 
     public PlayerCharaUI[] playerChar;
     public EnemyUI[] enemyChar;
 
     BattleManager battleManager;
 
-    public static BattleUI GetInstance()
-    {
-        return instance;
-    }
-
-    public static void UpdateInfo(string text)
-    {
-        if (instance != null)
-            instance.UpdateInfoText(text);
-    }
+    int selectedSkillIndex;
 
     void Start()
     {
-        if (instance != this)
-            instance = this;
-
         skillBtn.onClick.AddListener(OnSkillButtonClick);
         cancelSkill.onClick.AddListener(OnCancelSkillButtonClick);
-        attackButton.onClick.AddListener(OnAttackButtonClick);
-        for (int i = 0; i < 1; i++)
-        {//TODO increase to 4
+        attackButton.onValueChanged.AddListener(OnAttackButtonClick);
+        for (int i = 0; i < 4; i++)
+        {
             int j = i;
-            enemyChar[0].AddClickListener(delegate { OnAttackTargetSelected(j, false); });
-            playerChar[0].AddClickListener(delegate { OnAttackTargetSelected(j, true); });
+            enemyChar[i].AddClickListener(delegate { OnAttackTargetSelected(j, false); });
+            playerChar[i].AddClickListener(delegate { OnAttackTargetSelected(j, true); });
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            int j = i;
+            activeBtns[i].onValueChanged.AddListener(delegate { OnActiveSkillButtonClicked(j); });
         }
         battleManager = new BattleManager(this);
         battleManager.BattleStart();
+    }
+
+    public void UpdateSkillInfo(int index)
+    {
+        UpdateInfoText(battleManager.GetSkillNote(index));
+    }
+
+    public void UpdateInfo(string text)
+    {
+        UpdateInfoText(text);
     }
 
     void UpdateInfoText(string text)
@@ -63,23 +64,55 @@ public class BattleUI : MonoBehaviour, BattleInterface
     {
         basicActions.SetActive(false);
         skillActions.SetActive(true);
+        ResetToggleButton();
         CancelTargetingIndicator();
+    }
+
+    void OnActiveSkillButtonClicked(int i)
+    {
+        CancelTargetingIndicator();
+        if (activeBtns[i].isOn)
+        {
+            ResetOtherButton(i);
+            activeBtns[i].targetGraphic.color = Color.grey;
+            selectedSkillIndex = i;
+            battleManager.RequestSkillTarget(i);
+        }
+        else
+        {
+            activeBtns[i].targetGraphic.color = Color.white;
+        }
     }
 
     void OnCancelSkillButtonClick()
     {
         basicActions.SetActive(true);
         skillActions.SetActive(false);
+        ResetToggleButton();
+        CancelTargetingIndicator();
     }
 
-    void OnAttackButtonClick()
+    void OnAttackButtonClick(bool onToggle)
     {
-        battleManager.RequestAttackTarget();
+        if (onToggle)
+        {
+            battleManager.RequestAttackTarget();
+            attackButton.targetGraphic.color = Color.grey;
+        }
+        else
+            CancelTargetingIndicator();
     }
 
     void OnAttackTargetSelected(int index, bool isPlayer)
     {
-        battleManager.PlayerActorAttackTarget(index, isPlayer);
+        if (attackButton.isOn)
+        {
+            battleManager.PlayerActorAttackTarget(index, isPlayer);
+        }
+        else if (selectedSkillIndex != -1)
+        {
+            battleManager.PlayerActorSkillTarget(index, isPlayer, selectedSkillIndex);
+        }
         basicActions.SetActive(false);
         skillActions.SetActive(false);
         CancelTargetingIndicator();
@@ -88,9 +121,9 @@ public class BattleUI : MonoBehaviour, BattleInterface
     public void UpdateTimer(int p1, int p2, int p3, int p4)
     {
         playerChar[0].UpdateTurnBar(p1 / 2000f);
-        //turnBar[1].localScale = new Vector2(p2 / 2000f, 1);
-        //turnBar[2].localScale = new Vector2(p3 / 2000f, 1);
-        //turnBar[3].localScale = new Vector2(p4 / 2000f, 1);
+        playerChar[1].UpdateTurnBar(p2 / 2000f);
+        playerChar[2].UpdateTurnBar(p3 / 2000f);
+        playerChar[3].UpdateTurnBar(p4 / 2000f);
     }
 
     public void StartBattleTimer(IEnumerator coroutine)
@@ -107,18 +140,46 @@ public class BattleUI : MonoBehaviour, BattleInterface
     {
         playerTurnText.text = player.name + TURN;
         OnCancelSkillButtonClick();
+        SetPlayerActiveSkills(player);
+    }
+
+    void SetPlayerActiveSkills(CharacterModel player)
+    {
+        for (int x = 0; x < 5; x++)
+        {
+            activeBtns[x].gameObject.SetActive(false);
+        }
+        int i = 0;
+        foreach (string active in player.actives)
+        {
+            activeBtns[i].gameObject.SetActive(true);
+            activeBtns[i].GetComponentInChildren<Text>().text = ActiveSkillManager.GetInstance().GetActive(active).name;
+            i++;
+        }
     }
 
     public void UpdatePlayerTeam(CharacterModel model1, CharacterModel model2, CharacterModel model3, CharacterModel model4)
     {
         if (model1 != null)
             playerChar[0].UpdateCharacter(model1);
+        if (model2 != null)
+            playerChar[1].UpdateCharacter(model2);
+        if (model3 != null)
+            playerChar[2].UpdateCharacter(model3);
+        if (model4 != null)
+            playerChar[3].UpdateCharacter(model4);
     }
 
     public void UpdateEnemyTeam(CharacterModel model1, CharacterModel model2, CharacterModel model3, CharacterModel model4)
     {
         if (model1 != null)
             enemyChar[0].UpdateCharacter(model1);
+        if (model2 != null)
+            enemyChar[1].UpdateCharacter(model2);
+        if (model3 != null)
+            enemyChar[2].UpdateCharacter(model3);
+        if (model4 != null)
+            enemyChar[3].UpdateCharacter(model4);
     }
 
     public void EnableTargetingIndicator(int index, bool isPlayerSide, bool enabled)
@@ -131,20 +192,53 @@ public class BattleUI : MonoBehaviour, BattleInterface
 
     void CancelTargetingIndicator()
     {
-        for (int i = 0; i < 1; i++)//TODO Increase to 4 once completed
+        for (int i = 0; i < 4; i++)
         {
             EnableTargetingIndicator(i, true, false);
             EnableTargetingIndicator(i, false, false);
         }
     }
 
-    public void WriteLog(string log)
+    void ResetToggleButton()
     {
-        battleLog.text += "\n"+log;
+        attackButton.targetGraphic.color = Color.white;
+        attackButton.isOn = false;
+        selectedSkillIndex = -1;
+        for (int i = 0; i < 5; i++)
+        {
+            activeBtns[i].isOn = false;
+            activeBtns[i].targetGraphic.color = Color.white;
+        }
+    }
+
+    void ResetOtherButton(int excluded)
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            if (i != excluded)
+            {
+                activeBtns[i].isOn = false;
+                activeBtns[i].targetGraphic.color = Color.white;
+            }
+        }
+    }
+
+    public void WriteLog(string log, bool clear)
+    {
+        if (clear)
+            battleLog.text = "";
+        if (log.Length > 0)
+        {
+            if (battleLog.text.Length > 0)
+                battleLog.text += "\n" + log;
+            else
+                battleLog.text = log;
+        }
     }
 
     public void StartEnemyCoroutine(IEnumerator coroutine)
     {
         StartCoroutine(coroutine);
     }
+
 }

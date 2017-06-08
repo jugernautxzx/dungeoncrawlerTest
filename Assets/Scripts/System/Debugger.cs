@@ -20,6 +20,8 @@ public class Debugger
         model.attribute.speed = 1;
         model.battleSetting = new BattleSetting();
         model.elemental = new ElementAttribute();
+        model.actives = new List<string>();
+        model.passives = new List<string>();
         return model;
     }
 

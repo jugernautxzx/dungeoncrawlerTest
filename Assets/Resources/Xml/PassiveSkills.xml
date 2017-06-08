@@ -1,0 +1,5 @@
+  <PassiveSkills>
+    <Item Id="TestID" Name="TESTNAME"/>
+    <Item Id="TestID2" Name="TESTNAME"/>
+    <Item Id="TestID3" Name="TESTNAME"/>
+  </PassiveSkills>
