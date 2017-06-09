@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -8,7 +7,8 @@ public class PassiveSkillList : RealListWithDictionary<PassiveSkill>
 {
 }
 
-public class PassiveSkill : ClassWithId{
+public class PassiveSkill : ClassWithId
+{
     [XmlAttribute("Name")]
     public string name;
 }

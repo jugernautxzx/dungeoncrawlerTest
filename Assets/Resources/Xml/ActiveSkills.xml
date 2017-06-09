@@ -1,14 +1,20 @@
 <ActiveSkills>
-  <Item Id="Sweep" Name="Sweep" Stamina="35" Weapons="1HS|2HS|Spear" Targetable="allenemy" Row="front">
+  <Item Id="Sweep" Name="Sweep" Stamina="35" Weapons="Sword|Sword2H|Spear" Targetable="allenemy" Row="front">
     <Effects>
-      <Effect Target="allenemy" Row="front" Type="pdamage" Formula="PAtk" FormulaParam="0.7"/>
+      <Effect Target="allenemy" Row="front" Type="damage" Formula="PAtk" FormulaParam="0.7"/>
     </Effects>
     <Info>Deal 70% %damage% to all enemy on %front% row.</Info>
   </Item>
-  <Item Id="Sweep2" Name="Back Sweep" Stamina="35" Weapons="1HS|2HS|Spear" Targetable="allenemy" Row="back">
+  <Item Id="Sweep2" Name="Great cleave" Stamina="55" Weapons="Sword2H" Targetable="allenemy">
     <Effects>
-      <Effect Target="everyone" Type="pdamage" Formula="PAtk" FormulaParam="0.7"/>
+      <Effect Target="everyone" Type="damage" Formula="PAtk" FormulaParam="0.7"/>
     </Effects>
-    <Info>Deal 70% %damage% to all enemy on %front% row.</Info>
+    <Info>Deal 50% %damage% to all enemy.</Info>
+  </Item>
+  <Item Id="PoisonSting" Name="Poison sting" Stamina="25" Weapons="Dagger" Targetable="everyone" Row="front">
+    <Effects>
+      <Effect Target="target" Type="damage" Formula="PAtk" FormulaParam="0.3" Special="Poison"/>
+    </Effects>
+    <Info>Poison 1 enemy.</Info>
   </Item>
 </ActiveSkills>

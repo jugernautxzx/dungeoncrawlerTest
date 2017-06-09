@@ -196,9 +196,7 @@ public class BattleManager
     {
         int damage = calculate.DoNormalAttack(turnTaker, target);
         listener.WriteLog(turnTaker.name + " attack " + target.name + " for " + damage + " damage.", false);
-        target.battleAttribute.currHp -= damage;
-        if (target.battleAttribute.currHp < 0)
-            target.battleAttribute.currHp = 0;
+        target.battleAttribute.ModifyHp (damage);
         UpdateAllTeam();
     }
     //------------------------------- END OF NORMAL ATTACK ---------------------------------------------------------------------------------------------------
@@ -286,9 +284,33 @@ public class BattleManager
 
     void ActorGetSkillEffect(CharacterModel target, ActiveEffect effect)
     {//TODO add another skill effects
+        switch (effect.type)
+        {
+            case EffectType.damage:
+                break;
+            case EffectType.buff:
+                break;
+            case EffectType.debuff:
+                break;
+            case EffectType.heal:
+                break;
+            default:
+                break;
+        }
+        switch (effect.special)
+        {
+            case SpecialEffect.none:
+                break;
+            case SpecialEffect.lifeleech:
+                break;
+            case SpecialEffect.poison:
+                break;
+            default:
+                break;
+        }
         int damage = calculate.DoSkillDamageCalc(turnTaker, target, effect);
         listener.WriteLog(turnTaker.name + " attack " + target.name + " for " + damage + " damage.", false);
-        target.battleAttribute.currHp -= damage;
+        target.battleAttribute.ModifyHp(damage);
         if (target.battleAttribute.currHp < 0)
             target.battleAttribute.currHp = 0;
         UpdateAllTeam();

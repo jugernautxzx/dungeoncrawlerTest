@@ -1,16 +1,25 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class StatusEffectUI : MonoBehaviour {
+public class StatusEffectUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
+{
+    string infoId="InfoPoison";
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public void SetInfoId(string id)
+    {
+        infoId = id;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        GameObject.Find("BattleUI").GetComponent<BattleUI>().UpdateInfoId(infoId);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        //GameObject.Find("BattleUI").GetComponent<BattleUI>().UpdateInfoId(infoId);
+    }
 }

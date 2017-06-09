@@ -16,6 +16,8 @@ public class ActiveSkill : ClassWithId
     public string name;
     [XmlAttribute("Mana")]
     public string mana;
+    [XmlAttribute("Acc")]
+    public int acc;
     [XmlAttribute("Stamina")]
     public string stamina;
     [XmlAttribute("Weapons")]
@@ -47,7 +49,7 @@ public class ActiveEffect
     public string formulaParam;
     [XmlAttribute("Special")]
     public SpecialEffect special;
-    [XmlAttribute("SpecialValue")]
+    [XmlAttribute("SpecialParam")]
     public int specialVal;
 }
 

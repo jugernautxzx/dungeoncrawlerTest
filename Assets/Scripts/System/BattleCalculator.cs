@@ -6,7 +6,9 @@ public class BattleCalculator {
 
     public int DoNormalAttack(CharacterModel attack, CharacterModel target)
     {//TODO Do a real calculation here
-        return attack.battleAttribute.physAttack;
+        int simple = attack.battleAttribute.physAttack - target.battleAttribute.physDef;
+        simple = simple <= 0 ? 1 : simple;
+        return simple;
     }
 
     public int DoSkillDamageCalc(CharacterModel user, CharacterModel target, ActiveEffect effect)
@@ -15,7 +17,10 @@ public class BattleCalculator {
         {
             case "PAtk":
                 return FormulaPAtk(GetValue(effect.formulaParam), user.battleAttribute.physAttack);
+            case "MAtk":
+                return FormulaMAtk(GetValue(effect.formulaParam), user.battleAttribute.physAttack);
             default:
+                Debug.Log("Formula ID " + effect.formula + " not found.");
                 return 0;
         }
     }

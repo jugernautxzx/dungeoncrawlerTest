@@ -74,6 +74,7 @@ public class BattleAttribute
     public int currHp;
     public int mp;
     public int currMp;
+    public int currStamina;
     public int stamina;
     public int physAttack;
     public int physDef;
@@ -83,6 +84,34 @@ public class BattleAttribute
     public bool backRow;
     public int morale;
     public int actionBar;
+    List<BattleBuff> buffs = new List<BattleBuff>();
+
+    public void ModifyHp(int number)
+    {
+        currHp += number;
+        if (currHp > hp)
+            currHp = hp;
+        else if (currHp < 0)
+            currHp = 0;
+    }
+
+    public void ModifyMp(int number)
+    {
+        currMp += number;
+        if (currMp > mp)
+            currMp = mp;
+        else if (currMp < 0)
+            currMp = 0;
+    }
+
+    public void ModifyStamina(int number)
+    {
+        currStamina += number;
+        if (currStamina > stamina)
+            currStamina = stamina;
+        else if (currStamina < 0)
+            currStamina = 0;
+    }
 }
 
 public class BattleSetting

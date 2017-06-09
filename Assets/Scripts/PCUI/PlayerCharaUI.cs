@@ -17,9 +17,12 @@ public class PlayerCharaUI : MonoBehaviour
     public Button selectionButton;
     public RectTransform turnBar;
 
+    Text[] status;
+
     void Start()
     {
         EnableSelection(false);
+        status = statusEffect.GetComponentsInChildren<Text>();
     }
 
     public void EnableSelection(bool enable)

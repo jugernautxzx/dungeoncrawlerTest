@@ -15,15 +15,20 @@ public enum Row
 
 public enum EffectType
 {
-    pdamage, mdamage, heal, buff, debuff
+    damage, heal, buff, debuff
 }
 
 public enum SpecialEffect : int
 {
-    none, lifeleech
+    none, lifeleech, poison
 }
 
 public enum Element : int
 {
     none, physical, fire, water, wind, earth
+}
+
+public enum Weapon : int
+{
+    None, Dagger, Sword, Sword2H, Shield, Spear, Bow, Crossbow, Wand, Staff, Tome
 }

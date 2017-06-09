@@ -22,6 +22,7 @@ public class BattleUI : MonoBehaviour, BattleInterface
     public EnemyUI[] enemyChar;
 
     BattleManager battleManager;
+    TextManager textManager;
 
     int selectedSkillIndex;
 
@@ -41,6 +42,7 @@ public class BattleUI : MonoBehaviour, BattleInterface
             int j = i;
             activeBtns[i].onValueChanged.AddListener(delegate { OnActiveSkillButtonClicked(j); });
         }
+        textManager = new TextManager();
         battleManager = new BattleManager(this);
         battleManager.BattleStart();
     }
@@ -53,6 +55,11 @@ public class BattleUI : MonoBehaviour, BattleInterface
     public void UpdateInfo(string text)
     {
         UpdateInfoText(text);
+    }
+
+    public void UpdateInfoId(string id)
+    {
+        UpdateInfoText(textManager.GetText(id));
     }
 
     void UpdateInfoText(string text)
