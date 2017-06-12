@@ -1,3 +1,5 @@
 <Texts>
   <Item Id="InfoPoison" Text="Target is poisoned and take damage every turn."/>
+  <Item Id="InfoMuscleUp" Text="Increase physical attack damage."/>
+  <Item Id="NameMuscleUp" Text="&lt;color=#ffff00>PAUp&lt;/color>"/>
 </Texts>

@@ -14,7 +14,12 @@ public interface BattleInterface
     void StartEnemyCoroutine(IEnumerator coroutine);
 }
 
-public class BattleManager
+public interface BattleManagerLog
+{
+    void WriteLog(string log);
+}
+
+public class BattleManager : BattleManagerLog
 {
 
     CharacterModel player1, player2, player3, player4, enemy1, enemy2, enemy3, enemy4;
@@ -25,15 +30,17 @@ public class BattleManager
     bool timer, allActorsAlive;
     BattleInterface listener;
     BattleCalculator calculate;
-    ActiveSkillManager activeSkill;
+    ActiveSkillManager activeManager;
     PassiveManager passiveSkill;
+    ActiveUse active;
 
     public BattleManager(BattleInterface listener)
     {
         this.listener = listener;
         calculate = new BattleCalculator();
-        activeSkill = ActiveSkillManager.GetInstance();
+        activeManager = ActiveSkillManager.GetInstance();
         passiveSkill = new PassiveManager();
+        active = new ActiveUse(this);
     }
 
     public void BattleStart()
@@ -45,7 +52,7 @@ public class BattleManager
         listener.StartBattleTimer(BattleTimer());
     }
 
-    void UpdateAllTeam()
+    public void UpdateAllTeam()
     {
         listener.UpdatePlayerTeam(player1, player2, player3, player4);
         listener.UpdateEnemyTeam(enemy1, enemy2, enemy3, enemy4);
@@ -59,6 +66,7 @@ public class BattleManager
         player1.attribute.speed = 6;
         player1.actives.Add("Sweep");
         player1.actives.Add("Sweep2");
+        player1.actives.Add("PoisonSting");
         //player2 = Debugger.GenerateCharacterModel("Ramboman");
         //player2.isMainCharacter = true;
         //player2.attribute.speed = 2;
@@ -75,12 +83,17 @@ public class BattleManager
         enemy4.battleSetting.backRow = true;
         //
         player1.GenerateBasicBattleAttribute();
-        player1.battleAttribute.physAttack = 10;
+        player1.battleAttribute.pAtk = 10;
         //player2.GenerateBasicBattleAttribute();
         enemy1.GenerateBasicBattleAttribute();
         enemy2.GenerateBasicBattleAttribute();
         enemy3.GenerateBasicBattleAttribute();
         enemy4.GenerateBasicBattleAttribute();
+    }
+
+    public void WriteLog(string log)
+    {
+        listener.WriteLog(log, false);
     }
 
     public void RequestAttackTarget()
@@ -96,12 +109,12 @@ public class BattleManager
 
     public string GetSkillNote(int index)
     {
-        return activeSkill.GetActive(turnTaker.actives[index]).info;
+        return activeManager.GetActive(turnTaker.actives[index]).info;
     }
 
     public void RequestSkillTarget(int skillIndex)
     {
-        SetSkillTarget(activeSkill.GetActive(turnTaker.actives[skillIndex]));
+        SetSkillTarget(activeManager.GetActive(turnTaker.actives[skillIndex]));
     }
 
     void SetSkillTarget(ActiveSkill active)
@@ -196,7 +209,7 @@ public class BattleManager
     {
         int damage = calculate.DoNormalAttack(turnTaker, target);
         listener.WriteLog(turnTaker.name + " attack " + target.name + " for " + damage + " damage.", false);
-        target.battleAttribute.ModifyHp (damage);
+        target.battleAttribute.ModifyHp(-damage);
         UpdateAllTeam();
     }
     //------------------------------- END OF NORMAL ATTACK ---------------------------------------------------------------------------------------------------
@@ -205,116 +218,11 @@ public class BattleManager
     public void PlayerActorSkillTarget(int index, bool isPlayerSide, int skillIndex)
     {
         listener.WriteLog("", true);
-        foreach (ActiveEffect effect in activeSkill.GetActive(turnTaker.actives[skillIndex]).effects)
-        {
-            ActorSkillEffectTarget(GetCharacter(index, isPlayerSide), effect);
-        }
-        turnTaker.battleAttribute.actionBar -= 2000;
+        active.SetTurn(turnTaker);
+        active.PlayerActorSkillTarget(index, isPlayerSide, skillIndex);
         timer = true;
     }
 
-    void ActorSkillEffectTarget(CharacterModel target, ActiveEffect effect)
-    {
-        switch (effect.target)
-        {
-            case Target.self:
-                ActorGetSkillEffect(turnTaker, effect);
-                break;
-            case Target.target:
-                ActorGetSkillEffect(target, effect);
-                break;
-            case Target.allenemy:
-                AllEnemyGetSkillEffect(effect);
-                break;
-            case Target.allparty:
-                AllPartyGetSkillEffect(effect);
-                break;
-            case Target.everyone:
-                AllEnemyGetSkillEffect(effect);
-                AllPartyGetSkillEffect(effect);
-                break;
-            default:
-                throw new System.NotImplementedException();
-        }
-    }
-
-    void AllEnemyGetSkillEffect(ActiveEffect effect)
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            if (IsValid(GetEnemy(i)))
-                if (effect.row == Row.all)
-                {
-                    ActorGetSkillEffect(GetEnemy(i), effect);
-                }
-                else if (effect.row == Row.front)
-                {
-                    if (!GetEnemy(i).battleAttribute.backRow)
-                        ActorGetSkillEffect(GetEnemy(i), effect);
-                }
-                else
-                {
-                    if (GetEnemy(i).battleAttribute.backRow)
-                        ActorGetSkillEffect(GetEnemy(i), effect);
-                }
-        }
-    }
-
-    void AllPartyGetSkillEffect(ActiveEffect effect)
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            if (IsValid(GetPlayer(i)))
-                if (effect.row == Row.all)
-                {
-                    ActorGetSkillEffect(GetPlayer(i), effect);
-                }
-                else if (effect.row == Row.front)
-                {
-                    if (!GetPlayer(i).battleAttribute.backRow)
-                        ActorGetSkillEffect(GetEnemy(i), effect);
-                }
-                else
-                {
-                    if (GetPlayer(i).battleAttribute.backRow)
-                        ActorGetSkillEffect(GetEnemy(i), effect);
-                }
-        }
-    }
-
-    void ActorGetSkillEffect(CharacterModel target, ActiveEffect effect)
-    {//TODO add another skill effects
-        switch (effect.type)
-        {
-            case EffectType.damage:
-                break;
-            case EffectType.buff:
-                break;
-            case EffectType.debuff:
-                break;
-            case EffectType.heal:
-                break;
-            default:
-                break;
-        }
-        switch (effect.special)
-        {
-            case SpecialEffect.none:
-                break;
-            case SpecialEffect.lifeleech:
-                break;
-            case SpecialEffect.poison:
-                break;
-            default:
-                break;
-        }
-        int damage = calculate.DoSkillDamageCalc(turnTaker, target, effect);
-        listener.WriteLog(turnTaker.name + " attack " + target.name + " for " + damage + " damage.", false);
-        target.battleAttribute.ModifyHp(damage);
-        if (target.battleAttribute.currHp < 0)
-            target.battleAttribute.currHp = 0;
-        UpdateAllTeam();
-    }
 
     //------------------------------- END OF ACTIVE SKILLS ----------------------------------------------------------------------------------------------------------
 
@@ -429,7 +337,7 @@ public class BattleManager
             return false;
     }
 
-    bool IsValid(CharacterModel model)
+    public bool IsValid(CharacterModel model)
     {
         if (model == null)
             return false;
@@ -447,7 +355,7 @@ public class BattleManager
         timer = true;
     }
 
-    CharacterModel GetCharacter(int index, bool isPlayerSide)
+    public CharacterModel GetCharacter(int index, bool isPlayerSide)
     {
         if (isPlayerSide)
             return GetPlayer(index);
@@ -455,7 +363,7 @@ public class BattleManager
             return GetEnemy(index);
     }
 
-    CharacterModel GetPlayer(int index)
+    public CharacterModel GetPlayer(int index)
     {
         switch (index)
         {
@@ -472,7 +380,7 @@ public class BattleManager
         }
     }
 
-    CharacterModel GetEnemy(int index)
+    public CharacterModel GetEnemy(int index)
     {
         switch (index)
         {

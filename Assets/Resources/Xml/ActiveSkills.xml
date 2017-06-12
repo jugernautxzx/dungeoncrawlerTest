@@ -7,14 +7,19 @@
   </Item>
   <Item Id="Sweep2" Name="Great cleave" Stamina="55" Weapons="Sword2H" Targetable="allenemy">
     <Effects>
-      <Effect Target="everyone" Type="damage" Formula="PAtk" FormulaParam="0.7"/>
+      <Effect Target="allenemy" Type="damage" Formula="PAtk" FormulaParam="0.7"/>
     </Effects>
     <Info>Deal 50% %damage% to all enemy.</Info>
   </Item>
   <Item Id="PoisonSting" Name="Poison sting" Stamina="25" Weapons="Dagger" Targetable="everyone" Row="front">
     <Effects>
-      <Effect Target="target" Type="damage" Formula="PAtk" FormulaParam="0.3" Special="Poison"/>
+      <Effect Target="target" Type="damage" Formula="PAtk" FormulaParam="0.3" Special="poison"/>
     </Effects>
     <Info>Poison 1 enemy.</Info>
+  </Item>
+  <Item Id="MuscleUp" Name="Muscle up" Stamina="10" Weapons="All" Targetable="self">
+    <Effects>
+      <Effect Target="self" Type="buff" Formula="AtkBuff" FormulaParam="3|MuscleUp|NameMuscleUp|InfoMuscleUp|1.5"/>
+    </Effects>
   </Item>
 </ActiveSkills>

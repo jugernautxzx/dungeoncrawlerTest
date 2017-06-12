@@ -40,6 +40,12 @@ public class PlayerCharaUI : MonoBehaviour
         selectionButton.onClick.AddListener(call);
     }
 
+    public void UpdateStatusEffect()
+    {
+        for (int i = 0; i < 8; i++)
+            statusEffect.transform.GetChild(i).gameObject.SetActive(false);
+    }
+
     public void UpdateCharacter(CharacterModel model)
     {
         charName.text = model.name;
@@ -57,5 +63,6 @@ public class PlayerCharaUI : MonoBehaviour
             rowColor.color = Color.red;
             rowText.text = "Front";
         }
+        UpdateStatusEffect();
     }
 }

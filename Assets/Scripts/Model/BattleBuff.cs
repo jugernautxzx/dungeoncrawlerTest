@@ -5,36 +5,63 @@ public abstract class BattleBuff
 {
     public int turn;
     public string id;
-    public string name;
     public string infoId;
-    public string infoName;
+    public string nameInfo;
 
-    public abstract void BuffOnTurn(CharacterModel model);
-    public abstract void BuffOnGet(CharacterModel model);
-    public abstract void BuffOnRemove(CharacterModel model);
-    public virtual void Some()
+    public CharacterModel model;
+    public BattleManagerLog log;
+
+    public virtual void BuffOnTurn() { }
+    public virtual void BuffOnGet() { }
+    public virtual void BuffOnRemove() { }
+}
+
+public class BuffManager{
+
+    public static BattleBuff CreateBuff(string bType, string form)
     {
-
+        string[] forms = form.Split('|');
+        BattleBuff buff;
+        switch (bType)
+        {
+            case "AtkBuff":
+                buff = new AtkBuff(forms[4]);
+                break;
+            case "PoisonBuff":
+                buff = new PoisonBuff(forms[4]);
+                break;
+            default:
+                new NotImplementedException("Buff formula does not exist: " + bType);
+                return null;
+        }
+        buff.turn = int.Parse(forms[0]);
+        buff.id = forms[1];
+        buff.nameInfo = forms[2];
+        buff.infoId = forms[3];
+        return buff;
     }
+
 }
 
 public class AtkBuff : BattleBuff
 {
     int atkIncrease;
+    public float modifier;
 
-    public override void BuffOnGet(CharacterModel model)
+    public AtkBuff(string mod)
     {
-        atkIncrease = Mathf.RoundToInt(model.battleAttribute.physAttack * 0.4f);
-        model.battleAttribute.physAttack += atkIncrease;
+        modifier = float.Parse(mod);
     }
 
-    public override void BuffOnRemove(CharacterModel model)
+    public override void BuffOnGet()
     {
-        model.battleAttribute.physAttack -= atkIncrease;
+        atkIncrease = Mathf.RoundToInt(model.battleAttribute.basePAtk * modifier);
+        model.battleAttribute.pAtk += atkIncrease;
     }
 
-    public override void BuffOnTurn(CharacterModel model)
+    public override void BuffOnRemove()
     {
+        model.battleAttribute.pAtk -= atkIncrease;
     }
 }
 
@@ -42,21 +69,18 @@ public class PoisonBuff : BattleBuff
 {
     int damage;
 
-    public void SetDamage(int damage)
+    public PoisonBuff(string damage)
     {
-        this.damage = damage;
+        this.damage = int.Parse(damage);
     }
 
-    public override void BuffOnGet(CharacterModel model)
+    public override void BuffOnGet()
     {
+        log.WriteLog(model.name + " is poisoned for " + damage + " per turn.");
     }
 
-    public override void BuffOnRemove(CharacterModel model)
+    public override void BuffOnTurn()
     {
-    }
-
-    public override void BuffOnTurn(CharacterModel model)
-    {
-        model.battleAttribute.ModifyHp(damage);
+        model.battleAttribute.ModifyHp(-damage);
     }
 }

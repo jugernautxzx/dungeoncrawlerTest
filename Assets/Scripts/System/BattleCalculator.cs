@@ -6,7 +6,7 @@ public class BattleCalculator {
 
     public int DoNormalAttack(CharacterModel attack, CharacterModel target)
     {//TODO Do a real calculation here
-        int simple = attack.battleAttribute.physAttack - target.battleAttribute.physDef;
+        int simple = attack.battleAttribute.pAtk - target.battleAttribute.pDef;
         simple = simple <= 0 ? 1 : simple;
         return simple;
     }
@@ -16,9 +16,9 @@ public class BattleCalculator {
         switch (effect.formula)
         {
             case "PAtk":
-                return FormulaPAtk(GetValue(effect.formulaParam), user.battleAttribute.physAttack);
+                return FormulaPAtk(GetValue(effect.formulaParam), user.battleAttribute.pAtk);
             case "MAtk":
-                return FormulaMAtk(GetValue(effect.formulaParam), user.battleAttribute.physAttack);
+                return FormulaMAtk(GetValue(effect.formulaParam), user.battleAttribute.pAtk);
             default:
                 Debug.Log("Formula ID " + effect.formula + " not found.");
                 return 0;

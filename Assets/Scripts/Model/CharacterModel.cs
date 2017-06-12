@@ -41,11 +41,15 @@ public class CharacterModel{
         battleAttribute.mp = 10;
         battleAttribute.currMp = battleAttribute.mp;
         battleAttribute.stamina = 0;
-        battleAttribute.physAttack = attribute.str;
-        battleAttribute.physDef = attribute.cons;
-        battleAttribute.magicAttack = attribute.intel;
-        battleAttribute.magicDef = attribute.wisdom;
+        battleAttribute.pAtk = attribute.str;
+        battleAttribute.pDef = attribute.cons;
+        battleAttribute.mAtk = attribute.intel;
+        battleAttribute.mDef = attribute.wisdom;
         battleAttribute.speed = attribute.speed;
+        battleAttribute.baseMatk = battleAttribute.mAtk;
+        battleAttribute.basePAtk = battleAttribute.pAtk;
+        battleAttribute.baseMDef = battleAttribute.mDef;
+        battleAttribute.basePDef = battleAttribute.pDef;
         battleAttribute.backRow = battleSetting.backRow;
     }
 }
@@ -76,15 +80,20 @@ public class BattleAttribute
     public int currMp;
     public int currStamina;
     public int stamina;
-    public int physAttack;
-    public int physDef;
-    public int magicAttack;
-    public int magicDef;
+    public int basePAtk;
+    public int baseMatk;
+    public int baseMDef;
+    public int baseSpeed;
+    public int basePDef;
+    public int pAtk;
+    public int pDef;
+    public int mAtk;
+    public int mDef;
     public int speed;
     public bool backRow;
     public int morale;
     public int actionBar;
-    List<BattleBuff> buffs = new List<BattleBuff>();
+    public List<BattleBuff> buffs = new List<BattleBuff>();
 
     public void ModifyHp(int number)
     {

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EnemyUI : MonoBehaviour {
+public class EnemyUI : MonoBehaviour
+{
 
     public Text nameText;
     public RectTransform healthBar;
@@ -32,9 +33,19 @@ public class EnemyUI : MonoBehaviour {
         selectionButton.onClick.AddListener(call);
     }
 
-    public void UpdateStatusEffect()
+    public void UpdateStatusEffect(CharacterModel model)
     {
-
+        for (int i = 0; i < 8; i++)
+        {
+            statusEffect.transform.GetChild(i).gameObject.SetActive(false);
+        }
+        int j = 0;
+        foreach(BattleBuff buff in model.battleAttribute.buffs)
+        {
+            statusEffect.transform.GetChild(j).gameObject.SetActive(true);
+            statusEffect.transform.GetChild(j).GetComponent<StatusEffectUI>().SetInfoId(buff.nameInfo);
+            j++;
+        }
     }
 
     public void UpdateCharacter(CharacterModel model)
@@ -51,5 +62,6 @@ public class EnemyUI : MonoBehaviour {
             rowText.text = "Front";
         }
         SetHealth(model.battleAttribute.currHp / (float)model.battleAttribute.hp);
+        UpdateStatusEffect(model);
     }
 }

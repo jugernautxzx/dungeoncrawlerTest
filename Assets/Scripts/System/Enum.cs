@@ -30,5 +30,5 @@ public enum Element : int
 
 public enum Weapon : int
 {
-    None, Dagger, Sword, Sword2H, Shield, Spear, Bow, Crossbow, Wand, Staff, Tome
+    None, All, Dagger, Sword, Sword2H, Shield, Spear, Bow, Crossbow, Wand, Staff, Tome
 }

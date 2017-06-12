@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class StatusEffectUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
 {
@@ -11,6 +12,7 @@ public class StatusEffectUI : MonoBehaviour, IPointerClickHandler, IPointerEnter
     public void SetInfoId(string id)
     {
         infoId = id;
+        GetComponent<Text>().text = id;
     }
 
     public void OnPointerClick(PointerEventData eventData)
