@@ -40,10 +40,17 @@ public class PlayerCharaUI : MonoBehaviour
         selectionButton.onClick.AddListener(call);
     }
 
-    public void UpdateStatusEffect()
+    public void UpdateStatusEffect(CharacterModel model)
     {
         for (int i = 0; i < 8; i++)
             statusEffect.transform.GetChild(i).gameObject.SetActive(false);
+        int j = 0;
+        foreach (BattleBuff buff in model.battleAttribute.buffs)
+        {
+            statusEffect.transform.GetChild(j).gameObject.SetActive(true);
+            statusEffect.transform.GetChild(j).GetComponent<StatusEffectUI>().SetInfoId(buff.nameInfo, buff.infoId);
+            j++;
+        }
     }
 
     public void UpdateCharacter(CharacterModel model)
@@ -63,6 +70,6 @@ public class PlayerCharaUI : MonoBehaviour
             rowColor.color = Color.red;
             rowText.text = "Front";
         }
-        UpdateStatusEffect();
+        UpdateStatusEffect(model);
     }
 }

@@ -1,4 +1,6 @@
-﻿public class ActiveUse
+﻿using UnityEngine;
+
+public class ActiveUse
 {
 
     BattleManager bm;
@@ -104,6 +106,7 @@
                 ActiveEffectDamage(target, effect);
                 break;
             case EffectType.buff:
+                ActiveEffectBuff(target, effect);
                 break;
             case EffectType.debuff:
                 break;
@@ -119,7 +122,7 @@
             case SpecialEffect.lifeleech:
                 break;
             case SpecialEffect.poison:
-                ActiveEffectBuff(target, SpecialPoison());
+                ActiveEffectBuff(target, SpecialPoison(effect.specialVal));
                 break;
             default:
                 break;
@@ -141,15 +144,23 @@
         BattleBuff buff = BuffManager.CreateBuff(effect.formula, effect.formulaParam);
         buff.model = target;
         buff.log = bm;
+        for(int i=0; i<target.battleAttribute.buffs.Count; i++)
+        {
+            if (target.battleAttribute.buffs[i].id.Equals(buff.id))
+            {
+                target.battleAttribute.buffs.RemoveAt(i);
+                break;
+            }
+        }
         target.battleAttribute.buffs.Add(buff);
         buff.BuffOnGet();
     }
 
-    ActiveEffect SpecialPoison()
+    ActiveEffect SpecialPoison(string specialVal)
     {
         ActiveEffect effect = new ActiveEffect();
         effect.formula = "PoisonBuff";
-        effect.formulaParam = "2|Poison|<color=#00ff00>PSN</color>|InfoPoison|3";
+        effect.formulaParam = "4|Poison|<color=#00ff00>PSN</color>|InfoPoison|" + Mathf.RoundToInt(turnTaker.battleAttribute.pAtk * float.Parse(specialVal));
         return effect;
     }
 

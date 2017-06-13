@@ -11,12 +11,32 @@ public abstract class BattleBuff
     public CharacterModel model;
     public BattleManagerLog log;
 
-    public virtual void BuffOnTurn() { }
-    public virtual void BuffOnGet() { }
-    public virtual void BuffOnRemove() { }
+    public void CharaTakeTurn()
+    {
+        BuffOnTurn();
+        turn -= 1;
+        if (turn <= 0)
+            BuffOnRemove();
+    }
+
+    public bool IsExpired()
+    {
+        return turn <= 0;
+    }
+
+    public virtual void BuffOnTurn()
+    {
+    }
+    public virtual void BuffOnGet()
+    {
+    }
+    public virtual void BuffOnRemove()
+    {
+    }
 }
 
-public class BuffManager{
+public class BuffManager
+{
 
     public static BattleBuff CreateBuff(string bType, string form)
     {
@@ -55,12 +75,14 @@ public class AtkBuff : BattleBuff
 
     public override void BuffOnGet()
     {
+        base.BuffOnGet();
         atkIncrease = Mathf.RoundToInt(model.battleAttribute.basePAtk * modifier);
         model.battleAttribute.pAtk += atkIncrease;
     }
 
     public override void BuffOnRemove()
     {
+        base.BuffOnRemove();
         model.battleAttribute.pAtk -= atkIncrease;
     }
 }
@@ -76,11 +98,20 @@ public class PoisonBuff : BattleBuff
 
     public override void BuffOnGet()
     {
-        log.WriteLog(model.name + " is poisoned for " + damage + " per turn.");
+        base.BuffOnGet();
+        log.WriteLog(model.name + " is poisoned for " + turn + " turn.");
     }
 
     public override void BuffOnTurn()
     {
+        base.BuffOnTurn();
+        log.WriteLog(model.name + " takes "  + damage + " poison damage.");
         model.battleAttribute.ModifyHp(-damage);
+    }
+
+    public override void BuffOnRemove()
+    {
+        base.BuffOnRemove();
+        log.WriteLog(model.name + " is no longer poisoned.");
     }
 }

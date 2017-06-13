@@ -50,7 +50,7 @@ public class ActiveEffect
     [XmlAttribute("Special")]
     public SpecialEffect special;
     [XmlAttribute("SpecialParam")]
-    public int specialVal;
+    public string specialVal;
 }
 
 public class ActiveSkillManager

@@ -8,11 +8,12 @@ using UnityEngine.UI;
 public class StatusEffectUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
 {
     string infoId="InfoPoison";
+    string text;
 
-    public void SetInfoId(string id)
+    public void SetInfoId(string text, string id)
     {
         infoId = id;
-        GetComponent<Text>().text = id;
+        GetComponent<Text>().text = text;
     }
 
     public void OnPointerClick(PointerEventData eventData)

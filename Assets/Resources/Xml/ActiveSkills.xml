@@ -13,13 +13,13 @@
   </Item>
   <Item Id="PoisonSting" Name="Poison sting" Stamina="25" Weapons="Dagger" Targetable="everyone" Row="front">
     <Effects>
-      <Effect Target="target" Type="damage" Formula="PAtk" FormulaParam="0.3" Special="poison"/>
+      <Effect Target="target" Type="damage" Formula="PAtk" FormulaParam="0.3" Special="poison" SpecialParam="5"/>
     </Effects>
     <Info>Poison 1 enemy.</Info>
   </Item>
   <Item Id="MuscleUp" Name="Muscle up" Stamina="10" Weapons="All" Targetable="self">
     <Effects>
-      <Effect Target="self" Type="buff" Formula="AtkBuff" FormulaParam="3|MuscleUp|NameMuscleUp|InfoMuscleUp|1.5"/>
+      <Effect Target="self" Type="buff" Formula="AtkBuff" FormulaParam="3|MuscleUp|&lt;color=#ff0000>PAtk&lt;/color>|InfoMuscleUp|1.5"/>
     </Effects>
   </Item>
 </ActiveSkills>

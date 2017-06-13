@@ -43,7 +43,7 @@ public class EnemyUI : MonoBehaviour
         foreach(BattleBuff buff in model.battleAttribute.buffs)
         {
             statusEffect.transform.GetChild(j).gameObject.SetActive(true);
-            statusEffect.transform.GetChild(j).GetComponent<StatusEffectUI>().SetInfoId(buff.nameInfo);
+            statusEffect.transform.GetChild(j).GetComponent<StatusEffectUI>().SetInfoId(buff.nameInfo, buff.infoId);
             j++;
         }
     }

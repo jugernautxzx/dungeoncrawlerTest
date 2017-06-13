@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public interface BattleInterface
@@ -67,6 +68,7 @@ public class BattleManager : BattleManagerLog
         player1.actives.Add("Sweep");
         player1.actives.Add("Sweep2");
         player1.actives.Add("PoisonSting");
+        player1.actives.Add("MuscleUp");
         //player2 = Debugger.GenerateCharacterModel("Ramboman");
         //player2.isMainCharacter = true;
         //player2.attribute.speed = 2;
@@ -232,7 +234,7 @@ public class BattleManager : BattleManagerLog
         while (allActorsAlive)
         {
             yield return new WaitUntil(() => timer);
-            yield return new WaitForSeconds(0.02f);
+            yield return new WaitForFixedUpdate();
             AllActorsActionBarFill();
             listener.UpdateTimer(GetTimer(player1), GetTimer(player2), GetTimer(player3), GetTimer(player4));
             while (AnyActorCanMove())
@@ -267,9 +269,7 @@ public class BattleManager : BattleManagerLog
 
     void ActorActionBarFill(CharacterModel actor)//TODO Calculation needed
     {
-        if (actor == null)
-            return;
-        if (actor.battleAttribute.hp <= 0)
+        if (!IsValid(actor))
             return;
         actor.battleAttribute.actionBar += actor.battleAttribute.speed + 20;
     }
@@ -286,7 +286,7 @@ public class BattleManager : BattleManagerLog
 
     bool IsActorCanMove(CharacterModel actor)
     {
-        if (actor == null)
+        if (!IsValid(actor))
             return false;
         return actor.battleAttribute.actionBar >= 2000;
     }
@@ -311,13 +311,19 @@ public class BattleManager : BattleManagerLog
 
     bool PlayerActorTakeTurn(CharacterModel player)
     {
-        if (player == null)
+        if (!IsValid(player))
             return false;
         if (player.battleAttribute.actionBar >= 2000)
         {
             turnTaker = player;
-            listener.PlayerTakeTurn(player);
-            return true;
+            TurnTakerBuffOnTurn();
+            if (IsValid(turnTaker))
+            {
+                listener.PlayerTakeTurn(player);
+                return true;
+            }
+            else
+                return false;
         }
         else
             return false;
@@ -330,25 +336,45 @@ public class BattleManager : BattleManagerLog
         if (enemy.battleAttribute.actionBar >= 2000)
         {
             turnTaker = enemy;
-            listener.StartEnemyCoroutine(AITakeTurn());
-            return true;
+            TurnTakerBuffOnTurn();
+            if (IsValid(turnTaker))
+            {
+                listener.StartEnemyCoroutine(AITakeTurn());
+                return true;
+            }
+            else
+                return false;
         }
         else
             return false;
+    }
+
+    void TurnTakerBuffOnTurn()
+    {
+        List<BattleBuff> toRemove = new List<BattleBuff>();
+        foreach (BattleBuff buff in turnTaker.battleAttribute.buffs)
+        {
+            buff.CharaTakeTurn();
+            if (buff.IsExpired())
+                toRemove.Add(buff);
+        }
+        foreach (BattleBuff buff in toRemove)
+        {
+            turnTaker.battleAttribute.buffs.Remove(buff);
+        }
     }
 
     public bool IsValid(CharacterModel model)
     {
         if (model == null)
             return false;
-        if (model.battleAttribute.currHp == 0)
+        if (model.battleAttribute.currHp <= 0)
             return false;
         return true;
     }
 
     IEnumerator AITakeTurn()
     {
-        Debug.Log("AI Take turn : " + turnTaker.name);
         yield return new WaitForSeconds(0.5f);
         ActorAttackTarget(0, true);
         yield return new WaitForSeconds(0.25f);
