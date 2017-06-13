@@ -32,3 +32,8 @@ public enum Weapon : int
 {
     None, All, Dagger, Sword, Sword2H, Shield, Spear, Bow, Crossbow, Wand, Staff, Tome
 }
+
+public enum BuffTag : int
+{
+    Buff, Debuff, Poison, Regen, AttribUp, AttribDown
+}

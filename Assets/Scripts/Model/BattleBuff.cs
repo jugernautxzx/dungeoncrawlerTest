@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class BattleBuff
@@ -11,6 +12,8 @@ public abstract class BattleBuff
     public CharacterModel model;
     public BattleManagerLog log;
 
+    public List<BuffTag> tags = new List<BuffTag>();
+
     public void CharaTakeTurn()
     {
         BuffOnTurn();
@@ -18,6 +21,8 @@ public abstract class BattleBuff
         if (turn <= 0)
             BuffOnRemove();
     }
+
+    public abstract void AddTags();
 
     public bool IsExpired()
     {
@@ -85,6 +90,12 @@ public class AtkBuff : BattleBuff
         base.BuffOnRemove();
         model.battleAttribute.pAtk -= atkIncrease;
     }
+
+    public override void AddTags()
+    {
+        tags.Add(BuffTag.AttribUp);
+        tags.Add(BuffTag.Buff);
+    }
 }
 
 public class PoisonBuff : BattleBuff
@@ -113,5 +124,11 @@ public class PoisonBuff : BattleBuff
     {
         base.BuffOnRemove();
         log.WriteLog(model.name + " is no longer poisoned.");
+    }
+
+    public override void AddTags()
+    {
+        tags.Add(BuffTag.Debuff);
+        tags.Add(BuffTag.Poison);
     }
 }

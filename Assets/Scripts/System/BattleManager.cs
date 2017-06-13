@@ -34,6 +34,7 @@ public class BattleManager : BattleManagerLog
     ActiveSkillManager activeManager;
     PassiveManager passiveSkill;
     ActiveUse active;
+    EnemyAI enemyAI;
 
     public BattleManager(BattleInterface listener)
     {
@@ -42,6 +43,7 @@ public class BattleManager : BattleManagerLog
         activeManager = ActiveSkillManager.GetInstance();
         passiveSkill = new PassiveManager();
         active = new ActiveUse(this);
+        enemyAI = new EnemyAI(this);
     }
 
     public void BattleStart()
@@ -376,7 +378,9 @@ public class BattleManager : BattleManagerLog
     IEnumerator AITakeTurn()
     {
         yield return new WaitForSeconds(0.5f);
-        ActorAttackTarget(0, true);
+        //TODO Insert EnemyAI
+        //ActorAttackTarget(0, true);
+        turnTaker.monster.TakeTurn();
         yield return new WaitForSeconds(0.25f);
         timer = true;
     }

@@ -13,7 +13,7 @@
   </Item>
   <Item Id="PoisonSting" Name="Poison sting" Stamina="25" Weapons="Dagger" Targetable="everyone" Row="front">
     <Effects>
-      <Effect Target="target" Type="damage" Formula="PAtk" FormulaParam="0.3" Special="poison" SpecialParam="5"/>
+      <Effect Target="target" Type="damage" Formula="PAtk" FormulaParam="0.3" Special="poison" SpecialParam="0.5"/>
     </Effects>
     <Info>Poison 1 enemy.</Info>
   </Item>

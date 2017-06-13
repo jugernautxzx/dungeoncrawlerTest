@@ -7,6 +7,8 @@ public class CharacterModel{
 
     [XmlAttribute("IsMainCharacter")]
     public bool isMainCharacter;
+    [XmlAttribute("MonsterId")]
+    public string monsterId;
     [XmlAttribute("Name")]
     public string name;
     [XmlAttribute("Level")]
@@ -31,6 +33,8 @@ public class CharacterModel{
     [XmlArray("Passives")]
     [XmlArrayItem("Passive")]
     public List<string> passives;
+    [XmlIgnore]
+    public BaseMonster monster;
 
     public void GenerateBasicBattleAttribute()
     {
