@@ -66,33 +66,29 @@ public class BattleManager : BattleManagerLog
         //TODO Debugging purpose
         player1 = Debugger.GenerateCharacterModel("John McHammer");
         player1.isMainCharacter = true;
-        player1.attribute.speed = 6;
         player1.actives.Add("Sweep");
         player1.actives.Add("Sweep2");
         player1.actives.Add("PoisonSting");
         player1.actives.Add("MuscleUp");
-        //player2 = Debugger.GenerateCharacterModel("Ramboman");
-        //player2.isMainCharacter = true;
-        //player2.attribute.speed = 2;
-        //player2.battleSetting.backRow = true;
+        player2 = Debugger.GenerateCharacterModel("Ramboman");
+        player2.battleSetting.backRow = true;
         enemy1 = Debugger.GenerateCharacterModel("Skeleton 1");
-        enemy1.attribute.speed = 5;
         enemy2 = Debugger.GenerateCharacterModel("Skeleton 2");
-        enemy2.attribute.speed = 5;
         enemy3 = Debugger.GenerateCharacterModel("Skeleton 3");
-        enemy3.attribute.speed = 5;
         enemy3.battleSetting.backRow = true;
         enemy4 = Debugger.GenerateCharacterModel("Skeleton 4");
-        enemy4.attribute.speed = 5;
         enemy4.battleSetting.backRow = true;
         //
         player1.GenerateBasicBattleAttribute();
-        player1.battleAttribute.pAtk = 10;
-        //player2.GenerateBasicBattleAttribute();
+        player2.GenerateBasicBattleAttribute();
         enemy1.GenerateBasicBattleAttribute();
         enemy2.GenerateBasicBattleAttribute();
         enemy3.GenerateBasicBattleAttribute();
         enemy4.GenerateBasicBattleAttribute();
+        enemyAI.InitMonster(enemy1);
+        enemyAI.InitMonster(enemy2);
+        enemyAI.InitMonster(enemy3);
+        enemyAI.InitMonster(enemy4);
     }
 
     public void WriteLog(string log)
@@ -203,7 +199,7 @@ public class BattleManager : BattleManagerLog
             listener.WriteLog("Please select a valid target.", true);
     }
 
-    void ActorAttackTarget(int index, bool isPlayerSide)
+    public void ActorAttackTarget(int index, bool isPlayerSide)
     {
         turnTaker.battleAttribute.actionBar -= 2000;
         ActorSingleTargetAttack(GetCharacter(index, isPlayerSide));

@@ -3,7 +3,8 @@ using System.Xml.Serialization;
 using UnityEngine;
 
 [XmlRoot("Character")]
-public class CharacterModel{
+public class CharacterModel
+{
 
     [XmlAttribute("IsMainCharacter")]
     public bool isMainCharacter;
