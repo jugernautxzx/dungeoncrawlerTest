@@ -11,6 +11,10 @@ public class DungeonGenerator : MonoBehaviour {
     public RectTransform CoridorX;
     public RectTransform CoridorY;
     int randpos;
+    int IndexCoridor=0;
+    float PrevRoomPositionX;
+    float PrevRoomPositionY;
+
     RectTransform[] DungeonRoom = new RectTransform[100];
     RectTransform[] DungeonCoridor = new RectTransform[100];
 
@@ -21,6 +25,7 @@ public class DungeonGenerator : MonoBehaviour {
     public void GenerateDungeon()
     {
         bool position = true;
+        bool spawncoridor = true;
 
         RectTransform  Entrance = Instantiate(Room);
         Entrance.transform.SetParent(Panel.transform, false);
@@ -40,6 +45,7 @@ public class DungeonGenerator : MonoBehaviour {
             do
             {
                 randposition(i, RoomPositionX, RoomPositionY);
+                
                 for (int j=0; j<i; j++)
                 {
                     if(DungeonRoom[i].GetComponent<RectTransform>().offsetMin == DungeonRoom[j].GetComponent<RectTransform>().offsetMin || DungeonRoom[i].GetComponent<RectTransform>().offsetMin == new Vector2(0,0))
@@ -51,10 +57,27 @@ public class DungeonGenerator : MonoBehaviour {
                     {
                         position = true;
                     }
+
                 }
+
+                SpawnCoridor(IndexCoridor, RoomPositionX, RoomPositionY);
+
+                for (int K=0;K<IndexCoridor;K++)
+                {
+                    
+                    if (DungeonCoridor[K].GetComponent<RectTransform>().offsetMin==DungeonCoridor[IndexCoridor].GetComponent<RectTransform>().offsetMin)
+                    {
+                        Destroy(DungeonCoridor[IndexCoridor].gameObject);
+                        IndexCoridor -= 1;
+                    }
+                    
+                }
+
+                IndexCoridor += 1;
+                   
+
             } while (position == false);
             DungeonRoom[i].sizeDelta = new Vector2(70, 70);
-            SpawnCoridor(i,RoomPositionX,RoomPositionY);
             RoomPositionX = DungeonRoom[i].offsetMin.x;
             RoomPositionY = DungeonRoom[i].offsetMin.y;
 
@@ -65,6 +88,8 @@ public class DungeonGenerator : MonoBehaviour {
     }
     public void randposition(int i,float RoomPositionX,float RoomPositionY)
     {
+        PrevRoomPositionX = RoomPositionX;
+        PrevRoomPositionY = RoomPositionY;
         randpos = Random.Range(1, 5);
         switch (randpos)
         {
@@ -88,39 +113,39 @@ public class DungeonGenerator : MonoBehaviour {
         }
         
     }
-    public void SpawnCoridor(int i, float RoomPositionX, float RoomPositionY)
+    public void SpawnCoridor(int IndexCoridor, float RoomPositionX, float RoomPositionY)
     {
         switch (randpos)
         {
             case 1:
-                DungeonCoridor[i] = Instantiate(CoridorY);
-                DungeonCoridor[i].transform.SetParent(Panel.transform, false);
-                DungeonCoridor[i].GetComponent<RectTransform>().offsetMin = new Vector2(RoomPositionX + 25, 0);
-                DungeonCoridor[i].GetComponent<RectTransform>().offsetMax = new Vector2(0, RoomPositionY + 70);
-                DungeonCoridor[i].sizeDelta = new Vector2(260, 16);
+                DungeonCoridor[IndexCoridor] = Instantiate(CoridorY);
+                DungeonCoridor[IndexCoridor].transform.SetParent(Panel.transform, false);
+                DungeonCoridor[IndexCoridor].GetComponent<RectTransform>().offsetMin = new Vector2(RoomPositionX + 25, 0);
+                DungeonCoridor[IndexCoridor].GetComponent<RectTransform>().offsetMax = new Vector2(0, RoomPositionY + 70);
+                DungeonCoridor[IndexCoridor].sizeDelta = new Vector2(260, 16);
                 break;
 
             case 2:
-                DungeonCoridor[i] = Instantiate(CoridorX);
-                DungeonCoridor[i].transform.SetParent(Panel.transform, false);
-                DungeonCoridor[i].GetComponent<RectTransform>().offsetMin = new Vector2(RoomPositionX + 70, 0);
-                DungeonCoridor[i].GetComponent<RectTransform>().offsetMax = new Vector2(0, RoomPositionY + 45);
-                DungeonCoridor[i].sizeDelta = new Vector2(260, 16);
+                DungeonCoridor[IndexCoridor] = Instantiate(CoridorX);
+                DungeonCoridor[IndexCoridor].transform.SetParent(Panel.transform, false);
+                DungeonCoridor[IndexCoridor].GetComponent<RectTransform>().offsetMin = new Vector2(RoomPositionX + 70, 0);
+                DungeonCoridor[IndexCoridor].GetComponent<RectTransform>().offsetMax = new Vector2(0, RoomPositionY + 45);
+                DungeonCoridor[IndexCoridor].sizeDelta = new Vector2(260, 16);
                 break;
             case 3:
-                DungeonCoridor[i] = Instantiate(CoridorY);
-                DungeonCoridor[i].transform.SetParent(Panel.transform, false);
-                DungeonCoridor[i].GetComponent<RectTransform>().offsetMin = new Vector2(RoomPositionX + 25, 0);
-                DungeonCoridor[i].GetComponent<RectTransform>().offsetMax = new Vector2(0, RoomPositionY - 130);
-                DungeonCoridor[i].sizeDelta = new Vector2(260, 16);
+                DungeonCoridor[IndexCoridor] = Instantiate(CoridorY);
+                DungeonCoridor[IndexCoridor].transform.SetParent(Panel.transform, false);
+                DungeonCoridor[IndexCoridor].GetComponent<RectTransform>().offsetMin = new Vector2(RoomPositionX + 25, 0);
+                DungeonCoridor[IndexCoridor].GetComponent<RectTransform>().offsetMax = new Vector2(0, RoomPositionY - 130);
+                DungeonCoridor[IndexCoridor].sizeDelta = new Vector2(260, 16);
                 break;
 
             case 4:
-                DungeonCoridor[i] = Instantiate(CoridorX);
-                DungeonCoridor[i].transform.SetParent(Panel.transform, false);
-                DungeonCoridor[i].GetComponent<RectTransform>().offsetMin = new Vector2(RoomPositionX - 130, 0);
-                DungeonCoridor[i].GetComponent<RectTransform>().offsetMax = new Vector2(0, RoomPositionY + 45);
-                DungeonCoridor[i].sizeDelta = new Vector2(260, 16);
+                DungeonCoridor[IndexCoridor] = Instantiate(CoridorX);
+                DungeonCoridor[IndexCoridor].transform.SetParent(Panel.transform, false);
+                DungeonCoridor[IndexCoridor].GetComponent<RectTransform>().offsetMin = new Vector2(RoomPositionX - 130, 0);
+                DungeonCoridor[IndexCoridor].GetComponent<RectTransform>().offsetMax = new Vector2(0, RoomPositionY + 45);
+                DungeonCoridor[IndexCoridor].sizeDelta = new Vector2(260, 16);
                 break;
         }
     }
