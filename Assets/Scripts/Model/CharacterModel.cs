@@ -14,12 +14,8 @@ public class CharacterModel
     public string name;
     [XmlAttribute("Level")]
     public int level;
-    [XmlAttribute("HP")]
-    public int baseHP;
-    [XmlAttribute("MP")]
-    public int baseMP;
-    [XmlAttribute("Stamina")]
-    public int baseStamina;
+    [XmlAttribute("Experience")]
+    public int exp;
     [XmlElement("Attribute")]
     public Attribute attribute;
     [XmlElement("Elemental")]
@@ -41,7 +37,7 @@ public class CharacterModel
     {
         //TODO NOTE THIS IS STILL BETA AND WORK IN PROGRESS, USED FOR TESTING PURPOSE NO BALANCING
         battleAttribute = new BattleAttribute();
-        battleAttribute.hp = baseHP + Mathf.RoundToInt(level * 1.2f) + attribute.endurance + attribute.cons;
+        battleAttribute.hp = Mathf.RoundToInt(level * 1.2f) + Mathf.RoundToInt((((3 * attribute.cons) + attribute.endurance) / 4f) * 15);
         battleAttribute.currHp = battleAttribute.hp;
         battleAttribute.mp = 10;
         battleAttribute.currMp = battleAttribute.mp;

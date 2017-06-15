@@ -10,7 +10,6 @@ public class Debugger
         CharacterModel model = new CharacterModel();
         model.name = name;
         model.attribute = new Attribute();
-        model.baseHP = 20;
         model.attribute.agi = Random.Range(1, 5);
         model.attribute.cons = Random.Range(1, 5);
         model.attribute.endurance = Random.Range(1, 5);

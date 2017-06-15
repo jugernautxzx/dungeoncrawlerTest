@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="shift_jis"?>
+<PlayerProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Gold="5555">
+  <Characters>
+    <Character IsMainCharacter="false" Name="Johnny McHammer" Level="0" Experience="0">
+      <Attribute>
+        <Str>1</Str>
+        <Agi>1</Agi>
+        <Intel>4</Intel>
+        <Endurance>4</Endurance>
+        <Wisdom>1</Wisdom>
+        <Constitution>2</Constitution>
+        <Speed>4</Speed>
+      </Attribute>
+      <Elemental>
+        <Fire>0</Fire>
+        <Water>0</Water>
+        <Wind>0</Wind>
+        <Earth>0</Earth>
+      </Elemental>
+      <BattleSetting Row="false" Weapon="0" PlayerCharacter="false" />
+      <Actives />
+      <Passives />
+    </Character>
+  </Characters>
+  <MainCharacter />
+</PlayerProfile>
