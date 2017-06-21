@@ -3089,8 +3089,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1000, y: 1000}
-  m_SizeDelta: {x: 2000, y: 2000}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1705849128
 MonoBehaviour:
@@ -3150,6 +3150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Room: {fileID: 224621038821681398, guid: a4e02d320d4d0cd42b4199d7cb2247bb, type: 2}
   Panel: {fileID: 1705849126}
+  ScrollPanel: {fileID: 801151266}
   CoridorX: {fileID: 224157943667043918, guid: 223fe87775f19ea4b8de74db6f27f246, type: 2}
   CoridorY: {fileID: 224195579140505910, guid: e3c2c4f26a97c734e81100e04efebcb3, type: 2}
 --- !u!1 &1808554222

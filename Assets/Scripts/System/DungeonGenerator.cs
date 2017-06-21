@@ -8,8 +8,10 @@ public class DungeonGenerator : MonoBehaviour {
 
     public RectTransform Room;
     public RectTransform Panel;
+    public ScrollRect ScrollPanel;
     public RectTransform CoridorX;
     public RectTransform CoridorY;
+
     int test=0;
     int randpos;
     int IndexCoridor=0;
@@ -20,6 +22,7 @@ public class DungeonGenerator : MonoBehaviour {
 
     void Start () {
         StartCoroutine("GenerateDungeon");
+
     }
 
     IEnumerator GenerateDungeon()
@@ -69,12 +72,12 @@ public class DungeonGenerator : MonoBehaviour {
             } while (!RoomPosition);
             
                 DungeonRoom[RoomIndex].sizeDelta = new Vector2(70, 70);
-                SizePanel(RoomIndex);
-                Panel.offsetMin = new Vector2(-1000, -1000);//Left Bottom
-                Panel.offsetMax = new Vector2(2000, 2000); //Right Top
                 yield return new WaitForSeconds(.1f);
 
         }
+        SizePanel();
+        ScrollPanel.horizontalNormalizedPosition = 0.5f;
+        ScrollPanel.verticalNormalizedPosition = 0.5f;
     }
     public void randposition(int i,float RoomPositionX,float RoomPositionY)
     {
@@ -83,19 +86,19 @@ public class DungeonGenerator : MonoBehaviour {
         {
             case 1:
                 //North
-                DungeonRoom[i].offsetMin = new Vector2(RoomPositionX, RoomPositionY + 200);
+                DungeonRoom[i].offsetMin = new Vector2(RoomPositionX, RoomPositionY + 150);
                 break;
             case 2:
                 //East
-                DungeonRoom[i].offsetMin = new Vector2(RoomPositionX + 200, RoomPositionY);
+                DungeonRoom[i].offsetMin = new Vector2(RoomPositionX + 150, RoomPositionY);
                 break;
             case 3:
                 //South
-                DungeonRoom[i].offsetMin = new Vector2(RoomPositionX, RoomPositionY - 200);
+                DungeonRoom[i].offsetMin = new Vector2(RoomPositionX, RoomPositionY - 150);
                 break;
             case 4:
                 //West
-                DungeonRoom[i].offsetMin = new Vector2(RoomPositionX - 200, RoomPositionY);
+                DungeonRoom[i].offsetMin = new Vector2(RoomPositionX - 150, RoomPositionY);
                 break;
         }
         
@@ -127,52 +130,103 @@ public class DungeonGenerator : MonoBehaviour {
                 DungeonCoridor[IndexCoridor] = Instantiate(CoridorY);
                 DungeonCoridor[IndexCoridor].transform.SetParent(Panel.transform, false);
                 DungeonCoridor[IndexCoridor].offsetMin = new Vector2(RoomPositionX + 25, 0);
-                DungeonCoridor[IndexCoridor].offsetMax = new Vector2(0, RoomPositionY + 70);
-                DungeonCoridor[IndexCoridor].sizeDelta = new Vector2(260, 16);
+                DungeonCoridor[IndexCoridor].offsetMax = new Vector2(0, RoomPositionY + 65);
+                DungeonCoridor[IndexCoridor].sizeDelta = new Vector2(180, 16);
                 break;
 
             case 2:
                 DungeonCoridor[IndexCoridor] = Instantiate(CoridorX);
                 DungeonCoridor[IndexCoridor].transform.SetParent(Panel.transform, false);
-                DungeonCoridor[IndexCoridor].offsetMin = new Vector2(RoomPositionX + 70, 0);
+                DungeonCoridor[IndexCoridor].offsetMin = new Vector2(RoomPositionX + 65, 0);
                 DungeonCoridor[IndexCoridor].offsetMax = new Vector2(0, RoomPositionY + 45);
-                DungeonCoridor[IndexCoridor].sizeDelta = new Vector2(260, 16);
+                DungeonCoridor[IndexCoridor].sizeDelta = new Vector2(180, 16);
                 break;
             case 3:
                 DungeonCoridor[IndexCoridor] = Instantiate(CoridorY);
                 DungeonCoridor[IndexCoridor].transform.SetParent(Panel.transform, false);
                 DungeonCoridor[IndexCoridor].offsetMin = new Vector2(RoomPositionX + 25, 0);
-                DungeonCoridor[IndexCoridor].offsetMax = new Vector2(0, RoomPositionY - 130);
-                DungeonCoridor[IndexCoridor].sizeDelta = new Vector2(260, 16);
+                DungeonCoridor[IndexCoridor].offsetMax = new Vector2(0, RoomPositionY - 85);
+                DungeonCoridor[IndexCoridor].sizeDelta = new Vector2(180, 16);
                 break;
 
             case 4:
                 DungeonCoridor[IndexCoridor] = Instantiate(CoridorX);
                 DungeonCoridor[IndexCoridor].transform.SetParent(Panel.transform, false);
-                DungeonCoridor[IndexCoridor].offsetMin = new Vector2(RoomPositionX - 130, 0);
+                DungeonCoridor[IndexCoridor].offsetMin = new Vector2(RoomPositionX - 85, 0);
                 DungeonCoridor[IndexCoridor].offsetMax = new Vector2(0, RoomPositionY + 45);
-                DungeonCoridor[IndexCoridor].sizeDelta = new Vector2(260, 16);
+                DungeonCoridor[IndexCoridor].sizeDelta = new Vector2(180, 16);
                 break;
         }
     }
 
-    public void SizePanel(int RoomIndex)
+    public void SizePanel()
     {
         float PanelTop = 0;
-        float panelLeft = 0;
-        float panelRight = 0;
-        float panelBottom = 0;
+        float PanelLeft = 0;
+        float PanelRight = 0;
+        float PanelBottom = 0;
+        int PlusMaxTop = 0;
+        int PlusMaxRight = 0;
+        int PlusMaxLeft = 0;
+        int PlusMaxBottom = 0;
 
-        for (int j=0; j<=RoomIndex; j++)
+        for (int j=0; j<AllRoom; j++)
         {
-            if (DungeonRoom[j].offsetMin.y > DungeonRoom[RoomIndex].offsetMin.y)
+            if (DungeonRoom[j].offsetMin.y > PanelTop)//Top
             {
-                PanelTop = DungeonRoom[j].offsetMin.y;
-                Debug.Log(PanelTop);
+                PanelTop = DungeonRoom[j].offsetMin.y; 
+            }
+
+            if (DungeonRoom[j].offsetMin.x > PanelRight) //Right
+            {
+                PanelRight = DungeonRoom[j].offsetMin.x;
+            }
+
+            if(DungeonRoom[j].offsetMin.y < PanelBottom)//Bottom
+            {
+                PanelBottom = DungeonRoom[j].offsetMin.y;
+            }
+
+            if(DungeonRoom[j].offsetMin.x < PanelLeft)//Left
+            {
+                PanelLeft = DungeonRoom[j].offsetMin.x;
             }
 
         }
-        Debug.Log("hasil akhir: "+PanelTop);
+        if (PanelTop <= 150)
+        {
+            PlusMaxTop = 0;
+            PanelTop = 0;
+        }
+        else PlusMaxTop = 150;
+
+        if (PanelRight <= 150)
+        {
+            PlusMaxRight = 0;
+            PanelRight = 0;
+        }
+        else PlusMaxRight = 150;
+
+        if (PanelLeft >= -150)
+        {
+            PlusMaxLeft = 0;
+            PanelLeft = 0;
+        }
+        else PlusMaxLeft = 150;
+
+        if (PanelBottom >= -150)
+        {
+            PlusMaxBottom = 0;
+            PanelBottom = 0;
+        }
+        else PlusMaxBottom = 150;
+        
+        Panel.offsetMin = new Vector2(-Mathf.Abs(PanelLeft)-PlusMaxLeft, -Mathf.Abs(PanelBottom)-PlusMaxBottom);//Left Bottom
+        Panel.offsetMax = new Vector2(PanelRight+PlusMaxRight, PanelTop+PlusMaxTop); //Right Top
+        
+        
     }
+
+    
 }
 
