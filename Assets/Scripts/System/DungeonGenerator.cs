@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 
 public class DungeonGenerator : MonoBehaviour {
 
     public Button Room;
+    public GameObject[] Rooms;
     public RectTransform Panel;
     public ScrollRect ScrollPanel;
     public RectTransform CoridorX;
@@ -29,20 +31,24 @@ public class DungeonGenerator : MonoBehaviour {
     {
         bool RoomPosition = true;
   
-        Button Entrance = Instantiate(Room);
-        Entrance.transform.SetParent(Panel.transform, false);
-        Entrance.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
+        DungeonRoom[0] = Instantiate(Room);                             //Set Entrance first
+        DungeonRoom[0].transform.SetParent(Panel.transform, false);
+        DungeonRoom[0].name = "0";
+        DungeonRoom[0].onClick.AddListener(PlayerPosition);
+        DungeonRoom[0].GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
         //DungeonRoom.offsetMin = new Vector2(DungeonRoom.offsetMin.y, 300);
-        Entrance.GetComponent<RectTransform>().sizeDelta = new Vector2(70, 70);
-        float RoomPositionX = Entrance.GetComponent<RectTransform>().offsetMin.x;
-        float RoomPositionY = Entrance.GetComponent<RectTransform>().offsetMin.y;
+        DungeonRoom[0].GetComponent<RectTransform>().sizeDelta = new Vector2(70, 70);
+        float RoomPositionX = DungeonRoom[0].GetComponent<RectTransform>().offsetMin.x;
+        float RoomPositionY = DungeonRoom[0].GetComponent<RectTransform>().offsetMin.y;
 
 
 
-        for (int RoomIndex = 0; RoomIndex < AllRoom; RoomIndex++)
+        for (int RoomIndex = 1; RoomIndex <= AllRoom; RoomIndex++)
         {
             DungeonRoom[RoomIndex] = Instantiate(Room);
             DungeonRoom[RoomIndex].transform.SetParent(Panel.transform, false);
+            DungeonRoom[RoomIndex].name = RoomIndex+"";
+            DungeonRoom[RoomIndex].onClick.AddListener(PlayerPosition);
 
             do
             {
@@ -80,6 +86,7 @@ public class DungeonGenerator : MonoBehaviour {
         ScrollPanel.verticalNormalizedPosition = 0.5f;
         PlayerPosition();
     }
+
     public void randposition(int i,float RoomPositionX,float RoomPositionY)
     {
         
@@ -107,10 +114,10 @@ public class DungeonGenerator : MonoBehaviour {
 
     public bool CheckRoom(int RoomIndex, bool RoomPosition)
     {
-        for (int PrevRoomIndex = 0; PrevRoomIndex < RoomIndex; PrevRoomIndex++) //Check Room
+        for (int PrevRoomIndex = 1; PrevRoomIndex < RoomIndex; PrevRoomIndex++) //Check Room
         {
 
-            if (DungeonRoom[RoomIndex].GetComponent<RectTransform>().offsetMin == DungeonRoom[PrevRoomIndex].GetComponent<RectTransform>().offsetMin || DungeonRoom[RoomIndex].GetComponent<RectTransform>().offsetMin == new Vector2(0,0))
+            if (DungeonRoom[RoomIndex].GetComponent<RectTransform>().offsetMin == DungeonRoom[PrevRoomIndex].GetComponent<RectTransform>().offsetMin)
             {
                 RoomPosition = false;
                 break;
@@ -171,7 +178,7 @@ public class DungeonGenerator : MonoBehaviour {
         int PlusMaxLeft = 0;
         int PlusMaxBottom = 0;
 
-        for (int j=0; j<AllRoom; j++)
+        for (int j=1; j<= AllRoom; j++)
         {
             if (DungeonRoom[j].GetComponent<RectTransform>().offsetMin.y > PanelTop)//Top
             {
@@ -228,19 +235,35 @@ public class DungeonGenerator : MonoBehaviour {
         
     }
 
+
     public void PlayerPosition ()
     {
-        Vector2 PlayerPosition= new Vector2 (0,0) ;
+        int IndexRoom;
+        //Debug.Log(EventSystem.current.currentSelectedGameObject.GetComponent<RectTransform>().offsetMin);
+        if (EventSystem.current.currentSelectedGameObject != null)
+        {
+            IndexRoom = int.Parse(EventSystem.current.currentSelectedGameObject.name);
+        }
+        else
+        {
+            IndexRoom = 0;
+        }
+        Vector2 PlayerPosition= DungeonRoom[IndexRoom].GetComponent<RectTransform>().offsetMin ;
+        CheckAccessedRoom(PlayerPosition);
+    }
+
+    public void CheckAccessedRoom (Vector2 PlayerPosition)
+    {
         bool north = false;
         bool south = false;
         bool east = false;
         bool west = false;
 
         //Check coridor
-        for (int coridor=0; coridor<IndexCoridor; coridor++)
+        for (int coridor = 0; coridor < IndexCoridor; coridor++)
         {
             if (PlayerPosition.y + 65 == DungeonCoridor[coridor].offsetMax.y
-                && PlayerPosition.x + 25== DungeonCoridor[coridor].offsetMin.x) //North
+                && PlayerPosition.x + 25 == DungeonCoridor[coridor].offsetMin.x) //North
             {
                 north = true;
             }
@@ -263,7 +286,7 @@ public class DungeonGenerator : MonoBehaviour {
         }
 
         //Check Room
-        for (int room=0; room< AllRoom; room++)
+        for (int room = 0; room <= AllRoom; room++)
         {
             DungeonRoom[room].interactable = false;
             if (north)
@@ -274,8 +297,8 @@ public class DungeonGenerator : MonoBehaviour {
                     DungeonRoom[room].interactable = true;
                 }
             }
-            
-            if(east)
+
+            if (east)
             {
                 if (PlayerPosition.x + 150 == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.x
                 && PlayerPosition.y == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.y) //East
@@ -283,24 +306,28 @@ public class DungeonGenerator : MonoBehaviour {
                     DungeonRoom[room].interactable = true;
                 }
             }
-            if(south)
+            if (south)
             {
                 if (PlayerPosition.x == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.x
-                && PlayerPosition.y-150 == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.y) //South
+                && PlayerPosition.y - 150 == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.y) //South
                 {
                     DungeonRoom[room].interactable = true;
                 }
             }
             if (west)
             {
-                if (PlayerPosition.x-150 == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.x
+                if (PlayerPosition.x - 150 == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.x
                 && PlayerPosition.y == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.y) //West
                 {
                     DungeonRoom[room].interactable = true;
                 }
             }
-
         }
+    }
+
+    public void RandomRoomTag ()
+    {
+
     }
 }
 
