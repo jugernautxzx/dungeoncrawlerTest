@@ -4,4 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scene/PCUIMainMenu.unity
+  - enabled: 1
+    path: Assets/Scene/PCUIDungeon.unity
+  - enabled: 1
+    path: Assets/Scene/PCUIBattle.unity

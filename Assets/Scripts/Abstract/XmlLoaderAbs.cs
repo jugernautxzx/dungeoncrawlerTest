@@ -42,8 +42,6 @@ public class ClassWithId
 {
     [XmlAttribute("Id")]
     public string id;
-
-    public string x = "XX";
 }
 
 public abstract class ListWithDictionary<T>

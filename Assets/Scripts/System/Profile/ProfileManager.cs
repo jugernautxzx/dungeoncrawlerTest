@@ -1,11 +1,17 @@
 ﻿
 public class ProfileManager{
 
-
-
 	public PlayerProfileModel CreateNewProfile(CharacterModel mainChara)
     {
-        return null;
+        PlayerProfileModel profile = new PlayerProfileModel();
+        mainChara.isMainCharacter = true;
+        profile.mainChara = new MainCharaModel();
+        profile.mainChara.fame = 10;
+        profile.mainChara.leadership = 10;
+        profile.Gold = 100;
+        profile.characters = new System.Collections.Generic.List<CharacterModel>();
+        profile.characters.Add(mainChara);
+        return profile;
     }
 
     public void SaveProfile(PlayerProfileModel model)
@@ -13,8 +19,18 @@ public class ProfileManager{
         XmlSaver.SaveXmlToFile<PlayerProfileModel>("/MainSave.xml", model);
     }
 
-    public void LoadProfile()
+    public PlayerProfileModel LoadProfile()
     {
+        return XmlLoader.LoadFromXmlSave<PlayerProfileModel>("/MainSave.xml");
+    }
 
+    public void SaveEquipments(PlayerEquipments model)
+    {
+        XmlSaver.SaveXmlToFile<PlayerEquipments>("/MainEquips.xml", model);
+    }
+
+    public PlayerEquipments LoadEquipments()
+    {
+        return XmlLoader.LoadFromXmlSave<PlayerEquipments>("/MainEquips.xml");
     }
 }

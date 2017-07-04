@@ -37,3 +37,8 @@ public enum BuffTag : int
 {
     Buff, Debuff, Poison, Regen, AttribUp, AttribDown
 }
+
+public enum EqSlot : int
+{
+    MainHand, OffHand, Head, Body, Acc
+}

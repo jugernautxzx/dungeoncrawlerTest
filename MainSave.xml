@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="shift_jis"?>
-<PlayerProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Gold="5555">
+<PlayerProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Gold="100">
   <Characters>
-    <Character IsMainCharacter="false" Name="Johnny McHammer" Level="0" Experience="0">
+    <Character IsMainCharacter="true" Name="Neomatrix" Level="1" Experience="0">
       <Attribute>
-        <Str>1</Str>
+        <Str>6</Str>
         <Agi>1</Agi>
-        <Intel>4</Intel>
+        <Intel>7</Intel>
         <Endurance>4</Endurance>
         <Wisdom>1</Wisdom>
-        <Constitution>2</Constitution>
-        <Speed>4</Speed>
+        <Constitution>1</Constitution>
       </Attribute>
-      <Elemental>
-        <Fire>0</Fire>
-        <Water>0</Water>
-        <Wind>0</Wind>
-        <Earth>0</Earth>
-      </Elemental>
-      <BattleSetting Row="false" Weapon="0" PlayerCharacter="false" />
+      <Elemental />
+      <BattleSetting Row="false" PlayerCharacter="false" />
       <Actives />
       <Passives />
+      <Traits />
+      <LearnedActives />
     </Character>
   </Characters>
-  <MainCharacter />
+  <MainCharacter Fame="10" Leadership="10" />
+  <Party Member1="-1" Member2="-1" Member3="-1" />
 </PlayerProfile>

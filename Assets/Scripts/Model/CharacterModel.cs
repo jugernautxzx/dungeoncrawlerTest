@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Xml.Serialization;
 using UnityEngine;
 
@@ -16,12 +17,17 @@ public class CharacterModel
     public int level;
     [XmlAttribute("Experience")]
     public int exp;
+    [DefaultValue(false)]
+    [XmlAttribute("LevelUp")]
+    public bool levelUp;
     [XmlElement("Attribute")]
     public Attribute attribute;
     [XmlElement("Elemental")]
     public ElementAttribute elemental;
     [XmlIgnore]
     public BattleAttribute battleAttribute;
+    [XmlIgnore]
+    public Attribute eqAttribute;
     [XmlElement("BattleSetting")]
     public BattleSetting battleSetting;
     [XmlArray("Actives")]
@@ -30,11 +36,19 @@ public class CharacterModel
     [XmlArray("Passives")]
     [XmlArrayItem("Passive")]
     public List<string> passives;
+    [XmlArray("Traits")]
+    [XmlArrayItem("Trait")]
+    public List<string> traits;
+    [XmlArray("LearnedActives")]
+    [XmlArrayItem("Active")]
+    public List<string> learnActive;
     [XmlIgnore]
     public BaseMonster monster;
 
     public void GenerateBasicBattleAttribute()
     {
+        if (battleAttribute != null)
+            return;
         //TODO NOTE THIS IS STILL BETA AND WORK IN PROGRESS, USED FOR TESTING PURPOSE NO BALANCING
         battleAttribute = new BattleAttribute();
         battleAttribute.hp = Mathf.RoundToInt(level * 1.2f) + Mathf.RoundToInt((((3 * attribute.cons) + attribute.endurance) / 4f) * 15);
@@ -53,22 +67,58 @@ public class CharacterModel
         battleAttribute.basePDef = battleAttribute.pDef;
         battleAttribute.backRow = battleSetting.backRow;
     }
+
+    public void GetExperience(int ex)
+    {
+        exp += ex;
+    }
+
+    public void CalculateEqAttribute()
+    {
+        eqAttribute = new Attribute();
+        AddAllEquipmentAttrib(PlayerSession.GetEquipment(battleSetting.mainHand));
+        AddAllEquipmentAttrib(PlayerSession.GetEquipment(battleSetting.offHand));
+        AddAllEquipmentAttrib(PlayerSession.GetEquipment(battleSetting.head));
+        AddAllEquipmentAttrib(PlayerSession.GetEquipment(battleSetting.body));
+        AddAllEquipmentAttrib(PlayerSession.GetEquipment(battleSetting.acc1));
+        AddAllEquipmentAttrib(PlayerSession.GetEquipment(battleSetting.acc2));
+    }
+
+    void AddAllEquipmentAttrib(Equipment model)
+    {
+        if (model == null)
+            return;
+        eqAttribute.str = model.attribute.str;
+        eqAttribute.agi = model.attribute.agi;
+        eqAttribute.cons = model.attribute.cons;
+        eqAttribute.endurance = model.attribute.endurance;
+        eqAttribute.intel = model.attribute.intel;
+        eqAttribute.wisdom = model.attribute.wisdom;
+        eqAttribute.speed = model.attribute.speed;
+    }
 }
 
 public class Attribute
 {
+    [DefaultValue(0)]
     [XmlElement("Str")]//PAtk PDef
     public int str;
+    [DefaultValue(0)]
     [XmlElement("Agi")]//Spd StaRegen dodge
     public int agi;
+    [DefaultValue(0)]
     [XmlElement("Intel")]//MAtk Mana ManaRegen
     public int intel;
+    [DefaultValue(0)]
     [XmlElement("Endurance")]//HP stamina
     public int endurance;
+    [DefaultValue(0)]
     [XmlElement("Wisdom")]//Mana MDef ManaRegen
     public int wisdom;
+    [DefaultValue(0)]
     [XmlElement("Constitution")]//PDef HP
     public int cons;
+    [DefaultValue(0)]
     [XmlElement("Speed")]
     public int speed;
 }
@@ -128,20 +178,40 @@ public class BattleSetting
 {
     [XmlAttribute("Row")]
     public bool backRow;
-    [XmlAttribute("Weapon")]
-    public int weapon;
     [XmlAttribute("PlayerCharacter")]
     public bool isPlayerCharacter;
+    [DefaultValue(-1)]
+    [XmlAttribute("MainHand")]
+    public int mainHand = -1;
+    [DefaultValue(-1)]
+    [XmlAttribute("OffHand")]
+    public int offHand = -1;
+    [DefaultValue(-1)]
+    [XmlAttribute("Head")]
+    public int head = -1;
+    [DefaultValue(-1)]
+    [XmlAttribute("Body")]
+    public int body = -1;
+    [DefaultValue(-1)]
+    [XmlAttribute("Acc1")]
+    public int acc1 = -1;
+    [DefaultValue(-1)]
+    [XmlAttribute("Acc2")]
+    public int acc2 = -1;
 }
 
 public class ElementAttribute
 {
+    [DefaultValue(0)]
     [XmlElement("Fire")]
     public int fire;
+    [DefaultValue(0)]
     [XmlElement("Water")]
     public int water;
+    [DefaultValue(0)]
     [XmlElement("Wind")]
     public int wind;
+    [DefaultValue(0)]
     [XmlElement("Earth")]
     public int earth;
 }

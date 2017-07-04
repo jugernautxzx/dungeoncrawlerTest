@@ -64,14 +64,32 @@ public class BattleManager : BattleManagerLog
     void InitiateActors()
     {
         //TODO Debugging purpose
-        player1 = Debugger.GenerateCharacterModel("John McHammer");
-        player1.isMainCharacter = true;
-        player1.actives.Add("Sweep");
-        player1.actives.Add("Sweep2");
-        player1.actives.Add("PoisonSting");
-        player1.actives.Add("MuscleUp");
-        player2 = Debugger.GenerateCharacterModel("Ramboman");
-        player2.battleSetting.backRow = true;
+        //player1 = Debugger.GenerateCharacterModel("John McHammer");
+        //player1.isMainCharacter = true;
+        //player1.actives.Add("Sweep");
+        //player1.actives.Add("Sweep2");
+        //player1.actives.Add("PoisonSting");
+        //player1.actives.Add("MuscleUp");
+        //player2 = Debugger.GenerateCharacterModel("Ramboman");
+        //player2.battleSetting.backRow = true;
+        player1 = PlayerSession.GetProfile().characters[0];
+        if (PlayerSession.GetProfile().party.member1 > 0)
+        {
+            player2 = PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member1];
+            player2.GenerateBasicBattleAttribute();
+        }
+        if (PlayerSession.GetProfile().party.member2 > 0)
+        {
+            player3 = PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member2];
+            player3.GenerateBasicBattleAttribute();
+        }
+
+        if (PlayerSession.GetProfile().party.member3 > 0)
+        {
+            player4 = PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member3];
+            player4.GenerateBasicBattleAttribute();
+        }
+
         enemy1 = Debugger.GenerateCharacterModel("Skeleton 1");
         enemy2 = Debugger.GenerateCharacterModel("Skeleton 2");
         enemy3 = Debugger.GenerateCharacterModel("Skeleton 3");
@@ -80,7 +98,6 @@ public class BattleManager : BattleManagerLog
         enemy4.battleSetting.backRow = true;
         //
         player1.GenerateBasicBattleAttribute();
-        player2.GenerateBasicBattleAttribute();
         enemy1.GenerateBasicBattleAttribute();
         enemy2.GenerateBasicBattleAttribute();
         enemy3.GenerateBasicBattleAttribute();

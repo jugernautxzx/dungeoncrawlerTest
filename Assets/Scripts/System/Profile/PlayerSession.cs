@@ -6,6 +6,7 @@ public class PlayerSession  {
 
     PlayerProfileModel player;
     ProfileManager manager;
+    PlayerEquipments equipments;
 
     static PlayerSession instance;
 
@@ -16,6 +17,19 @@ public class PlayerSession  {
         return instance;
     }
 
+    public static PlayerEquipments GetInventory()
+    {
+        return instance.equipments;
+    }
+
+    public static Equipment GetEquipment(int index)
+    {
+        if (index < 0)
+            return null;
+        else
+            return instance.equipments.list[index];
+    }
+
     public PlayerSession()
     {
         manager = new ProfileManager();
@@ -24,22 +38,26 @@ public class PlayerSession  {
     public void CreateNewSession(CharacterModel model)
     {
         player = manager.CreateNewProfile(model);
+        equipments = new PlayerEquipments();
+        equipments.list = new List<Equipment>();
     }
 
     public bool LoadSession()
     {
-        return false;
+        player = manager.LoadProfile();
+        equipments = manager.LoadEquipments();
+        return player == null;
     }
 
     public bool SaveSession()
     {
-        player = new PlayerProfileModel();
-        player.characters = new List<CharacterModel>();
-        player.mainChara = new MainCharaModel();
-        player.Gold = 5555;
-        player.characters.Add(Debugger.GenerateCharacterModel("Johnny McHammer"));
         manager.SaveProfile(player);
+        manager.SaveEquipments(equipments);
         return true;
     }
 
+    public static PlayerProfileModel GetProfile()
+    {
+        return GetInstance().player;
+    }
 }
