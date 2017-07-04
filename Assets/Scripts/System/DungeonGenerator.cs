@@ -84,6 +84,10 @@ public class DungeonGenerator : MonoBehaviour {
         SizePanel();
         ScrollPanel.horizontalNormalizedPosition = 0.5f;
         ScrollPanel.verticalNormalizedPosition = 0.5f;
+        RandomRoomTag();
+        EventSystem.current.SetSelectedGameObject(DungeonRoom[0].gameObject);
+        EventSystem.current.currentSelectedGameObject.tag = "Entrance";
+        DungeonRoom[0].GetComponent<Image>().color = Color.cyan;
         PlayerPosition();
     }
 
@@ -117,7 +121,8 @@ public class DungeonGenerator : MonoBehaviour {
         for (int PrevRoomIndex = 1; PrevRoomIndex < RoomIndex; PrevRoomIndex++) //Check Room
         {
 
-            if (DungeonRoom[RoomIndex].GetComponent<RectTransform>().offsetMin == DungeonRoom[PrevRoomIndex].GetComponent<RectTransform>().offsetMin)
+            if (DungeonRoom[RoomIndex].GetComponent<RectTransform>().offsetMin == DungeonRoom[PrevRoomIndex].GetComponent<RectTransform>().offsetMin
+                || DungeonRoom[RoomIndex].GetComponent<RectTransform>().offsetMin==new Vector2(0,0))
             {
                 RoomPosition = false;
                 break;
@@ -240,15 +245,9 @@ public class DungeonGenerator : MonoBehaviour {
     {
         int IndexRoom;
         //Debug.Log(EventSystem.current.currentSelectedGameObject.GetComponent<RectTransform>().offsetMin);
-        if (EventSystem.current.currentSelectedGameObject != null)
-        {
-            IndexRoom = int.Parse(EventSystem.current.currentSelectedGameObject.name);
-        }
-        else
-        {
-            IndexRoom = 0;
-        }
+        IndexRoom = int.Parse(EventSystem.current.currentSelectedGameObject.name);
         Vector2 PlayerPosition= DungeonRoom[IndexRoom].GetComponent<RectTransform>().offsetMin ;
+        ClickRoomAction();
         CheckAccessedRoom(PlayerPosition);
     }
 
@@ -327,6 +326,111 @@ public class DungeonGenerator : MonoBehaviour {
 
     public void RandomRoomTag ()
     {
+        RandomBossRoom();
+        RandomEnemyRoom();
+        RandomTreasureRoom();
+
+    }
+
+    public void RandomBossRoom()
+    {
+        int MaxBoss = 1;
+        int AddBoss = 0;
+        List<int> BossRoom;
+
+        BossRoom = new List<int>();
+        for (int Boss = 0; Boss < MaxBoss; Boss++)
+        {
+            AddBoss = Random.Range(AllRoom/2, AllRoom);
+            while (BossRoom.Contains(AddBoss))
+            {
+                AddBoss = Random.Range(1, AllRoom);
+            }
+            BossRoom.Add(AddBoss);
+            DungeonRoom[AddBoss].tag = "Boss";
+            DungeonRoom[AddBoss].GetComponent<Image>().color = Color.red;
+        }
+
+    }
+
+    public void RandomEnemyRoom()
+    {
+        int MaxEnemy = 5;
+        int AddEnemy = 0;
+        List<int> EnemyRoom;
+
+        EnemyRoom = new List<int>();
+        for (int Enemy = 0; Enemy < MaxEnemy; Enemy++)
+        {
+            AddEnemy = Random.Range(1, AllRoom);
+            while (EnemyRoom.Contains(AddEnemy) || DungeonRoom[AddEnemy].tag=="Boss")
+            {
+                AddEnemy = Random.Range(1, AllRoom);
+            }
+            EnemyRoom.Add(AddEnemy);
+            DungeonRoom[AddEnemy].tag ="Enemy";
+            DungeonRoom[AddEnemy].GetComponent<Image>().color = Color.blue;
+        }
+    }
+
+    public void RandomTreasureRoom()
+    {
+        int MaxTreasure = 5;
+        int AddTreasure = 0;
+        List<int> TreasureRoom;
+
+        TreasureRoom = new List<int>();
+        for (int Treasure = 0; Treasure < MaxTreasure; Treasure++)
+        {
+            AddTreasure = Random.Range(1, AllRoom);
+            while (TreasureRoom.Contains(AddTreasure)|| DungeonRoom[AddTreasure].tag == "Boss")
+            {
+                AddTreasure = Random.Range(1, AllRoom);
+            }
+            TreasureRoom.Add(AddTreasure);
+            if(DungeonRoom[AddTreasure].tag!="Untagged")
+            {
+                DungeonRoom[AddTreasure].tag = DungeonRoom[AddTreasure].tag + "Treasure";
+            }
+            else
+            {
+                DungeonRoom[AddTreasure].tag ="Treasure";
+            }
+            DungeonRoom[AddTreasure].GetComponent<Image>().color = Color.yellow;
+        }
+    }
+
+    public void ClickRoomAction()
+    {
+
+        if (EventSystem.current.currentSelectedGameObject.tag.Contains("Enemy"))
+        {
+            //do something
+
+            EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
+            EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
+        }
+
+        if (EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure"))
+        {
+            //do something
+            EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
+            EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
+        }
+
+        if (EventSystem.current.currentSelectedGameObject.tag.Contains("Boss"))
+        {
+            //do something
+            EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
+            EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
+        }
+
+        if(EventSystem.current.currentSelectedGameObject.tag=="Untagged")
+        {
+            EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
+            EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
+        }
+
 
     }
 }
