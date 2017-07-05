@@ -17,10 +17,10 @@ public class DungeonGenerator : MonoBehaviour {
     int test=0;
     int randpos;
     int IndexCoridor=0;
-    int AllRoom = 20;
+    int AllRoom = 100;
 
-    Button[] DungeonRoom = new Button[100];
-    RectTransform[] DungeonCoridor = new RectTransform[100];
+    Button[] DungeonRoom = new Button[200];
+    RectTransform[] DungeonCoridor = new RectTransform[200];
 
     void Start () {
         StartCoroutine("GenerateDungeon");
@@ -82,8 +82,8 @@ public class DungeonGenerator : MonoBehaviour {
 
         }
         SizePanel();
-        ScrollPanel.horizontalNormalizedPosition = 0.5f;
-        ScrollPanel.verticalNormalizedPosition = 0.5f;
+        //ScrollPanel.horizontalNormalizedPosition = 0.5f;
+        //ScrollPanel.verticalNormalizedPosition = 0.5f;
         RandomRoomTag();
         EventSystem.current.SetSelectedGameObject(DungeonRoom[0].gameObject);
         EventSystem.current.currentSelectedGameObject.tag = "Entrance";
@@ -183,7 +183,7 @@ public class DungeonGenerator : MonoBehaviour {
         int PlusMaxLeft = 0;
         int PlusMaxBottom = 0;
 
-        for (int j=1; j<= AllRoom; j++)
+        for (int j=0; j<= AllRoom; j++)
         {
             if (DungeonRoom[j].GetComponent<RectTransform>().offsetMin.y > PanelTop)//Top
             {
@@ -206,38 +206,26 @@ public class DungeonGenerator : MonoBehaviour {
             }
 
         }
-        if (PanelTop <= 150)
-        {
-            PlusMaxTop = 0;
-            PanelTop = 0;
-        }
-        else PlusMaxTop = 150;
-
-        if (PanelRight <= 150)
-        {
-            PlusMaxRight = 0;
-            PanelRight = 0;
-        }
-        else PlusMaxRight = 150;
-
-        if (PanelLeft >= -150)
-        {
-            PlusMaxLeft = 0;
-            PanelLeft = 0;
-        }
-        else PlusMaxLeft = 150;
-
-        if (PanelBottom >= -150)
-        {
-            PlusMaxBottom = 0;
-            PanelBottom = 0;
-        }
-        else PlusMaxBottom = 150;
         
-        Panel.offsetMin = new Vector2(-Mathf.Abs(PanelLeft)-PlusMaxLeft, -Mathf.Abs(PanelBottom)-PlusMaxBottom);//Left Bottom
-        Panel.offsetMax = new Vector2(PanelRight+PlusMaxRight, PanelTop+PlusMaxTop); //Right Top
-        
-        
+        if (PanelTop>Mathf.Abs(PanelBottom))
+        {
+            PanelBottom = -PanelTop;
+        }
+        else
+        {
+            PanelTop = Mathf.Abs(PanelBottom);
+        }
+
+        if (PanelRight>Mathf.Abs(PanelLeft))
+        {
+            PanelLeft = -PanelRight;
+        }
+        else
+        {
+            PanelRight = Mathf.Abs(PanelLeft);
+        }
+        Panel.offsetMin = new Vector2(PanelLeft+400,PanelBottom+150 );//Left Bottom
+        Panel.offsetMax = new Vector2(PanelRight-400, PanelTop-150); //Right Top
     }
 
 

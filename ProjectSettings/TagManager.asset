@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - EnemyTreasure
   - Boss
+  - ClearRoom
+  - Entrance
   layers:
   - Default
   - TransparentFX
