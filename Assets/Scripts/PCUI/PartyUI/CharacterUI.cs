@@ -15,7 +15,7 @@ public class CharacterUI : MonoBehaviour
     public GameObject inPartyNotice;
 
     PartySelectionInterface listener;
-
+    EquipmentUIInterface eqListener;
 
     // Use this for initialization
     void Start()
@@ -28,10 +28,16 @@ public class CharacterUI : MonoBehaviour
 
     }
 
+    public void SetEquipmentUI(EquipmentUIInterface eqImpl)
+    {
+        eqListener = eqImpl;
+    }
+
     public void SetListener(PartySelectionInterface listener)
     {
         this.listener = listener;
         GetComponent<Button>().onClick.AddListener(AddIntoParty);
+        transform.GetChild(3).GetComponent<Button>().onClick.AddListener(LoadEquipmentInformation);
     }
 
     public void LoadInformation(CharacterModel model)
@@ -64,5 +70,10 @@ public class CharacterUI : MonoBehaviour
             SetInParty(true);
         else
             SetInParty(false);
+    }
+
+    public void LoadEquipmentInformation()
+    {
+        eqListener.LoadEquipmentUI(PlayerSession.GetProfile().characters[transform.GetSiblingIndex()]);
     }
 }

@@ -1,9 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryUI : MonoBehaviour
+public interface EquipInterface {
+
+    void OnItemEquiped(int index);
+
+}
+
+public class InventoryUI : MonoBehaviour, InventoryItemInterface
 {
 
     public Dropdown slotFilter;
@@ -13,11 +20,13 @@ public class InventoryUI : MonoBehaviour
     public GameObject prefab;
 
     List<int> sorting;
+    EquipInterface eqImpl;
 
     // Use this for initialization
     void Start()
     {
-        slotFilter.onValueChanged.AddListener(ChangeFilter);
+        if(slotFilter != null)
+            slotFilter.onValueChanged.AddListener(ChangeFilter);
         sortingFilter.onValueChanged.AddListener(ChangeSorting);
         sorting = new List<int>();
         FilterMainHand();
@@ -28,6 +37,11 @@ public class InventoryUI : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public void SetEquipImpl(EquipInterface ei)
+    {
+        eqImpl = ei;
     }
 
     public void ChangeSorting(int sort)//TODO NOT IMPLEMENTED YET
@@ -111,5 +125,11 @@ public class InventoryUI : MonoBehaviour
     {
         GameObject eqItem = Instantiate(prefab, viewPort.transform, false);
         eqItem.GetComponent<InventoryItemUI>().SetModel(equipment);
+    }
+
+  
+    public void OnItemClicked(int index)
+    {
+        eqImpl.OnItemEquiped(sorting[index]);
     }
 }

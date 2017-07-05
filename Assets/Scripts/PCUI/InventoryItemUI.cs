@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public interface InventoryItemInterface
 {
-    void OnItemClicked(Equipment model);
+    void OnItemClicked(int index);
 }
 
 public class InventoryItemUI : MonoBehaviour {

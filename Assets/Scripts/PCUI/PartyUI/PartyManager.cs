@@ -15,6 +15,8 @@ public class PartyManager : MonoBehaviour, PartySelectionInterface
 
     List<GameObject> allMembers;
 
+    EquipmentUIInterface eqImpl;
+
     // Use this for initialization
     void Start()
     {
@@ -25,6 +27,11 @@ public class PartyManager : MonoBehaviour, PartySelectionInterface
     void Update()
     {
 
+    }
+
+    public void SetEquipmentImpl(EquipmentUIInterface eqImpl)
+    {
+        this.eqImpl = eqImpl;
     }
 
     public void RemoveFromParty(int index)
@@ -75,6 +82,7 @@ public class PartyManager : MonoBehaviour, PartySelectionInterface
             GameObject member = Instantiate(memberPrefab, reservedMember.transform, false);
             member.GetComponent<CharacterUI>().LoadInformation(model);
             member.GetComponent<CharacterUI>().SetListener(this);
+            member.GetComponent<CharacterUI>().SetEquipmentUI(eqImpl);
         }
         reservedMember.transform.GetChild(0).GetComponent<CharacterUI>().SetInParty(true);
         for (int i = 0; i < 3; i++)

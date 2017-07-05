@@ -12,7 +12,28 @@
       </Attribute>
       <Elemental />
       <BattleSetting Row="false" PlayerCharacter="false" />
-      <Actives />
+      <Actives>
+        <Active>Sweep</Active>
+        <Active>Sweep</Active>
+      </Actives>
+      <Passives />
+      <Traits />
+      <LearnedActives />
+    </Character>
+    <Character IsMainCharacter="false" Name="Tom Hanks" Level="1" Experience="0">
+      <Attribute>
+        <Str>5</Str>
+        <Agi>3</Agi>
+        <Intel>3</Intel>
+        <Endurance>3</Endurance>
+        <Wisdom>3</Wisdom>
+        <Constitution>3</Constitution>
+      </Attribute>
+      <Elemental />
+      <BattleSetting Row="false" PlayerCharacter="false" />
+      <Actives>
+        <Active>Sweep</Active>
+      </Actives>
       <Passives />
       <Traits />
       <LearnedActives />

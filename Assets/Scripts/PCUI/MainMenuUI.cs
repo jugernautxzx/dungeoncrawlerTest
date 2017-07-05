@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInterface {
+public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInterface, EquipmentUIInterface {
 
     public CharCreationUI charCreate;
     public PartyManager partyManager;
@@ -21,6 +21,7 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
     void Start () {
         charCreate.SetListener(this);
         recruitmentManager.SetListener(this);
+        partyManager.SetEquipmentImpl(this);
         if (PlayerSession.GetInstance().LoadSession())
         {
             charCreate.gameObject.SetActive(true);
@@ -80,5 +81,12 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
     public void RecruitNewCharacter(CharacterModel model)
     {
         LevelUpCharacter(model);
+    }
+
+    public void LoadEquipmentUI(CharacterModel model)
+    {
+        equipmentUI.SetCharacterModel(model);
+        HideAllWindow();
+        equipmentUI.gameObject.SetActive(true);
     }
 }
