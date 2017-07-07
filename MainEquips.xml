@@ -1,13 +1,15 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="shift_jis"?>
 <PlayerEquipments xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Item Id="13.738780.01684867" Slot="MainHand" Name="Iron dagger" Used="false" WeaponType="Dagger">
     <Attribute>
+      <Str>1</Str>
       <Speed>2</Speed>
     </Attribute>
     <Bonus Attack="6" />
   </Item>
-  <Item Id="14.143160.01644012" Slot="OffHand" Name="Parrying dagger" Used="false">
+  <Item Id="14.143160.01644012" Slot="OffHand" Name="Parrying dagger" Used="true">
     <Attribute>
+      <Agi>1</Agi>
       <Speed>2</Speed>
     </Attribute>
     <Bonus Defense="2" />

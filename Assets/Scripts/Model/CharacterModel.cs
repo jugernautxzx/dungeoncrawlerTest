@@ -42,6 +42,9 @@ public class CharacterModel
     [XmlArray("LearnedActives")]
     [XmlArrayItem("Active")]
     public List<string> learnActive;
+    [XmlArray("LearnedPassive")]
+    [XmlArrayItem("Passive")]
+    public List<string> learnPassive;
     [XmlIgnore]
     public BaseMonster monster;
 
@@ -75,7 +78,10 @@ public class CharacterModel
 
     public void CalculateEqAttribute()
     {
-        eqAttribute = new Attribute();
+        if (eqAttribute == null)
+            eqAttribute = new Attribute();
+        else
+            eqAttribute.Reset();
         AddAllEquipmentAttrib(PlayerSession.GetEquipment(battleSetting.mainHand));
         AddAllEquipmentAttrib(PlayerSession.GetEquipment(battleSetting.offHand));
         AddAllEquipmentAttrib(PlayerSession.GetEquipment(battleSetting.head));
@@ -88,13 +94,13 @@ public class CharacterModel
     {
         if (model == null)
             return;
-        eqAttribute.str = model.attribute.str;
-        eqAttribute.agi = model.attribute.agi;
-        eqAttribute.cons = model.attribute.cons;
-        eqAttribute.endurance = model.attribute.endurance;
-        eqAttribute.intel = model.attribute.intel;
-        eqAttribute.wisdom = model.attribute.wisdom;
-        eqAttribute.speed = model.attribute.speed;
+        eqAttribute.str += model.attribute.str;
+        eqAttribute.agi += model.attribute.agi;
+        eqAttribute.cons += model.attribute.cons;
+        eqAttribute.endurance += model.attribute.endurance;
+        eqAttribute.intel += model.attribute.intel;
+        eqAttribute.wisdom += model.attribute.wisdom;
+        eqAttribute.speed += model.attribute.speed;
     }
 }
 
@@ -121,6 +127,17 @@ public class Attribute
     [DefaultValue(0)]
     [XmlElement("Speed")]
     public int speed;
+
+    public void Reset()
+    {
+        str = 0;
+        agi = 0;
+        intel = 0;
+        endurance = 0;
+        wisdom = 0;
+        speed = 0;
+        cons = 0;
+    }
 }
 
 public class BattleAttribute

@@ -19,7 +19,7 @@ public class InventoryUI : MonoBehaviour, InventoryItemInterface
 
     public GameObject prefab;
 
-    List<int> sorting;
+    List<int> sorting = new List<int>();
     EquipInterface eqImpl;
 
     // Use this for initialization
@@ -28,15 +28,21 @@ public class InventoryUI : MonoBehaviour, InventoryItemInterface
         if(slotFilter != null)
             slotFilter.onValueChanged.AddListener(ChangeFilter);
         sortingFilter.onValueChanged.AddListener(ChangeSorting);
-        sorting = new List<int>();
-        FilterMainHand();
-        LoadAllEquipment();
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    void OnDisable()
+    {
+        sorting.Clear();
+        foreach (Transform child in viewPort.transform)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
     public void SetEquipImpl(EquipInterface ei)
@@ -57,50 +63,33 @@ public class InventoryUI : MonoBehaviour, InventoryItemInterface
         switch (code)
         {
             case 0:
-                FilterMainHand();
+                FilterEquipmentSlot(EqSlot.MainHand);
                 break;
             case 1:
-                FilterOffHand();
+                FilterEquipmentSlot(EqSlot.OffHand);
+                break;
+            case 2:
+                FilterEquipmentSlot(EqSlot.Head);
+                break;
+            case 3:
+                FilterEquipmentSlot(EqSlot.Body);
+                break;
+            default:
+                FilterEquipmentSlot(EqSlot.Acc);
                 break;
         }
         LoadAllEquipment();
     }
 
-    void FilterMainHand()
+    void FilterEquipmentSlot(EqSlot filter)
     {
         int i = 0;
         foreach(Equipment model in PlayerSession.GetInventory().list)
         {
-            if (model.slot == EqSlot.MainHand && !model.isUsed)
+            if (model.slot == filter && !model.isUsed)
                 sorting.Add(i);
             i++;
         }
-    }
-
-    void FilterOffHand()
-    {
-        int i = 0;
-        foreach (Equipment model in PlayerSession.GetInventory().list)
-        {
-            if (model.slot == EqSlot.OffHand && !model.isUsed)
-                sorting.Add(i);
-            i++;
-        }
-    }
-
-    void FilterHead()
-    {
-
-    }
-
-    void FilterBody()
-    {
-
-    }
-
-    void FilterAcc()
-    {
-
     }
 
     void LoadAllEquipment()
@@ -125,6 +114,8 @@ public class InventoryUI : MonoBehaviour, InventoryItemInterface
     {
         GameObject eqItem = Instantiate(prefab, viewPort.transform, false);
         eqItem.GetComponent<InventoryItemUI>().SetModel(equipment);
+        if (eqImpl != null)
+            eqItem.GetComponent<InventoryItemUI>().SetInterface(this);
     }
 
   
