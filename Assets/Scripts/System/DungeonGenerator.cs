@@ -18,6 +18,12 @@ public class DungeonGenerator : MonoBehaviour {
     int randpos;
     int IndexCoridor=0;
     int AllRoom = 100;
+    float PanelTop = 0;
+    float PanelLeft = 0;
+    float PanelRight = 0;
+    float PanelBottom = 0;
+    float MaxPanelTopBottom=0;
+    float MaxPanelRightLeft = 0;
 
     Button[] DungeonRoom = new Button[200];
     RectTransform[] DungeonCoridor = new RectTransform[200];
@@ -25,6 +31,15 @@ public class DungeonGenerator : MonoBehaviour {
     void Start () {
         StartCoroutine("GenerateDungeon");
 
+    }
+
+    void Update()
+    {
+        /*if (ScrollPanel.verticalNormalizedPosition>0.8f)
+        {
+            ScrollPanel.verticalNormalizedPosition = 0.5f;
+        }*/
+        CalculateMaxScroll();
     }
 
     IEnumerator GenerateDungeon()
@@ -174,15 +189,7 @@ public class DungeonGenerator : MonoBehaviour {
 
     public void SizePanel()
     {
-        float PanelTop = 0;
-        float PanelLeft = 0;
-        float PanelRight = 0;
-        float PanelBottom = 0;
-        int PlusMaxTop = 0;
-        int PlusMaxRight = 0;
-        int PlusMaxLeft = 0;
-        int PlusMaxBottom = 0;
-
+        
         for (int j=0; j<= AllRoom; j++)
         {
             if (DungeonRoom[j].GetComponent<RectTransform>().offsetMin.y > PanelTop)//Top
@@ -206,26 +213,41 @@ public class DungeonGenerator : MonoBehaviour {
             }
 
         }
-        
+
+        float MaxPanelTop = PanelTop;
+        float MaxPanelBottom = PanelBottom;
+        float MaxPanelRight = PanelRight;
+        float MaxPanelLeft = PanelLeft;
+
         if (PanelTop>Mathf.Abs(PanelBottom))
         {
-            PanelBottom = -PanelTop;
+            MaxPanelTopBottom = PanelTop;
+            MaxPanelBottom = -PanelTop;
         }
         else
         {
-            PanelTop = Mathf.Abs(PanelBottom);
+            MaxPanelTopBottom = PanelBottom;
+            MaxPanelTop = Mathf.Abs(PanelBottom);
         }
 
         if (PanelRight>Mathf.Abs(PanelLeft))
         {
-            PanelLeft = -PanelRight;
+            MaxPanelRightLeft = PanelRight;
+            MaxPanelLeft = -PanelRight;
         }
         else
         {
-            PanelRight = Mathf.Abs(PanelLeft);
+            MaxPanelRightLeft = PanelLeft;
+            MaxPanelRight = Mathf.Abs(PanelLeft);
         }
-        Panel.offsetMin = new Vector2(PanelLeft+400,PanelBottom+150 );//Left Bottom
-        Panel.offsetMax = new Vector2(PanelRight-400, PanelTop-150); //Right Top
+
+        Panel.offsetMin = new Vector2(MaxPanelLeft+200,  MaxPanelBottom+200 );//Left Bottom
+        Panel.offsetMax = new Vector2(MaxPanelRight-200, MaxPanelTop-200); //Right Top
+
+        //float normalizeposition = (float)DungeonRoom[0].transform.GetSiblingIndex() / (float)ScrollPanel.content.transform.childCount;
+        //ScrollPanel.verticalNormalizedPosition = 0.5f;
+        //ScrollPanel.horizontalNormalizedPosition = 0.5f;
+
     }
 
 
@@ -388,6 +410,59 @@ public class DungeonGenerator : MonoBehaviour {
         }
     }
 
+    public void CalculateMaxScroll()
+    {
+        float VerticalNormalPosition;
+        float HorizontalNormalPosition;
+        float PositionPerRoomTopBottom = 0.5f / (MaxPanelTopBottom / 150f);
+        float PositionPerRoomRightLeft= 0.5f / (MaxPanelRightLeft / 150f);
+
+        if (PanelTop!=Mathf.Abs(PanelBottom))
+        {
+            if (PositionPerRoomTopBottom >= 0)
+            {
+                VerticalNormalPosition = 0.5f - (PositionPerRoomTopBottom * (Mathf.Abs(PanelBottom+150) / 150f));
+
+                if (ScrollPanel.verticalNormalizedPosition < VerticalNormalPosition)
+                {
+                    ScrollPanel.verticalNormalizedPosition = VerticalNormalPosition;
+                }
+            }
+            else
+            {
+                VerticalNormalPosition = 0.5f - (PositionPerRoomTopBottom * (Mathf.Abs(PanelTop+150) / 150f));
+
+                if (ScrollPanel.verticalNormalizedPosition > VerticalNormalPosition)
+                {
+                    ScrollPanel.verticalNormalizedPosition = VerticalNormalPosition;
+                }
+            }
+        }
+
+        if (PanelRight != Mathf.Abs(PanelLeft))
+        {
+            if (PositionPerRoomRightLeft >= 0)
+            {
+                HorizontalNormalPosition = 0.5f - (PositionPerRoomRightLeft * (Mathf.Abs(PanelLeft + 150) / 150f));
+
+                if (ScrollPanel.horizontalNormalizedPosition < HorizontalNormalPosition)
+                {
+                    ScrollPanel.horizontalNormalizedPosition = HorizontalNormalPosition;
+                }
+            }
+            else
+            {
+                HorizontalNormalPosition = 0.5f - (PositionPerRoomRightLeft * (Mathf.Abs(PanelRight + 150) / 150f));
+
+                if (ScrollPanel.horizontalNormalizedPosition > HorizontalNormalPosition)
+                {
+                    ScrollPanel.horizontalNormalizedPosition = HorizontalNormalPosition;
+                }
+            }
+        }
+
+
+        }
     public void ClickRoomAction()
     {
 
