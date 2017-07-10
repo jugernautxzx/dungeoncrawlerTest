@@ -38,11 +38,7 @@ public class InventoryUI : MonoBehaviour, InventoryItemInterface
 
     void OnDisable()
     {
-        sorting.Clear();
-        foreach (Transform child in viewPort.transform)
-        {
-            Destroy(child.gameObject);
-        }
+        
     }
 
     public void SetEquipImpl(EquipInterface ei)
@@ -115,12 +111,22 @@ public class InventoryUI : MonoBehaviour, InventoryItemInterface
         GameObject eqItem = Instantiate(prefab, viewPort.transform, false);
         eqItem.GetComponent<InventoryItemUI>().SetModel(equipment);
         if (eqImpl != null)
-            eqItem.GetComponent<InventoryItemUI>().SetInterface(this);
+            eqItem.GetComponent<InventoryItemUI>().SetInterface(this); 
     }
 
   
     public void OnItemClicked(int index)
     {
         eqImpl.OnItemEquiped(sorting[index]);
+        ClearItemList();
+    }
+
+    public void ClearItemList()
+    {
+        sorting.Clear();
+        foreach (Transform child in viewPort.transform)
+        {
+            Destroy(child.gameObject);
+        }
     }
 }

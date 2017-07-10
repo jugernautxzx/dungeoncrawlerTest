@@ -14,11 +14,13 @@
       <BattleSetting Row="false" PlayerCharacter="false" />
       <Actives>
         <Active>Sweep</Active>
-        <Active>Sweep</Active>
       </Actives>
       <Passives />
       <Traits />
-      <LearnedActives />
+      <LearnedActives>
+        <Active>Sweep</Active>
+      </LearnedActives>
+      <LearnedPassive />
     </Character>
     <Character IsMainCharacter="false" Name="Tom Hanks" Level="1" Experience="0">
       <Attribute>
@@ -37,6 +39,7 @@
       <Passives />
       <Traits />
       <LearnedActives />
+      <LearnedPassive />
     </Character>
   </Characters>
   <MainCharacter Fame="10" Leadership="10" />

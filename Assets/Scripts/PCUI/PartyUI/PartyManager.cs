@@ -100,40 +100,27 @@ public class PartyManager : MonoBehaviour, PartySelectionInterface
 
     public bool OnAddToParty(int index)
     {
-        if (partyIndex[0] == -1)
+        for (int i = 0; i < 3; i++)
         {
-            partyIndex[0] = index;
-            UpdatePartyMembersLineUp();
-            return true;
-        }
-        else if (partyIndex[1] == -1)
-        {
-            partyIndex[1] = index;
-            UpdatePartyMembersLineUp();
-            return true;
-        }
-        else if (partyIndex[2] == -1)
-        {
-            partyIndex[2] = index;
-            UpdatePartyMembersLineUp();
-            return true;
+            if (partyIndex[i] == -1)
+            {
+                partyIndex[i] = index;
+                UpdatePartyMembersLineUp();
+                return true;
+            }
         }
         return false;
     }
 
     void PartySelectionInterface.RemoveFromParty(int index)
     {
-        if (partyIndex[0] == index)
+        for (int i = 0; i < 3; i++)
         {
-            RemoveFromParty(0);
-        }
-        else if (partyIndex[1] == index)
-        {
-            RemoveFromParty(1);
-        }
-        else if (partyIndex[2] == index)
-        {
-            RemoveFromParty(2);
+            if (partyIndex[i] == index)
+            {
+                RemoveFromParty(i);
+                break;
+            }
         }
     }
 }

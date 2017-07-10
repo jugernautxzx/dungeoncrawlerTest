@@ -1,19 +1,22 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public interface SetSkillInterface
 {
-    void EquipSelectedSkill(int index);
+    void EquipSelectedSkill(string id);
 }
 
-public class SkillsUI : MonoBehaviour {
+public class SkillsUI : MonoBehaviour, SkillItemInterface {
 
     public GameObject prefab;
     public Transform container;
 
-    List<string> names;
-    List<string> desc;
+    List<string> names = new List<string>();
+    List<string> desc = new List<string>();
+
+    SetSkillInterface setInterface;
 
 	// Use this for initialization
 	void Start () {
@@ -25,17 +28,35 @@ public class SkillsUI : MonoBehaviour {
 		
 	}
 
-    void LoadAllAvailableActives()
+    public void SetInterface(SetSkillInterface impl)
     {
-
+        setInterface = impl;
     }
 
-    void LoadAllAvailablePassives()
+    public void LoadAllAvailableActives(List<string> learned, List<string> equiped)
     {
+        ClearList();
+        foreach(string id in learned)
+        {
+            if (!equiped.Contains(id))
+            {
+                names.Add(ActiveSkillManager.GetInstance().GetActive(id).name);
+                desc.Add(ActiveSkillManager.GetInstance().GetActive(id).info);
+            }
+        }
 
+        for(int i=0; i<names.Count; i++)
+        {
+            PopulateList(names[i], desc[i]);
+        }
     }
 
-    void ClearList()
+    public void LoadAllAvailablePassives()
+    {
+        ClearList();
+    }
+
+    public void ClearList()
     {
         names.Clear();
         desc.Clear();
@@ -49,5 +70,11 @@ public class SkillsUI : MonoBehaviour {
     {
         GameObject instan = Instantiate(prefab, container, false);
         instan.GetComponent<SkillsItemUI>().SetSkill(name, desc);
+        instan.GetComponent<SkillsItemUI>().SetInterface(this);
+    }
+
+    public void OnItemClicked(string id)
+    {
+        setInterface.EquipSelectedSkill(id);
     }
 }
