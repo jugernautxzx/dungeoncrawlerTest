@@ -623,6 +623,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 376689941}
+  - component: {fileID: 376689943}
   m_Layer: 5
   m_Name: DungeonUI
   m_TagString: Untagged
@@ -652,6 +653,12 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &376689943
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 376689940}
 --- !u!1 &415867250
 GameObject:
   m_ObjectHideFlags: 0
@@ -1502,7 +1509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.469}
+  m_Color: {r: 0.027450982, g: 0.027450982, b: 0.027450982, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -3131,7 +3138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.469}
+  m_Color: {r: 0.029411793, g: 0.029411793, b: 0.029411793, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
