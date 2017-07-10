@@ -17,13 +17,14 @@ public class DungeonGenerator : MonoBehaviour {
     int test=0;
     int randpos;
     int IndexCoridor=0;
-    int AllRoom = 100;
+    int AllRoom = 20;     //Total Dungeon Room
     float PanelTop = 0;
     float PanelLeft = 0;
     float PanelRight = 0;
     float PanelBottom = 0;
     float MaxPanelTopBottom=0;
     float MaxPanelRightLeft = 0;
+    float CurrentScale = 1f;
 
     Button[] DungeonRoom = new Button[200];
     RectTransform[] DungeonCoridor = new RectTransform[200];
@@ -35,28 +36,17 @@ public class DungeonGenerator : MonoBehaviour {
 
     void Update()
     {
-        /*if (ScrollPanel.verticalNormalizedPosition>0.8f)
-        {
-            ScrollPanel.verticalNormalizedPosition = 0.5f;
-        }*/
         CalculateMaxScroll();
+        Zoom(Input.GetAxis("Mouse ScrollWheel"));
     }
 
     IEnumerator GenerateDungeon()
     {
         bool RoomPosition = true;
-  
-        DungeonRoom[0] = Instantiate(Room);                             //Set Entrance first
-        DungeonRoom[0].transform.SetParent(Panel.transform, false);
-        DungeonRoom[0].name = "0";
-        DungeonRoom[0].onClick.AddListener(PlayerPosition);
-        DungeonRoom[0].GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
-        //DungeonRoom.offsetMin = new Vector2(DungeonRoom.offsetMin.y, 300);
-        DungeonRoom[0].GetComponent<RectTransform>().sizeDelta = new Vector2(70, 70);
+
+        SpawnEntrancePoint();
         float RoomPositionX = DungeonRoom[0].GetComponent<RectTransform>().offsetMin.x;
         float RoomPositionY = DungeonRoom[0].GetComponent<RectTransform>().offsetMin.y;
-
-
 
         for (int RoomIndex = 1; RoomIndex <= AllRoom; RoomIndex++)
         {
@@ -97,13 +87,21 @@ public class DungeonGenerator : MonoBehaviour {
 
         }
         SizePanel();
-        //ScrollPanel.horizontalNormalizedPosition = 0.5f;
-        //ScrollPanel.verticalNormalizedPosition = 0.5f;
         RandomRoomTag();
         EventSystem.current.SetSelectedGameObject(DungeonRoom[0].gameObject);
         EventSystem.current.currentSelectedGameObject.tag = "Entrance";
         DungeonRoom[0].GetComponent<Image>().color = Color.cyan;
         PlayerPosition();
+    }
+
+    public void SpawnEntrancePoint()
+    {
+        DungeonRoom[0] = Instantiate(Room);                             //Set Entrance first
+        DungeonRoom[0].transform.SetParent(Panel.transform, false);
+        DungeonRoom[0].name = "0";
+        DungeonRoom[0].onClick.AddListener(PlayerPosition);
+        DungeonRoom[0].GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
+        DungeonRoom[0].GetComponent<RectTransform>().sizeDelta = new Vector2(70, 70);
     }
 
     public void randposition(int i,float RoomPositionX,float RoomPositionY)
@@ -243,20 +241,15 @@ public class DungeonGenerator : MonoBehaviour {
 
         Panel.offsetMin = new Vector2(MaxPanelLeft+200,  MaxPanelBottom+200 );//Left Bottom
         Panel.offsetMax = new Vector2(MaxPanelRight-200, MaxPanelTop-200); //Right Top
-
-        //float normalizeposition = (float)DungeonRoom[0].transform.GetSiblingIndex() / (float)ScrollPanel.content.transform.childCount;
-        //ScrollPanel.verticalNormalizedPosition = 0.5f;
-        //ScrollPanel.horizontalNormalizedPosition = 0.5f;
-
     }
 
 
     public void PlayerPosition ()
     {
         int IndexRoom;
-        //Debug.Log(EventSystem.current.currentSelectedGameObject.GetComponent<RectTransform>().offsetMin);
         IndexRoom = int.Parse(EventSystem.current.currentSelectedGameObject.name);
         Vector2 PlayerPosition= DungeonRoom[IndexRoom].GetComponent<RectTransform>().offsetMin ;
+        CenterOnClick(PlayerPosition);
         ClickRoomAction();
         CheckAccessedRoom(PlayerPosition);
     }
@@ -414,14 +407,32 @@ public class DungeonGenerator : MonoBehaviour {
     {
         float VerticalNormalPosition;
         float HorizontalNormalPosition;
-        float PositionPerRoomTopBottom = 0.5f / (MaxPanelTopBottom / 150f);
-        float PositionPerRoomRightLeft= 0.5f / (MaxPanelRightLeft / 150f);
+        float PositionPerRoomTopBottom;
+        float PositionPerRoomRightLeft;
+
+        if (MaxPanelTopBottom>=0)
+        {
+            PositionPerRoomTopBottom = 0.5f / ((MaxPanelTopBottom - 200) / 150f);
+        }
+        else
+        {
+            PositionPerRoomTopBottom = 0.5f / ((MaxPanelTopBottom + 200) / 150f);
+        }
+
+        if (MaxPanelRightLeft>=0)
+        {
+            PositionPerRoomRightLeft = 0.5f / ((MaxPanelRightLeft - 200) / 150f);
+        }
+        else
+        {
+            PositionPerRoomRightLeft = 0.5f / ((MaxPanelRightLeft + 200) / 150f);
+        }
 
         if (PanelTop!=Mathf.Abs(PanelBottom))
         {
             if (PositionPerRoomTopBottom >= 0)
             {
-                VerticalNormalPosition = 0.5f - (PositionPerRoomTopBottom * (Mathf.Abs(PanelBottom+150) / 150f));
+                VerticalNormalPosition = 0.5f - (PositionPerRoomTopBottom * (Mathf.Abs(PanelBottom+200) / 150f));
 
                 if (ScrollPanel.verticalNormalizedPosition < VerticalNormalPosition)
                 {
@@ -430,7 +441,7 @@ public class DungeonGenerator : MonoBehaviour {
             }
             else
             {
-                VerticalNormalPosition = 0.5f - (PositionPerRoomTopBottom * (Mathf.Abs(PanelTop+150) / 150f));
+                VerticalNormalPosition = 0.5f - (PositionPerRoomTopBottom * (Mathf.Abs(PanelTop+200) / 150f));
 
                 if (ScrollPanel.verticalNormalizedPosition > VerticalNormalPosition)
                 {
@@ -443,7 +454,7 @@ public class DungeonGenerator : MonoBehaviour {
         {
             if (PositionPerRoomRightLeft >= 0)
             {
-                HorizontalNormalPosition = 0.5f - (PositionPerRoomRightLeft * (Mathf.Abs(PanelLeft + 150) / 150f));
+                HorizontalNormalPosition = 0.5f - (PositionPerRoomRightLeft * (Mathf.Abs(PanelLeft+200) / 150f));
 
                 if (ScrollPanel.horizontalNormalizedPosition < HorizontalNormalPosition)
                 {
@@ -452,7 +463,7 @@ public class DungeonGenerator : MonoBehaviour {
             }
             else
             {
-                HorizontalNormalPosition = 0.5f - (PositionPerRoomRightLeft * (Mathf.Abs(PanelRight + 150) / 150f));
+                HorizontalNormalPosition = 0.5f - (PositionPerRoomRightLeft * (Mathf.Abs(PanelRight+200) / 150f));
 
                 if (ScrollPanel.horizontalNormalizedPosition > HorizontalNormalPosition)
                 {
@@ -460,9 +471,107 @@ public class DungeonGenerator : MonoBehaviour {
                 }
             }
         }
+    }
 
+    public void Zoom(float increment)
+    {
+        float MaxScale = 1f;
+        float MinScale = 0.5f;
 
+        CurrentScale += increment;
+        if (CurrentScale>=MaxScale)
+        {
+            CurrentScale = MaxScale;
+        }else if (CurrentScale<=MinScale)
+        {
+            CurrentScale = MinScale;
         }
+
+        Panel.localScale = new Vector2(CurrentScale,CurrentScale);
+
+    }
+
+    public void CenterOnClick(Vector2 PlayerPosition)
+    {
+        float PositionRoomY;
+        float PositionRoomX;
+        float PositionPerRoomTopBottom;
+        float PositionPerRoomRightLeft;
+        float NormalizeRoomPositionY=0.5f;
+        float NormalizeRoomPositionX=0.5f;
+
+        if (MaxPanelTopBottom >= 0)
+        {
+            PositionPerRoomTopBottom = 0.5f / ((MaxPanelTopBottom - 200) / 150f);
+        }
+        else
+        {
+            PositionPerRoomTopBottom = 0.5f / ((MaxPanelTopBottom + 200) / 150f);
+        }
+
+        if (MaxPanelRightLeft >= 0)
+        {
+            PositionPerRoomRightLeft = 0.5f / ((MaxPanelRightLeft - 200) / 150f);
+        }
+        else
+        {
+            PositionPerRoomRightLeft = 0.5f / ((MaxPanelRightLeft + 200) / 150f);
+        }
+
+        PositionRoomY = (PlayerPosition.y / 150) * PositionPerRoomTopBottom;
+        PositionRoomX = (PlayerPosition.x / 150) * PositionPerRoomRightLeft;
+
+        if (PlayerPosition.y>=0)
+        {
+            NormalizeRoomPositionY = 0.5f + Mathf.Abs(PositionRoomY);
+        }
+        else if (PlayerPosition.y < 0)
+        {
+            NormalizeRoomPositionY = 0.5f - Mathf.Abs(PositionRoomY);
+        }
+
+        if (PlayerPosition.x >= 0)
+        {
+            NormalizeRoomPositionX = 0.5f + Mathf.Abs(PositionRoomX);
+        }
+        else if (PlayerPosition.x < 0)
+        {
+            NormalizeRoomPositionX = 0.5f - Mathf.Abs(PositionRoomX);
+        }
+
+        DoScrolling(NormalizeRoomPositionY,NormalizeRoomPositionX);
+        
+    }
+
+    public void DoScrolling(float NormalizeRoomPositionY, float NormalizeRoomPositionX)
+    {
+        if (NormalizeRoomPositionY > 1)
+        {
+            ScrollPanel.verticalNormalizedPosition = 1f;
+        }
+        else if (NormalizeRoomPositionY < 0)
+        {
+            ScrollPanel.verticalNormalizedPosition = 0f;
+        }
+        else
+        {
+            ScrollPanel.verticalNormalizedPosition = NormalizeRoomPositionY;
+        }
+
+        if (NormalizeRoomPositionX > 1)
+        {
+            ScrollPanel.horizontalNormalizedPosition = 1f;
+        }
+        else if (NormalizeRoomPositionX < 0)
+        {
+            ScrollPanel.horizontalNormalizedPosition = 0f;
+        }
+        else
+        {
+            ScrollPanel.horizontalNormalizedPosition = NormalizeRoomPositionX;
+        }
+    }
+
     public void ClickRoomAction()
     {
 
