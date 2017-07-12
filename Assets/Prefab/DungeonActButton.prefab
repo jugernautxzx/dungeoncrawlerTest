@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114444493288618344}
   - component: {fileID: 114831523158625296}
   m_Layer: 5
-  m_Name: Loot
+  m_Name: DungeonActButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
