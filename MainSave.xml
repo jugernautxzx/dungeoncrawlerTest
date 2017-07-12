@@ -1,41 +1,49 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <PlayerProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Gold="100">
   <Characters>
-    <Character IsMainCharacter="true" Name="Neomatrix" Level="1" Experience="0">
+    <Character IsMainCharacter="true" Name="Debugger" Level="1" Experience="0">
       <Attribute>
-        <Str>6</Str>
+        <Str>15</Str>
         <Agi>1</Agi>
-        <Intel>7</Intel>
-        <Endurance>4</Endurance>
+        <Intel>1</Intel>
+        <Endurance>1</Endurance>
         <Wisdom>1</Wisdom>
         <Constitution>1</Constitution>
       </Attribute>
       <Elemental />
-      <BattleSetting Row="false" PlayerCharacter="false" />
+      <BattleSetting Row="false" PlayerCharacter="false" MainHand="4" />
       <Actives>
-        <Active>Sweep</Active>
+        <Active />
+        <Active />
+        <Active />
+        <Active />
+        <Active />
       </Actives>
-      <Passives />
+      <Passives>
+        <Passive />
+        <Passive />
+        <Passive />
+        <Passive />
+        <Passive />
+      </Passives>
       <Traits />
       <LearnedActives>
         <Active>Sweep</Active>
       </LearnedActives>
       <LearnedPassive />
     </Character>
-    <Character IsMainCharacter="false" Name="Tom Hanks" Level="1" Experience="0">
+    <Character IsMainCharacter="false" Name="Newman" Level="1" Experience="0">
       <Attribute>
-        <Str>5</Str>
-        <Agi>3</Agi>
-        <Intel>3</Intel>
-        <Endurance>3</Endurance>
-        <Wisdom>3</Wisdom>
-        <Constitution>3</Constitution>
+        <Str>15</Str>
+        <Agi>1</Agi>
+        <Intel>1</Intel>
+        <Endurance>1</Endurance>
+        <Wisdom>1</Wisdom>
+        <Constitution>1</Constitution>
       </Attribute>
       <Elemental />
-      <BattleSetting Row="false" PlayerCharacter="false" OffHand="1" />
-      <Actives>
-        <Active>Sweep</Active>
-      </Actives>
+      <BattleSetting Row="false" PlayerCharacter="false" />
+      <Actives />
       <Passives />
       <Traits />
       <LearnedActives />
@@ -43,5 +51,5 @@
     </Character>
   </Characters>
   <MainCharacter Fame="10" Leadership="10" />
-  <Party Member1="-1" Member2="-1" Member3="-1" />
+  <Party Member1="1" Member2="-1" Member3="-1" />
 </PlayerProfile>

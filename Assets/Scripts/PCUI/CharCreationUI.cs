@@ -135,6 +135,18 @@ public class CharCreationUI : MonoBehaviour
         model.attribute.wisdom = int.Parse(wis.text);
         model.attribute.str = int.Parse(str.text);
         model.battleSetting = new BattleSetting();
+        model.actives = new List<string>();
+        model.actives.Add("");
+        model.actives.Add("");
+        model.actives.Add("");
+        model.actives.Add("");
+        model.actives.Add("");
+        model.passives = new List<string>();
+        model.passives.Add("");
+        model.passives.Add("");
+        model.passives.Add("");
+        model.passives.Add("");
+        model.passives.Add("");
         PlayerSession.GetInstance().CreateNewSession(model);
         PlayerSession.GetInstance().SaveSession();
     }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public interface SkillItemInterface
 {
@@ -34,6 +35,7 @@ public class SkillsItemUI : MonoBehaviour, IPointerEnterHandler, IPointerClickHa
     {
         this.id = id;
         this.desc = desc;
+        GetComponent<Text>().text = ActiveSkillManager.GetInstance().GetName(id);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -43,6 +45,9 @@ public class SkillsItemUI : MonoBehaviour, IPointerEnterHandler, IPointerClickHa
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        impl.OnItemClicked(id);
+        if (!id.Equals("None"))
+            impl.OnItemClicked(id);
+        else
+            impl.OnItemClicked("");
     }
 }

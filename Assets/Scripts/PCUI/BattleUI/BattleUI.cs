@@ -159,8 +159,11 @@ public class BattleUI : MonoBehaviour, BattleInterface
         int i = 0;
         foreach (string active in player.actives)
         {
-            activeBtns[i].gameObject.SetActive(true);
-            activeBtns[i].GetComponentInChildren<Text>().text = ActiveSkillManager.GetInstance().GetActive(active).name;
+            if (active.Length > 0)
+            {
+                activeBtns[i].gameObject.SetActive(true);
+                activeBtns[i].GetComponentInChildren<Text>().text = ActiveSkillManager.GetInstance().GetActive(active).name;
+            }
             i++;
         }
     }

@@ -21,6 +21,7 @@ public class InventoryUI : MonoBehaviour, InventoryItemInterface
 
     List<int> sorting = new List<int>();
     EquipInterface eqImpl;
+    InventoryItemShowInterface showImpl;
 
     // Use this for initialization
     void Start()
@@ -39,6 +40,11 @@ public class InventoryUI : MonoBehaviour, InventoryItemInterface
     void OnDisable()
     {
         
+    }
+
+    public void SetItemShowImpl(InventoryItemShowInterface iis)
+    {
+        showImpl = iis;
     }
 
     public void SetEquipImpl(EquipInterface ei)
@@ -111,14 +117,14 @@ public class InventoryUI : MonoBehaviour, InventoryItemInterface
         GameObject eqItem = Instantiate(prefab, viewPort.transform, false);
         eqItem.GetComponent<InventoryItemUI>().SetModel(equipment);
         if (eqImpl != null)
-            eqItem.GetComponent<InventoryItemUI>().SetInterface(this); 
+            eqItem.GetComponent<InventoryItemUI>().SetInterface(this);
+        eqItem.GetComponent<InventoryItemUI>().SetShowInterface(showImpl);
     }
 
   
     public void OnItemClicked(int index)
     {
         eqImpl.OnItemEquiped(sorting[index]);
-        ClearItemList();
     }
 
     public void ClearItemList()

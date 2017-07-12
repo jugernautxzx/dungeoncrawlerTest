@@ -10,6 +10,12 @@ public interface InventoryItemInterface
     void OnItemClicked(int index);
 }
 
+public interface InventoryItemShowInterface
+{
+    void OnShowEquipmentStatus(Equipment model, Vector2 pos);
+    void OnCloseEquipmentStatus();
+}
+
 public class InventoryItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
 
     public Text eqName;
@@ -18,7 +24,8 @@ public class InventoryItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnte
 
     Equipment model;
 
-    InventoryItemInterface impl;
+    InventoryItemInterface selectedImpl;
+    InventoryItemShowInterface showImpl;
 
 	// Use this for initialization
 	void Start () {
@@ -27,7 +34,12 @@ public class InventoryItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnte
 
     public void SetInterface(InventoryItemInterface ii)
     {
-        impl = ii;
+        selectedImpl = ii;
+    }
+
+    public void SetShowInterface(InventoryItemShowInterface iis)
+    {
+        showImpl = iis;
     }
 	
 	// Update is called once per frame
@@ -45,15 +57,23 @@ public class InventoryItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnte
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (impl != null)
-            impl.OnItemClicked(transform.GetSiblingIndex());
+        if (selectedImpl != null)
+            selectedImpl.OnItemClicked(transform.GetSiblingIndex());
+        if (showImpl != null)
+            showImpl.OnCloseEquipmentStatus();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (showImpl != null)
+            showImpl.OnShowEquipmentStatus(model, eventData.position);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (showImpl != null)
+            showImpl.OnCloseEquipmentStatus();
     }
+
+
 }

@@ -19,9 +19,11 @@ public class EquipmentUI : MonoBehaviour, EquipInterface, SetSkillInterface
     public Text eqMain, eqOff, eqHead, eqBody, eqAcc1, eqAcc2;
     public InventoryUI invUI;
     public SkillsUI skillUI;
+    public Button closeBtn;
 
     CharacterModel model;
     int selectedSlot;
+    bool isPassive;
 
     // Use this for initialization
     void Start()
@@ -36,6 +38,16 @@ public class EquipmentUI : MonoBehaviour, EquipInterface, SetSkillInterface
         eqAcc1.GetComponent<Button>().onClick.AddListener(delegate { OnEquipmentClicked(eqAcc1, EqSlot.Acc, 4); });
         eqAcc2.GetComponent<Button>().onClick.AddListener(delegate { OnEquipmentClicked(eqAcc2, EqSlot.Acc, 5); });
         actives[0].GetComponent<Button>().onClick.AddListener(delegate { OnActiveSkillChange(0); });
+        actives[1].GetComponent<Button>().onClick.AddListener(delegate { OnActiveSkillChange(1); });
+        actives[2].GetComponent<Button>().onClick.AddListener(delegate { OnActiveSkillChange(2); });
+        actives[3].GetComponent<Button>().onClick.AddListener(delegate { OnActiveSkillChange(3); });
+        actives[4].GetComponent<Button>().onClick.AddListener(delegate { OnActiveSkillChange(4); });
+        closeBtn.onClick.AddListener(CloseSelection);
+    }
+
+    public void SetEquipmentShowImpl(InventoryItemShowInterface iis)
+    {
+        invUI.SetItemShowImpl(iis);
     }
 
     // Update is called once per frame
@@ -46,8 +58,20 @@ public class EquipmentUI : MonoBehaviour, EquipInterface, SetSkillInterface
 
     void OnDisable()
     {
+        closeBtn.gameObject.SetActive(false);
         invUI.ClearItemList();
         invUI.gameObject.SetActive(false);
+        skillUI.ClearList();
+        skillUI.gameObject.SetActive(false);
+    }
+
+    public void CloseSelection()
+    {
+        invUI.ClearItemList();
+        invUI.gameObject.SetActive(false);
+        skillUI.ClearList();
+        skillUI.gameObject.SetActive(false);
+        closeBtn.gameObject.SetActive(false);
     }
 
     public void SetCharacterModel(CharacterModel model)
@@ -128,7 +152,7 @@ public class EquipmentUI : MonoBehaviour, EquipInterface, SetSkillInterface
         {
             if (indexSlot == selectedSlot)
             {
-                invUI.gameObject.SetActive(false);
+                CloseSelection();
                 RemoveEquipment(indexSlot);
                 text.text = "None";
             }
@@ -141,9 +165,15 @@ public class EquipmentUI : MonoBehaviour, EquipInterface, SetSkillInterface
         else
         {
             selectedSlot = indexSlot;
-            invUI.gameObject.SetActive(true);
-            invUI.ChangeFilter(indexSlot);
+            ShowEquipmentSelection(indexSlot);
         }
+    }
+
+    void ShowEquipmentSelection(int indexSlot) {
+        closeBtn.gameObject.SetActive(true);
+        skillUI.gameObject.SetActive(false);
+        invUI.gameObject.SetActive(true);
+        invUI.ChangeFilter(indexSlot);
     }
 
     public void OnItemEquiped(int index)
@@ -221,19 +251,39 @@ public class EquipmentUI : MonoBehaviour, EquipInterface, SetSkillInterface
     void OnActiveSkillChange(int selIndex)
     {
         selectedSlot = selIndex;
+        isPassive = false;
+        ShowSkillSelection();
+    }
+
+    void ShowSkillSelection()
+    {
+        closeBtn.gameObject.SetActive(true);
+        invUI.gameObject.SetActive(false);
         skillUI.gameObject.SetActive(true);
         skillUI.LoadAllAvailableActives(model.learnActive, model.actives);
     }
 
     public void EquipSelectedSkill(string id)
     {
-        actives[selectedSlot].text = ActiveSkillManager.GetInstance().GetActive(id).name;
-        if (selectedSlot >= model.actives.Count)
-            model.actives.Add(id);
+        if (isPassive)
+        {
+            
+        }
         else
-            model.actives[selectedSlot] = id;
+        {
+            EquipSelectedActives(id);
+            CloseSelection();
+        }
+        
+    }
 
-        skillUI.gameObject.SetActive(false);
-        skillUI.ClearList();
+    void EquipSelectedActives(string id)
+    {
+        if (id.Length != 0)
+            actives[selectedSlot].text = ActiveSkillManager.GetInstance().GetActive(id).name;
+        else
+            actives[selectedSlot].text = "None";
+
+        model.actives[selectedSlot] = id;
     }
 }

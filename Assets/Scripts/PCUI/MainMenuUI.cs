@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInterface, EquipmentUIInterface {
+public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInterface, EquipmentUIInterface, InventoryItemShowInterface
+{
 
     public CharCreationUI charCreate;
     public PartyManager partyManager;
     public RecruitmentManager recruitmentManager;
     public EquipmentUI equipmentUI;
     public InventoryUI inventoryUI;
+    public RectTransform equipmentShowPopUp;
 
     public void OnCreateNewChar()
     {
@@ -18,10 +17,13 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
     }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         charCreate.SetListener(this);
         recruitmentManager.SetListener(this);
         partyManager.SetEquipmentImpl(this);
+        inventoryUI.SetItemShowImpl(this);
+        equipmentUI.SetEquipmentShowImpl(this);
         if (PlayerSession.GetInstance().LoadSession())
         {
             charCreate.gameObject.SetActive(true);
@@ -30,14 +32,41 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         else
         {
             partyManager.UpdatePartyMembersInformation();
+            ShowPartyWindow();
         }
+
+    }
+
+    void Update()
+    {
+        if (equipmentShowPopUp.gameObject.activeInHierarchy)
+        {
+            UpdateEquipmentShowPos();
+        }
+    }
+
+    void UpdateEquipmentShowPos()
+    {
+        float height = equipmentShowPopUp.rect.height;
+        float width = equipmentShowPopUp.rect.width;
+        Vector3 newPos = Input.mousePosition;
+        if (newPos.y - height < 0)
+        {
+            newPos.y += height - newPos.y;
+        }
+        if(newPos.x + width > Screen.width)
+        {
+            newPos.x -= (newPos.x + width) - Screen.width;
+        }
+        equipmentShowPopUp.transform.position = newPos;
     }
 
     public void StartMockupBattle()
     {
+        //TODO Move to dungeon generation
         SceneManager.LoadScene(2);
     }
-	
+
     public void ShowRecruitWindow()
     {
         HideAllWindow();
@@ -56,6 +85,7 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
     {
         HideAllWindow();
         inventoryUI.gameObject.SetActive(true);
+        inventoryUI.ChangeFilter(inventoryUI.slotFilter.value);
     }
 
     void HideAllWindow()
@@ -88,5 +118,16 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         equipmentUI.SetCharacterModel(model);
         HideAllWindow();
         equipmentUI.gameObject.SetActive(true);
+    }
+
+    public void OnShowEquipmentStatus(Equipment model, Vector2 pos)
+    {
+        equipmentShowPopUp.gameObject.SetActive(true);
+        equipmentShowPopUp.GetComponent<EquipmentShowUI>().setModel(model);
+    }
+
+    public void OnCloseEquipmentStatus()
+    {
+        equipmentShowPopUp.gameObject.SetActive(false);
     }
 }

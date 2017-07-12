@@ -8,7 +8,8 @@ public interface SetSkillInterface
     void EquipSelectedSkill(string id);
 }
 
-public class SkillsUI : MonoBehaviour, SkillItemInterface {
+public class SkillsUI : MonoBehaviour, SkillItemInterface
+{
 
     public GameObject prefab;
     public Transform container;
@@ -18,15 +19,17 @@ public class SkillsUI : MonoBehaviour, SkillItemInterface {
 
     SetSkillInterface setInterface;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    // Use this for initialization
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     public void SetInterface(SetSkillInterface impl)
     {
@@ -36,16 +39,20 @@ public class SkillsUI : MonoBehaviour, SkillItemInterface {
     public void LoadAllAvailableActives(List<string> learned, List<string> equiped)
     {
         ClearList();
-        foreach(string id in learned)
-        {
-            if (!equiped.Contains(id))
-            {
-                names.Add(ActiveSkillManager.GetInstance().GetActive(id).name);
-                desc.Add(ActiveSkillManager.GetInstance().GetActive(id).info);
-            }
-        }
+        names.Add("None");
+        desc.Add("Remove active skill");
 
-        for(int i=0; i<names.Count; i++)
+        if (learned != null)
+            foreach (string id in learned)
+            {
+                if (!equiped.Contains(id))
+                {
+                    names.Add(ActiveSkillManager.GetInstance().GetActive(id).name);
+                    desc.Add(ActiveSkillManager.GetInstance().GetActive(id).info);
+                }
+            }
+
+        for (int i = 0; i < names.Count; i++)
         {
             PopulateList(names[i], desc[i]);
         }

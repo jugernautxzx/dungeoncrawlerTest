@@ -20,21 +20,19 @@ public class Debugger
         model.battleSetting = new BattleSetting();
         model.elemental = new ElementAttribute();
         model.actives = new List<string>();
+        model.actives.Add("");
+        model.actives.Add("");
+        model.actives.Add("");
+        model.actives.Add("");
+        model.actives.Add("");
         model.passives = new List<string>();
         return model;
     }
 
     public static void GenerateMainHand()
     {
-        Equipment generated = new Equipment();
-        generated.attribute = new Attribute();
-        generated.bonus = new BonusAttribute();
-        generated.id = Time.timeSinceLevelLoad.ToString() + Time.deltaTime.ToString();
-        generated.name = "Iron dagger";
-        generated.slot = EqSlot.MainHand;
-        generated.weapon = Weapon.Dagger;
-        generated.bonus.attack = 6;
-        generated.attribute.speed = 2;
+        EquipmentGenerator gen = new EquipmentGenerator();
+        Equipment generated = gen.GenerateWeapon(1);
         PlayerSession.GetInventory().list.Add(generated);
     }
 

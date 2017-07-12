@@ -94,8 +94,8 @@ public class PartyManager : MonoBehaviour, PartySelectionInterface
 
     IEnumerator UpdateAllMembersRoutine()
     {
-        yield return null;
         UpdateAllMembers();
+        yield return null;
     }
 
     public bool OnAddToParty(int index)

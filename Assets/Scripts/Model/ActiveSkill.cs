@@ -76,4 +76,13 @@ public class ActiveSkillManager
     {
         return list.Get(id);
     }
+
+    public string GetName(string id)
+    {
+        if (list.DictContains(id))
+            return list.Get(id).name;
+        else
+            return "None";
+    }
+
 }

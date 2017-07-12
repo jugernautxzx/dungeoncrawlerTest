@@ -1,17 +1,38 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <PlayerEquipments xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Item Id="13.738780.01684867" Slot="MainHand" Name="Iron dagger" Used="false" WeaponType="Dagger">
-    <Attribute>
-      <Str>1</Str>
-      <Speed>2</Speed>
-    </Attribute>
-    <Bonus Attack="6" />
-  </Item>
-  <Item Id="14.143160.01644012" Slot="OffHand" Name="Parrying dagger" Used="true">
+  <Item Id="9.7313660.01668501" Slot="MainHand" Name="Heavy Iron Dagger" Used="false" WeaponType="Dagger">
     <Attribute>
       <Agi>1</Agi>
       <Speed>2</Speed>
     </Attribute>
-    <Bonus Defense="2" />
+    <Bonus Attack="3" />
+  </Item>
+  <Item Id="9.8830080.01684838" Slot="MainHand" Name="Dull Iron Dagger" Used="false" WeaponType="Dagger">
+    <Attribute>
+      <Agi>1</Agi>
+      <Speed>2</Speed>
+    </Attribute>
+    <Bonus Attack="5" />
+  </Item>
+  <Item Id="10.068390.01651347" Slot="MainHand" Name="Dull Iron Dagger" Used="false" WeaponType="Dagger">
+    <Attribute>
+      <Agi>1</Agi>
+      <Speed>2</Speed>
+    </Attribute>
+    <Bonus Attack="5" />
+  </Item>
+  <Item Id="10.203290.01700268" Slot="MainHand" Name="Dull Iron Dagger" Used="false" WeaponType="Dagger">
+    <Attribute>
+      <Agi>2</Agi>
+      <Speed>2</Speed>
+    </Attribute>
+    <Bonus Attack="3" />
+  </Item>
+  <Item Id="10.371760.01697579" Slot="MainHand" Name="Fine Iron Dagger" Used="true" WeaponType="Dagger">
+    <Attribute>
+      <Agi>1</Agi>
+      <Speed>2</Speed>
+    </Attribute>
+    <Bonus Attack="5" />
   </Item>
 </PlayerEquipments>
