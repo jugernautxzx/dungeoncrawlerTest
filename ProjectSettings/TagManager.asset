@@ -10,6 +10,8 @@ TagManager:
   - Boss
   - ClearRoom
   - Entrance
+  - Trap
+  - TrapTreasure
   layers:
   - Default
   - TransparentFX

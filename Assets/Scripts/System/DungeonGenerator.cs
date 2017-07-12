@@ -13,11 +13,15 @@ public class DungeonGenerator : MonoBehaviour {
     public ScrollRect ScrollPanel;
     public RectTransform CoridorX;
     public RectTransform CoridorY;
+    public GameObject TreasureActionPanel;
+    public GameObject TrapActionPanel;
+    public Button ActionButton;
 
     int test=0;
     int randpos;
     int IndexCoridor=0;
     int AllRoom = 20;     //Total Dungeon Room
+    int PlayerInRoom=0;
     float PanelTop = 0;
     float PanelLeft = 0;
     float PanelRight = 0;
@@ -28,10 +32,12 @@ public class DungeonGenerator : MonoBehaviour {
 
     Button[] DungeonRoom = new Button[200];
     RectTransform[] DungeonCoridor = new RectTransform[200];
+    Button[] TreasureAction = new Button[5];
+    Button[] TrapAction = new Button[5];
 
     void Start () {
-        StartCoroutine("GenerateDungeon");
-
+        GenerateDungeon();
+        GenerateActionButton();
     }
 
     void Update()
@@ -40,7 +46,7 @@ public class DungeonGenerator : MonoBehaviour {
         Zoom(Input.GetAxis("Mouse ScrollWheel"));
     }
 
-    IEnumerator GenerateDungeon()
+    public void GenerateDungeon()
     {
         bool RoomPosition = true;
 
@@ -83,7 +89,6 @@ public class DungeonGenerator : MonoBehaviour {
             } while (!RoomPosition);
             
                 DungeonRoom[RoomIndex].GetComponent<RectTransform>().sizeDelta = new Vector2(70, 70);
-                yield return new WaitForSeconds(.1f);
 
         }
         SizePanel();
@@ -331,6 +336,7 @@ public class DungeonGenerator : MonoBehaviour {
     {
         RandomBossRoom();
         RandomEnemyRoom();
+        RandomTrapRoom();
         RandomTreasureRoom();
 
     }
@@ -399,7 +405,42 @@ public class DungeonGenerator : MonoBehaviour {
             {
                 DungeonRoom[AddTreasure].tag ="Treasure";
             }
-            DungeonRoom[AddTreasure].GetComponent<Image>().color = Color.yellow;
+
+            if (DungeonRoom[AddTreasure].tag.Contains("Enemy"))
+            {
+                DungeonRoom[AddTreasure].GetComponent<Image>().color = Color.blue;
+            }
+            else if (DungeonRoom[AddTreasure].tag.Contains("Trap"))
+            {
+                DungeonRoom[AddTreasure].GetComponent<Image>().color = Color.black;
+            }
+            else
+            {
+                DungeonRoom[AddTreasure].GetComponent<Image>().color = Color.yellow;
+            }
+            
+        }
+    }
+
+    public void RandomTrapRoom()
+    {
+        int MaxTrap = 5;
+        int AddTrap = 0;
+        List<int> TrapRoom;
+
+        TrapRoom = new List<int>();
+        for (int Treasure = 0; Treasure < MaxTrap; Treasure++)
+        {
+            AddTrap = Random.Range(1, AllRoom);
+            while (TrapRoom.Contains(AddTrap) || DungeonRoom[AddTrap].tag == "Boss" || DungeonRoom[AddTrap].tag.Contains("Enemy"))
+            {
+                AddTrap = Random.Range(1, AllRoom);
+            }
+            TrapRoom.Add(AddTrap);
+           
+            DungeonRoom[AddTrap].tag = "Trap";
+
+            DungeonRoom[AddTrap].GetComponent<Image>().color = Color.black;
         }
     }
 
@@ -574,20 +615,53 @@ public class DungeonGenerator : MonoBehaviour {
 
     public void ClickRoomAction()
     {
+        PlayerInRoom= int.Parse(EventSystem.current.currentSelectedGameObject.name);
+        bool EnemyDefeated;
 
         if (EventSystem.current.currentSelectedGameObject.tag.Contains("Enemy"))
         {
             //do something
+            EnemyDefeated = true;
 
-            EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
-            EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
+            if (EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure") && EnemyDefeated==true)
+            {
+                DungeonRoom[PlayerInRoom].tag = "Treasure";
+                DungeonRoom[PlayerInRoom].GetComponent<Image>().color = Color.yellow;
+                ClickRoomAction();
+            }
+            if (!EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure") && EnemyDefeated==true)
+            {
+                EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
+                EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
+            }
         }
 
-        if (EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure"))
+        /*if (EventSystem.current.currentSelectedGameObject.tag.Contains("Trap"))
         {
             //do something
-            EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
-            EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
+            if (EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure"))
+            {
+                TreasureActionPanel.SetActive(true);
+            }
+            else
+            {
+                TreasureActionPanel.SetActive(false);
+            }
+            if (!EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure"))
+            {
+                EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
+                EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
+            }
+            
+        }*/
+
+        if (EventSystem.current.currentSelectedGameObject.tag=="Treasure")
+        {
+            TreasureActionPanel.SetActive(true);
+        }
+        else
+        {
+            TreasureActionPanel.SetActive(false);
         }
 
         if (EventSystem.current.currentSelectedGameObject.tag.Contains("Boss"))
@@ -605,5 +679,36 @@ public class DungeonGenerator : MonoBehaviour {
 
 
     }
+
+    public void GenerateActionButton()
+    {
+        for (int Action=0; Action < 1; Action++)
+        {
+            TreasureAction[Action] = Instantiate(ActionButton);
+            TreasureAction[Action].transform.SetParent(TreasureActionPanel.transform,false);
+        }
+
+        TreasureAction[0].GetComponentInChildren<Text>().text = "Loot";
+        TreasureAction[0].onClick.AddListener(LootAction);
+
+        for(int Action=0; Action<1;Action++)
+        {
+            TrapAction[Action] = Instantiate(ActionButton);
+            TrapAction[Action].transform.SetParent(TrapActionPanel.transform, false);
+        }
+
+        TrapAction[0].GetComponentInChildren<Text>().text = "Disarm";
+        
+    }
+
+    public void LootAction()
+    {
+        //do something
+        Debug.Log("Looted");
+        DungeonRoom[PlayerInRoom].GetComponent<Image>().color = Color.green;
+        DungeonRoom[PlayerInRoom].tag = "ClearRoom";
+        TreasureActionPanel.SetActive(false);
+    }
+
 }
 
