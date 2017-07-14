@@ -3114,7 +3114,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &696960100
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3933,10 +3933,10 @@ MonoBehaviour:
   m_Content: {fileID: 1705849126}
   m_Horizontal: 1
   m_Vertical: 1
-  m_MovementType: 2
-  m_Elasticity: 0.3
+  m_MovementType: 1
+  m_Elasticity: 0.5
   m_Inertia: 1
-  m_DecelerationRate: 0.135
+  m_DecelerationRate: 0.1
   m_ScrollSensitivity: 1
   m_Viewport: {fileID: 0}
   m_HorizontalScrollbar: {fileID: 0}
@@ -5317,7 +5317,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1342233784}
   m_HandleRect: {fileID: 1342233783}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -6854,7 +6854,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1553945717
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7660,11 +7660,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Room: {fileID: 114380683235909794, guid: a4e02d320d4d0cd42b4199d7cb2247bb, type: 2}
-  Rooms: []
+  Log: {fileID: 2120403344}
   Panel: {fileID: 1705849126}
   ScrollPanel: {fileID: 801151266}
   CoridorX: {fileID: 224157943667043918, guid: 223fe87775f19ea4b8de74db6f27f246, type: 2}
   CoridorY: {fileID: 224195579140505910, guid: e3c2c4f26a97c734e81100e04efebcb3, type: 2}
+  TreasureActionPanel: {fileID: 2113462615}
+  TrapActionPanel: {fileID: 369374094}
+  ActionButton: {fileID: 114831523158625296, guid: 599d8dfbdf0e5fc44922f2667be96609,
+    type: 2}
 --- !u!1 &1710656569
 GameObject:
   m_ObjectHideFlags: 0
@@ -9519,7 +9523,7 @@ GameObject:
   - component: {fileID: 2120403344}
   - component: {fileID: 2120403343}
   m_Layer: 5
-  m_Name: Text
+  m_Name: LogText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9540,7 +9544,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 20, y: -0.000030517578}
+  m_AnchoredPosition: {x: 20, y: 0}
   m_SizeDelta: {x: -40, y: 0}
   m_Pivot: {x: 0, y: 0.98}
 --- !u!114 &2120403343
