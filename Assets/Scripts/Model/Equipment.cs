@@ -23,19 +23,6 @@ public class Equipment : ClassWithId {
     [XmlElement("Attribute")]
     public Attribute attribute;
     [XmlElement("Bonus")]
-    public BonusAttribute bonus;
-}
-
-public class BonusAttribute
-{
-    [DefaultValue(0)]
-    [XmlAttribute("HP")]
-    public int hp;
-    [DefaultValue(0)]
-    [XmlAttribute("Attack")]
-    public int attack;
-    [DefaultValue(0)]
-    [XmlAttribute("Defense")]
-    public int defense;
+    public BattleAttribute battle;
 }
 

@@ -59,11 +59,11 @@ public class CharacterModel
         battleAttribute.mp = 10;
         battleAttribute.currMp = battleAttribute.mp;
         battleAttribute.stamina = 0;
-        battleAttribute.pAtk = attribute.str;
-        battleAttribute.pDef = attribute.cons;
-        battleAttribute.mAtk = attribute.intel;
-        battleAttribute.mDef = attribute.wisdom;
-        battleAttribute.speed = attribute.speed;
+        battleAttribute.pAtk = attribute.str + eqAttribute.str;
+        battleAttribute.pDef = attribute.cons + eqAttribute.cons;
+        battleAttribute.mAtk = attribute.intel + eqAttribute.intel;
+        battleAttribute.mDef = attribute.wisdom + eqAttribute.wisdom;
+        battleAttribute.speed = attribute.speed + eqAttribute.speed;
         battleAttribute.baseMatk = battleAttribute.mAtk;
         battleAttribute.basePAtk = battleAttribute.pAtk;
         battleAttribute.baseMDef = battleAttribute.mDef;
@@ -142,25 +142,52 @@ public class Attribute
 
 public class BattleAttribute
 {
+    [DefaultValue(0)]
+    [XmlAttribute("HP")]
     public int hp;
+    [XmlIgnore]
     public int currHp;
+    [DefaultValue(0)]
+    [XmlAttribute("MP")]
     public int mp;
+    [XmlIgnore]
     public int currMp;
+    [XmlIgnore]
     public int currStamina;
+    [DefaultValue(0)]
+    [XmlAttribute("Stamina")]
     public int stamina;
+    [DefaultValue(0)]
+    [XmlAttribute("PAtk")]
     public int basePAtk;
+    [DefaultValue(0)]
+    [XmlAttribute("MAtk")]
     public int baseMatk;
+    [DefaultValue(0)]
+    [XmlAttribute("MDef")]
     public int baseMDef;
+    [XmlIgnore]
     public int baseSpeed;
+    [DefaultValue(0)]
+    [XmlAttribute("PDef")]
     public int basePDef;
+    [XmlIgnore]
     public int pAtk;
+    [XmlIgnore]
     public int pDef;
+    [XmlIgnore]
     public int mAtk;
+    [XmlIgnore]
     public int mDef;
+    [XmlIgnore]
     public int speed;
+    [XmlIgnore]
     public bool backRow;
+    [XmlIgnore]
     public int morale;
+    [XmlIgnore]
     public int actionBar;
+    [XmlIgnore]
     public List<BattleBuff> buffs = new List<BattleBuff>();
 
     public void ModifyHp(int number)

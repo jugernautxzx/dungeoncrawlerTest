@@ -31,8 +31,9 @@ public class Debugger
 
     public static void GenerateMainHand()
     {
+        int tier = Random.Range(1, 10);
         EquipmentGenerator gen = new EquipmentGenerator();
-        Equipment generated = gen.GenerateWeapon(1);
+        Equipment generated = gen.GenerateWeapon(tier);
         PlayerSession.GetInventory().list.Add(generated);
     }
 
@@ -40,11 +41,10 @@ public class Debugger
     {
         Equipment generated = new Equipment();
         generated.attribute = new Attribute();
-        generated.bonus = new BonusAttribute();
+        generated.battle = new BattleAttribute();
         generated.id = Time.timeSinceLevelLoad.ToString() + Time.deltaTime.ToString();
         generated.name = "Parrying dagger";
         generated.slot = EqSlot.OffHand;
-        generated.bonus.defense = 2;
         generated.attribute.speed = 2;
         PlayerSession.GetInventory().list.Add(generated);
     }

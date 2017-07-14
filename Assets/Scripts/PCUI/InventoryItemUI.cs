@@ -16,7 +16,8 @@ public interface InventoryItemShowInterface
     void OnCloseEquipmentStatus();
 }
 
-public class InventoryItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
+public class InventoryItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+{
 
     public Text eqName;
     public Text eqType;
@@ -27,10 +28,11 @@ public class InventoryItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnte
     InventoryItemInterface selectedImpl;
     InventoryItemShowInterface showImpl;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+    // Use this for initialization
+    void Start()
+    {
+
+    }
 
     public void SetInterface(InventoryItemInterface ii)
     {
@@ -41,26 +43,29 @@ public class InventoryItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnte
     {
         showImpl = iis;
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     public void SetModel(Equipment model)
     {
         this.model = model;
         eqName.text = model.name;
-        eqAttack.text = "Attack " + model.bonus.attack;
+        eqAttack.text = "Attack " + model.battle.pAtk;
         eqType.text = model.weapon.ToString();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (selectedImpl != null)
+        {
             selectedImpl.OnItemClicked(transform.GetSiblingIndex());
-        if (showImpl != null)
-            showImpl.OnCloseEquipmentStatus();
+            if (showImpl != null)
+                showImpl.OnCloseEquipmentStatus();
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -74,6 +79,5 @@ public class InventoryItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnte
         if (showImpl != null)
             showImpl.OnCloseEquipmentStatus();
     }
-
 
 }

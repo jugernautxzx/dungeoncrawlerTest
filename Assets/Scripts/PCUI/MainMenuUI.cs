@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInterface, EquipmentUIInterface, InventoryItemShowInterface
@@ -31,7 +32,7 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         }
         else
         {
-            partyManager.UpdatePartyMembersInformation();
+            partyManager.RequestUpdateMember();
             ShowPartyWindow();
         }
 
@@ -64,7 +65,8 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
     public void StartMockupBattle()
     {
         //TODO Move to dungeon generation
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(1);
+
     }
 
     public void ShowRecruitWindow()
@@ -105,7 +107,7 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
 
     public void OnCharLevelUp()
     {
-        partyManager.UpdatePartyMembersInformation();
+        partyManager.RequestUpdateMember();
     }
 
     public void RecruitNewCharacter(CharacterModel model)

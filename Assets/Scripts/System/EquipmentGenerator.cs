@@ -9,7 +9,7 @@ public class EquipmentGenerator
     {
         Equipment generated = new Equipment();
         generated.attribute = new Attribute();
-        generated.bonus = new BonusAttribute();
+        generated.battle = new BattleAttribute();
         generated.id = Time.timeSinceLevelLoad.ToString() + Time.deltaTime.ToString();
         generated.slot = EqSlot.MainHand;
         RandomizeWeaponType(generated);
@@ -96,8 +96,11 @@ public class EquipmentGenerator
             case 1:
                 eq.name = "Iron " + eq.weapon.ToString();
                 break;
+            case 2:
+                eq.name = "Steel " + eq.weapon.ToString();
+                break;
             default:
-                eq.name = eq.weapon.ToString();
+                eq.name = tier.ToString() + " tiered " + eq.weapon.ToString();
                 break;
         }
         int seed = Random.Range(0, 5);
@@ -126,8 +129,7 @@ public class EquipmentGenerator
 
     void DaggerBonus(Equipment eq, int tier)
     {
-        eq.bonus.attack = Random.Range(2 + tier, 5 + tier);
-        eq.bonus.defense = Random.Range(0, tier);
+        eq.battle.pAtk = Random.Range(((tier - 1) * 2) + 1, 3 + (tier * 2));
     }
 
     void DaggerAttribute(Equipment eq, int tier)
@@ -138,6 +140,5 @@ public class EquipmentGenerator
 
     void SwordBonus(Equipment eq)//TODO Incomplete
     {
-        eq.bonus.attack = Random.Range(4, 8);
     }
 }

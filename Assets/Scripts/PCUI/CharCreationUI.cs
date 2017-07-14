@@ -35,7 +35,6 @@ public class CharCreationUI : MonoBehaviour
 
     void Update()
     {
-
     }
 
     public void SetListener(CharCreationInterface listen)

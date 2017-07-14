@@ -169,7 +169,8 @@ public class EquipmentUI : MonoBehaviour, EquipInterface, SetSkillInterface
         }
     }
 
-    void ShowEquipmentSelection(int indexSlot) {
+    void ShowEquipmentSelection(int indexSlot)
+    {
         closeBtn.gameObject.SetActive(true);
         skillUI.gameObject.SetActive(false);
         invUI.gameObject.SetActive(true);
@@ -208,7 +209,7 @@ public class EquipmentUI : MonoBehaviour, EquipInterface, SetSkillInterface
         PlayerSession.GetEquipment(index).isUsed = true;
         LoadAllEquipments();
         LoadAllAttributes();
-        invUI.gameObject.SetActive(false);
+        CloseSelection();
     }
 
     void RemoveEquipment(int slotIndex)
@@ -252,7 +253,16 @@ public class EquipmentUI : MonoBehaviour, EquipInterface, SetSkillInterface
     {
         selectedSlot = selIndex;
         isPassive = false;
-        ShowSkillSelection();
+        if (!skillUI.isActiveAndEnabled)
+        {
+            ShowSkillSelection();
+        }
+        else
+        {
+            CloseSelection();
+            EquipSelectedActives("");
+        }
+
     }
 
     void ShowSkillSelection()
@@ -267,14 +277,14 @@ public class EquipmentUI : MonoBehaviour, EquipInterface, SetSkillInterface
     {
         if (isPassive)
         {
-            
+
         }
         else
         {
             EquipSelectedActives(id);
             CloseSelection();
         }
-        
+
     }
 
     void EquipSelectedActives(string id)

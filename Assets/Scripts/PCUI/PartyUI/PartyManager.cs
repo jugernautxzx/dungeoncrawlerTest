@@ -16,17 +16,30 @@ public class PartyManager : MonoBehaviour, PartySelectionInterface
     List<GameObject> allMembers;
 
     EquipmentUIInterface eqImpl;
+    bool requireUpdate;
 
     // Use this for initialization
     void Start()
     {
         allMembers = new List<GameObject>();
+        requireUpdate = true;
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    void OnEnable()
+    {
+        if(PlayerSession.GetProfile() != null && requireUpdate)
+            UpdatePartyMembersInformation();
+    }
+
+    public void RequestUpdateMember()
+    {
+        requireUpdate = true;
     }
 
     public void SetEquipmentImpl(EquipmentUIInterface eqImpl)
@@ -48,10 +61,7 @@ public class PartyManager : MonoBehaviour, PartySelectionInterface
         partyIndex[0] = PlayerSession.GetProfile().party.member1;
         partyIndex[1] = PlayerSession.GetProfile().party.member2;
         partyIndex[2] = PlayerSession.GetProfile().party.member3;
-        if (isActiveAndEnabled)
-            StartCoroutine(UpdateAllMembersRoutine());
-        else
-            UpdateAllMembers();
+        StartCoroutine(UpdateAllMembersRoutine());
         UpdateActiveMemberInfo();
     }
 
@@ -84,6 +94,10 @@ public class PartyManager : MonoBehaviour, PartySelectionInterface
             member.GetComponent<CharacterUI>().SetListener(this);
             member.GetComponent<CharacterUI>().SetEquipmentUI(eqImpl);
         }
+    }
+
+    void UpdateSelectedMembers()
+    {
         reservedMember.transform.GetChild(0).GetComponent<CharacterUI>().SetInParty(true);
         for (int i = 0; i < 3; i++)
         {
@@ -95,7 +109,8 @@ public class PartyManager : MonoBehaviour, PartySelectionInterface
     IEnumerator UpdateAllMembersRoutine()
     {
         UpdateAllMembers();
-        yield return null;
+        yield return new WaitForEndOfFrame();
+        UpdateSelectedMembers();
     }
 
     public bool OnAddToParty(int index)

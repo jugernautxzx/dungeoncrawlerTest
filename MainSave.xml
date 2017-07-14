@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <PlayerProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Gold="100">
   <Characters>
-    <Character IsMainCharacter="true" Name="Debugger" Level="1" Experience="0">
+    <Character IsMainCharacter="true" Name="Casdas" Level="1" Experience="0">
       <Attribute>
-        <Str>15</Str>
+        <Str>1</Str>
         <Agi>1</Agi>
         <Intel>1</Intel>
         <Endurance>1</Endurance>
         <Wisdom>1</Wisdom>
-        <Constitution>1</Constitution>
+        <Constitution>15</Constitution>
       </Attribute>
       <Elemental />
-      <BattleSetting Row="false" PlayerCharacter="false" MainHand="4" />
+      <BattleSetting Row="false" PlayerCharacter="false" />
       <Actives>
         <Active />
         <Active />
@@ -27,15 +27,13 @@
         <Passive />
       </Passives>
       <Traits />
-      <LearnedActives>
-        <Active>Sweep</Active>
-      </LearnedActives>
+      <LearnedActives />
       <LearnedPassive />
     </Character>
-    <Character IsMainCharacter="false" Name="Newman" Level="1" Experience="0">
+    <Character IsMainCharacter="false" Name="NewCharacter" Level="1" Experience="0">
       <Attribute>
-        <Str>15</Str>
-        <Agi>1</Agi>
+        <Str>1</Str>
+        <Agi>15</Agi>
         <Intel>1</Intel>
         <Endurance>1</Endurance>
         <Wisdom>1</Wisdom>
@@ -51,5 +49,5 @@
     </Character>
   </Characters>
   <MainCharacter Fame="10" Leadership="10" />
-  <Party Member1="1" Member2="-1" Member3="-1" />
+  <Party Member1="-1" Member2="-1" Member3="-1" />
 </PlayerProfile>

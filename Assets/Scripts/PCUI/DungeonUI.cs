@@ -6,7 +6,7 @@ public class DugeonUI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+        Debug.Log("Dungeon UI");
 	}
 	
 	// Update is called once per frame

@@ -1,8 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EquipmentShowUI : MonoBehaviour {
+
+    public Text eqName;
+    public Text[] bonusTxt;
+    public Text[] bonusDigit;
 
 	// Use this for initialization
 	void Start () {
@@ -16,6 +21,5 @@ public class EquipmentShowUI : MonoBehaviour {
 
     public void setModel(Equipment eq)
     {
-
     }
 }
