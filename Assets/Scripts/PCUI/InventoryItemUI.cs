@@ -18,7 +18,6 @@ public interface InventoryItemShowInterface
 
 public class InventoryItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-
     public Text eqName;
     public Text eqType;
     public Text eqAttack;
@@ -50,11 +49,19 @@ public class InventoryItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnte
 
     }
 
-    public void SetModel(Equipment model)
+    public void SetModel(Equipment model, int sort)
     {
         this.model = model;
         eqName.text = model.name;
-        eqAttack.text = "Attack " + model.battle.pAtk;
+        switch (sort)
+        {
+            case InventoryUI.SORT_DEFENSE:
+                eqAttack.text = "Defense " + model.battle.basePDef;
+                break;
+            default:
+                eqAttack.text = "Attack " + model.battle.basePAtk;
+                break;
+        }
         eqType.text = model.weapon.ToString();
     }
 

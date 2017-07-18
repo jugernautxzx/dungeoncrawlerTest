@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,28 +10,36 @@ public interface CharCreationInterface
     void OnCharLevelUp();
 }
 
-public class CharCreationUI : MonoBehaviour
+public class CharCreationUI : MonoBehaviour, AttributeFieldInterface
 {
     public InputField pName;
-    public InputField str, agi, intl, con, wis, end;
+    public AttributeField attStr, attAgi, attInt, attCon, attWis, attEnd;
     public Button confirmButton;
     public Text remainingText;
     bool isNewGame;
     public CharCreationInterface listener;
 
     CharacterModel toLevelUp;
+    Attribute initialAttr;
 
-    int startingValue = 20;
+    int startingValue;
+    int bonusValue;
+    int remainingValue;
 
     void Start()
     {
-        str.onEndEdit.AddListener(delegate { OnValueChanged(str); });
-        agi.onEndEdit.AddListener(delegate { OnValueChanged(agi); });
-        intl.onEndEdit.AddListener(delegate { OnValueChanged(intl); });
-        con.onEndEdit.AddListener(delegate { OnValueChanged(con); });
-        wis.onEndEdit.AddListener(delegate { OnValueChanged(wis); });
-        end.onEndEdit.AddListener(delegate { OnValueChanged(end); });
+        SetListener();
+    }
+
+    void SetListener()
+    {
         pName.onEndEdit.AddListener(delegate { CheckValidForm(); });
+        attStr.SetInterface(this);
+        attAgi.SetInterface(this);
+        attInt.SetInterface(this);
+        attCon.SetInterface(this);
+        attWis.SetInterface(this);
+        attEnd.SetInterface(this);
     }
 
     void Update()
@@ -46,22 +55,24 @@ public class CharCreationUI : MonoBehaviour
     {
         //TODO Badly need new recalculation on total attributes
         isNewGame = false;
+        bonusValue = 3;
         //pName.interactable = false;
-        startingValue = 20;
+        initialAttr = (Attribute)model.attribute.Clone();
         pName.text = model.name;
         toLevelUp = model;
         LoadModelAttribute(model.attribute);
+        startingValue = TotalAttributeValue();
         RecalculateRemainingValue();
     }
 
     void LoadModelAttribute(Attribute att)
     {
-        str.text = att.str.ToString();
-        intl.text = att.intel.ToString();
-        agi.text = att.agi.ToString();
-        wis.text = att.wisdom.ToString();
-        con.text = att.cons.ToString();
-        end.text = att.endurance.ToString();
+        attStr.SetValue(att.str, true);
+        attAgi.SetValue(att.agi, true);
+        attEnd.SetValue(att.endurance, true);
+        attInt.SetValue(att.intel, true);
+        attWis.SetValue(att.wisdom, true);
+        attCon.SetValue(att.cons, true);
     }
 
     public void SetForNewGame()
@@ -70,27 +81,15 @@ public class CharCreationUI : MonoBehaviour
         pName.interactable = true;
     }
 
-    public void OnValueChanged(InputField field)
+    int TotalAttributeValue()
     {
-        if (field.text.Length == 0)
-        {
-            field.text = "0";
-            return;
-        }
-        field.text = Mathf.Clamp(int.Parse(field.text), 1, 15).ToString();
-        RecalculateRemainingValue();
+        return attStr.GetValue() + attAgi.GetValue() + attInt.GetValue() + attCon.GetValue() + attInt.GetValue() + attEnd.GetValue();
     }
 
     void RecalculateRemainingValue()
     {
-        int strInt = int.Parse(str.text);
-        int agiInt = int.Parse(agi.text);
-        int intInt = int.Parse(intl.text);
-        int conInt = int.Parse(con.text);
-        int wisInt = int.Parse(wis.text);
-        int endInt = int.Parse(end.text);
-        startingValue = 20 - strInt - agiInt - intInt - conInt - wisInt - endInt;
-        remainingText.text = startingValue + " points available";
+        remainingValue = bonusValue - (TotalAttributeValue() - startingValue);
+        remainingText.text = remainingValue + " points available";
         CheckValidForm();
     }
 
@@ -102,7 +101,7 @@ public class CharCreationUI : MonoBehaviour
 
     bool IsFormValid()
     {
-        return startingValue == 0 && pName.text.Length > 3;
+        return remainingValue == 0 && pName.text.Length > 3;
     }
 
     public void ConfirmClicked()
@@ -127,12 +126,12 @@ public class CharCreationUI : MonoBehaviour
         model.elemental = new ElementAttribute();
         model.name = pName.text;
         model.level = 1;
-        model.attribute.endurance = int.Parse(end.text);
-        model.attribute.agi = int.Parse(agi.text);
-        model.attribute.cons = int.Parse(con.text);
-        model.attribute.intel = int.Parse(intl.text);
-        model.attribute.wisdom = int.Parse(wis.text);
-        model.attribute.str = int.Parse(str.text);
+        model.attribute.endurance = attEnd.GetValue();
+        model.attribute.agi = attAgi.GetValue();
+        model.attribute.cons = attCon.GetValue();
+        model.attribute.intel = attInt.GetValue();
+        model.attribute.wisdom = attWis.GetValue();
+        model.attribute.str = attStr.GetValue();
         model.battleSetting = new BattleSetting();
         model.actives = new List<string>();
         model.actives.Add("");
@@ -152,16 +151,27 @@ public class CharCreationUI : MonoBehaviour
 
     void UpdateModelAttribute()
     {
+        toLevelUp.levelUp = false;
         toLevelUp.attribute = new Attribute();
         toLevelUp.elemental = new ElementAttribute();
         toLevelUp.name = pName.text;
         toLevelUp.level += 1;
-        toLevelUp.attribute.endurance = int.Parse(end.text);
-        toLevelUp.attribute.agi = int.Parse(agi.text);
-        toLevelUp.attribute.cons = int.Parse(con.text);
-        toLevelUp.attribute.intel = int.Parse(intl.text);
-        toLevelUp.attribute.wisdom = int.Parse(wis.text);
-        toLevelUp.attribute.str = int.Parse(str.text);
+        toLevelUp.attribute.endurance = attEnd.GetValue();
+        toLevelUp.attribute.agi = attAgi.GetValue();
+        toLevelUp.attribute.cons = attCon.GetValue();
+        toLevelUp.attribute.intel = attInt.GetValue();
+        toLevelUp.attribute.wisdom = attWis.GetValue();
+        toLevelUp.attribute.str = attStr.GetValue();
         PlayerSession.GetInstance().SaveSession();
+    }
+
+    public void OnValueIncrease()
+    {
+        RecalculateRemainingValue();
+    }
+
+    public void OnValueDecrease()
+    {
+        RecalculateRemainingValue();
     }
 }

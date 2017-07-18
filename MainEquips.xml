@@ -1,128 +1,84 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <PlayerEquipments xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Item Id="7.3237640.01684953" Slot="MainHand" Name="Iron Dagger of swiftness" Used="false" WeaponType="Dagger">
-    <Attribute>
-      <Agi>2</Agi>
-      <Speed>2</Speed>
-    </Attribute>
-    <Bonus />
-  </Item>
-  <Item Id="8.4358080.01684923" Slot="MainHand" Name="Fine Iron Dagger" Used="false" WeaponType="Dagger">
+  <Item Id="2.2884780.01684923" Slot="MainHand" Name="Iron Dagger of swiftness" Used="false" WeaponType="Dagger">
     <Attribute>
       <Agi>1</Agi>
       <Speed>2</Speed>
     </Attribute>
-    <Bonus />
+    <Bonus PAtk="3" MAtk="1" />
   </Item>
-  <Item Id="1.3611430.01689278" Slot="OffHand" Name="Parrying dagger" Used="false">
+  <Item Id="2.4572190.01704299" Slot="MainHand" Name="Dull 8 tiered Dagger" Used="false" WeaponType="Dagger">
     <Attribute>
+      <Agi>9</Agi>
       <Speed>2</Speed>
     </Attribute>
-    <Bonus />
+    <Bonus PAtk="17" MAtk="13" PDef="7" />
   </Item>
-  <Item Id="25.502110.01708478" Slot="MainHand" Name="Sharp 6 tiered Dagger" Used="false" WeaponType="Dagger">
+  <Item Id="2.6423210.01685829" Slot="MainHand" Name="9 tiered Dagger of swiftness" Used="true" WeaponType="Dagger">
     <Attribute>
-      <Agi>6</Agi>
+      <Agi>10</Agi>
       <Speed>2</Speed>
     </Attribute>
-    <Bonus />
+    <Bonus PAtk="20" MAtk="16" PDef="8" />
   </Item>
-  <Item Id="25.670520.01700412" Slot="MainHand" Name="Sharp 7 tiered Dagger" Used="false" WeaponType="Dagger">
+  <Item Id="2.8108260.01687261" Slot="MainHand" Name="Fine 7 tiered Dagger" Used="false" WeaponType="Dagger">
+    <Attribute>
+      <Agi>8</Agi>
+      <Speed>2</Speed>
+    </Attribute>
+    <Bonus PAtk="13" MAtk="11" PDef="6" />
+  </Item>
+  <Item Id="1.3804560.01653625" Slot="MainHand" Name="Dull 6 tiered Dagger" Used="true" WeaponType="Dagger">
     <Attribute>
       <Agi>7</Agi>
       <Speed>2</Speed>
     </Attribute>
-    <Bonus />
+    <Bonus PAtk="14" MAtk="11" PDef="5" />
   </Item>
-  <Item Id="25.805470.0171555" Slot="MainHand" Name="3 tiered Dagger of swiftness" Used="false" WeaponType="Dagger">
+  <Item Id="16.937650.01649504" Slot="OffHand" Name="Parrying dagger" Used="true">
     <Attribute>
-      <Agi>3</Agi>
       <Speed>2</Speed>
     </Attribute>
     <Bonus />
   </Item>
-  <Item Id="25.973650.01678085" Slot="MainHand" Name="Dull 4 tiered Dagger" Used="false" WeaponType="Dagger">
+  <Item Id="17.106080.01684923" Slot="OffHand" Name="Parrying dagger" Used="false">
     <Attribute>
-      <Agi>5</Agi>
       <Speed>2</Speed>
     </Attribute>
     <Bonus />
   </Item>
-  <Item Id="26.142150.01685712" Slot="MainHand" Name="9 tiered Dagger of swiftness" Used="false" WeaponType="Dagger">
+  <Item Id="17.2580.01710962" Slot="OffHand" Name="Parrying dagger" Used="false">
+    <Attribute>
+      <Speed>2</Speed>
+    </Attribute>
+    <Bonus />
+  </Item>
+  <Item Id="17.544160.01684953" Slot="MainHand" Name="Heavy 8 tiered Dagger" Used="false" WeaponType="Dagger">
     <Attribute>
       <Agi>9</Agi>
       <Speed>2</Speed>
     </Attribute>
-    <Bonus />
+    <Bonus PAtk="16" MAtk="8" PDef="7" />
   </Item>
-  <Item Id="26.276960.01687407" Slot="MainHand" Name="3 tiered Dagger of swiftness" Used="false" WeaponType="Dagger">
+  <Item Id="17.712650.01682264" Slot="MainHand" Name="Heavy 4 tiered Dagger" Used="true" WeaponType="Dagger">
     <Attribute>
       <Agi>4</Agi>
       <Speed>2</Speed>
     </Attribute>
-    <Bonus />
+    <Bonus PAtk="9" MAtk="4" PDef="3" />
   </Item>
-  <Item Id="26.428770.0170313" Slot="MainHand" Name="Dull 9 tiered Dagger" Used="false" WeaponType="Dagger">
+  <Item Id="17.864370.01662392" Slot="MainHand" Name="Sharp 6 tiered Dagger" Used="false" WeaponType="Dagger">
     <Attribute>
-      <Agi>9</Agi>
+      <Agi>7</Agi>
       <Speed>2</Speed>
     </Attribute>
-    <Bonus />
+    <Bonus PAtk="13" MAtk="10" PDef="5" />
   </Item>
-  <Item Id="26.580220.01684865" Slot="MainHand" Name="Dull 8 tiered Dagger" Used="false" WeaponType="Dagger">
+  <Item Id="18.032790.01684923" Slot="MainHand" Name="Heavy Iron Dagger" Used="false" WeaponType="Dagger">
     <Attribute>
-      <Agi>8</Agi>
+      <Agi>2</Agi>
       <Speed>2</Speed>
     </Attribute>
-    <Bonus />
-  </Item>
-  <Item Id="26.748710.01684865" Slot="MainHand" Name="Sharp 7 tiered Dagger" Used="false" WeaponType="Dagger">
-    <Attribute>
-      <Agi>8</Agi>
-      <Speed>2</Speed>
-    </Attribute>
-    <Bonus />
-  </Item>
-  <Item Id="26.917410.01704532" Slot="MainHand" Name="Sharp 9 tiered Dagger" Used="false" WeaponType="Dagger">
-    <Attribute>
-      <Agi>9</Agi>
-      <Speed>2</Speed>
-    </Attribute>
-    <Bonus />
-  </Item>
-  <Item Id="27.05210.01694888" Slot="MainHand" Name="Fine 8 tiered Dagger" Used="false" WeaponType="Dagger">
-    <Attribute>
-      <Agi>9</Agi>
-      <Speed>2</Speed>
-    </Attribute>
-    <Bonus />
-  </Item>
-  <Item Id="27.203640.01684982" Slot="MainHand" Name="8 tiered Dagger of swiftness" Used="false" WeaponType="Dagger">
-    <Attribute>
-      <Agi>9</Agi>
-      <Speed>2</Speed>
-    </Attribute>
-    <Bonus />
-  </Item>
-  <Item Id="27.37250.01722067" Slot="MainHand" Name="Heavy 5 tiered Dagger" Used="false" WeaponType="Dagger">
-    <Attribute>
-      <Agi>6</Agi>
-      <Speed>2</Speed>
-    </Attribute>
-    <Bonus />
-  </Item>
-  <Item Id="27.540620.01684865" Slot="MainHand" Name="Sharp 9 tiered Dagger" Used="false" WeaponType="Dagger">
-    <Attribute>
-      <Agi>9</Agi>
-      <Speed>2</Speed>
-    </Attribute>
-    <Bonus />
-  </Item>
-  <Item Id="27.69230.01688752" Slot="MainHand" Name="Dull 5 tiered Dagger" Used="false" WeaponType="Dagger">
-    <Attribute>
-      <Agi>5</Agi>
-      <Speed>2</Speed>
-    </Attribute>
-    <Bonus />
+    <Bonus PAtk="3" MAtk="1" />
   </Item>
 </PlayerEquipments>

@@ -129,7 +129,10 @@ public class EquipmentGenerator
 
     void DaggerBonus(Equipment eq, int tier)
     {
-        eq.battle.pAtk = Random.Range(((tier - 1) * 2) + 1, 3 + (tier * 2));
+        eq.battle.basePAtk = Random.Range(((tier - 1) * 2) + 1, 3 + (tier * 2));
+        eq.battle.basePDef= Random.Range(tier - 1, tier);
+        eq.battle.baseMDef = Random.Range(0, 1);
+        eq.battle.baseMatk= Random.Range(tier - 1, tier * 2);
     }
 
     void DaggerAttribute(Equipment eq, int tier)

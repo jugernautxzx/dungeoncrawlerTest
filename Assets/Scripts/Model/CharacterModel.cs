@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
 using UnityEngine;
@@ -28,6 +29,8 @@ public class CharacterModel
     public BattleAttribute battleAttribute;
     [XmlIgnore]
     public Attribute eqAttribute;
+    [XmlIgnore]
+    public BattleAttribute equipBAttribute;
     [XmlElement("BattleSetting")]
     public BattleSetting battleSetting;
     [XmlArray("Actives")]
@@ -79,9 +82,16 @@ public class CharacterModel
     public void CalculateEqAttribute()
     {
         if (eqAttribute == null)
+        {
             eqAttribute = new Attribute();
+            equipBAttribute = new BattleAttribute();
+        }
+
         else
+        {
             eqAttribute.Reset();
+            equipBAttribute.Reset();
+        }
         AddAllEquipmentAttrib(PlayerSession.GetEquipment(battleSetting.mainHand));
         AddAllEquipmentAttrib(PlayerSession.GetEquipment(battleSetting.offHand));
         AddAllEquipmentAttrib(PlayerSession.GetEquipment(battleSetting.head));
@@ -101,10 +111,17 @@ public class CharacterModel
         eqAttribute.intel += model.attribute.intel;
         eqAttribute.wisdom += model.attribute.wisdom;
         eqAttribute.speed += model.attribute.speed;
+        equipBAttribute.basePAtk += model.battle.basePAtk;
+        equipBAttribute.basePDef += model.battle.basePDef;
+        equipBAttribute.baseMatk += model.battle.baseMatk;
+        equipBAttribute.baseMDef += model.battle.baseMDef;
+        equipBAttribute.hp += model.battle.hp;
+        equipBAttribute.mp += model.battle.mp;
+        equipBAttribute.stamina += model.battle.stamina;
     }
 }
 
-public class Attribute
+public class Attribute : ICloneable
 {
     [DefaultValue(0)]
     [XmlElement("Str")]//PAtk PDef
@@ -137,6 +154,19 @@ public class Attribute
         wisdom = 0;
         speed = 0;
         cons = 0;
+    }
+
+    public object Clone()
+    {
+        Attribute attr = new Attribute();
+        attr.str = str;
+        attr.agi = agi;
+        attr.intel = intel;
+        attr.endurance = endurance;
+        attr.wisdom = wisdom;
+        attr.cons = cons;
+        attr.speed = speed;
+        return attr;
     }
 }
 
@@ -215,6 +245,17 @@ public class BattleAttribute
             currStamina = stamina;
         else if (currStamina < 0)
             currStamina = 0;
+    }
+
+    public void Reset()
+    {
+        hp = 0;
+        mp = 0;
+        stamina = 0;
+        basePAtk = 0;
+        baseMatk = 0;
+        basePDef = 0;
+        baseMDef = 0;
     }
 }
 

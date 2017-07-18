@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInterface, EquipmentUIInterface, InventoryItemShowInterface
+public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInterface, EquipmentUIInterface, EquipmentUILevelUpInterface, InventoryItemShowInterface
 {
 
     public CharCreationUI charCreate;
@@ -25,6 +25,7 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         partyManager.SetEquipmentImpl(this);
         inventoryUI.SetItemShowImpl(this);
         equipmentUI.SetEquipmentShowImpl(this);
+        equipmentUI.SetLevelUpInterface(this);
         if (PlayerSession.GetInstance().LoadSession())
         {
             charCreate.gameObject.SetActive(true);
@@ -55,7 +56,7 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         {
             newPos.y += height - newPos.y;
         }
-        if(newPos.x + width > Screen.width)
+        if (newPos.x + width > Screen.width)
         {
             newPos.x -= (newPos.x + width) - Screen.width;
         }
@@ -108,6 +109,8 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
     public void OnCharLevelUp()
     {
         partyManager.RequestUpdateMember();
+        if (equipmentUI.gameObject.activeInHierarchy)
+            equipmentUI.LoadAllAttributes();
     }
 
     public void RecruitNewCharacter(CharacterModel model)
@@ -131,5 +134,10 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
     public void OnCloseEquipmentStatus()
     {
         equipmentShowPopUp.gameObject.SetActive(false);
+    }
+
+    public void RequestLevelUpMenu(CharacterModel model)
+    {
+        LevelUpCharacter(model);
     }
 }

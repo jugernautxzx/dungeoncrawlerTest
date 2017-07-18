@@ -12,6 +12,10 @@ public interface EquipInterface {
 
 public class InventoryUI : MonoBehaviour, InventoryItemInterface
 {
+    public const int SORT_ACQUIRED = 0;
+    public const int SORT_ATTACK = 1;
+    public const int SORT_DEFENSE = 2;
+
 
     public Dropdown slotFilter;
     public Dropdown sortingFilter;
@@ -104,18 +108,28 @@ public class InventoryUI : MonoBehaviour, InventoryItemInterface
         yield return null;
         foreach (Transform child in viewPort.transform)
         {
-            Destroy(child.gameObject);
+            //Destroy(child.gameObject);
+            child.gameObject.SetActive(false);
         }
-        foreach (int index in sorting)
+        for(int i=0; i<sorting.Count; i++)
         {
-            LoadEquipment(PlayerSession.GetInventory().list[index]);
+            if (i < viewPort.transform.childCount)
+                UpdateEquipmentItem(PlayerSession.GetInventory().list[sorting[i]], viewPort.transform.GetChild(i).GetComponent<InventoryItemUI>());
+            else
+                CreateNewEquipmentItem(PlayerSession.GetInventory().list[sorting[i]]);
         }
     }
 
-    void LoadEquipment(Equipment equipment)
+    void UpdateEquipmentItem(Equipment model, InventoryItemUI ui)
+    {
+        ui.gameObject.SetActive(true);
+        ui.SetModel(model, sortingFilter.value);
+    }
+
+    void CreateNewEquipmentItem(Equipment equipment)
     {
         GameObject eqItem = Instantiate(prefab, viewPort.transform, false);
-        eqItem.GetComponent<InventoryItemUI>().SetModel(equipment);
+        eqItem.GetComponent<InventoryItemUI>().SetModel(equipment, sortingFilter.value);
         if (eqImpl != null)
             eqItem.GetComponent<InventoryItemUI>().SetInterface(this);
         eqItem.GetComponent<InventoryItemUI>().SetShowInterface(showImpl);
@@ -132,7 +146,8 @@ public class InventoryUI : MonoBehaviour, InventoryItemInterface
         sorting.Clear();
         foreach (Transform child in viewPort.transform)
         {
-            Destroy(child.gameObject);
+            //Destroy(child.gameObject);
+            child.gameObject.SetActive(false);
         }
     }
 }
