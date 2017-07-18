@@ -16,25 +16,19 @@ public class DungeonGenerator : MonoBehaviour {
     public GameObject TreasureActionPanel;
     public GameObject TrapActionPanel;
     public Button ActionButton;
+    DungeonControl dungeonControl;
+    DungeonModel dungeonModel;
 
-    int randpos;
-    int IndexCoridor=0;
-    int AllRoom = 100;     //Total Dungeon Room
-    int PlayerInRoom=0;
-    float PanelTop = 0;
-    float PanelLeft = 0;
-    float PanelRight = 0;
-    float PanelBottom = 0;
-    float MaxPanelTopBottom=0;
-    float MaxPanelRightLeft = 0;
-    float CurrentScale = 1f;
-    float VerticalNormalPosition;
-    float HorizontalNormalPosition;
+    int randPos;
+    float panelTop = 0;
+    float panelLeft = 0;
+    float panelRight = 0;
+    float panelBottom = 0;
 
-    Button[] DungeonRoom = new Button[200];
-    RectTransform[] DungeonCoridor = new RectTransform[200];
-    Button[] TreasureAction = new Button[5];
-    Button[] TrapAction = new Button[5];
+    public Button[] DungeonRoom = new Button[200];
+    public RectTransform[] DungeonCoridor = new RectTransform[200];
+    public Button[] TreasureAction = new Button[5];
+    public Button[] TrapAction = new Button[5];
 
     void Start () {
         GenerateDungeon();
@@ -44,7 +38,13 @@ public class DungeonGenerator : MonoBehaviour {
     void Update()
     {
         CalculateMaxScroll();
-        Zoom(Input.GetAxis("Mouse ScrollWheel"));
+        dungeonControl.Zoom(Panel,Input.GetAxis("Mouse ScrollWheel"));
+    }
+
+    public DungeonGenerator()
+    {
+        dungeonModel = new DungeonModel();
+        dungeonControl = new DungeonControl();
     }
 
     public void GenerateDungeon()
@@ -55,41 +55,41 @@ public class DungeonGenerator : MonoBehaviour {
         float RoomPositionX = DungeonRoom[0].GetComponent<RectTransform>().offsetMin.x;
         float RoomPositionY = DungeonRoom[0].GetComponent<RectTransform>().offsetMin.y;
 
-        for (int RoomIndex = 1; RoomIndex <= AllRoom; RoomIndex++)
+        for (int RoomIndex = 1; RoomIndex <= dungeonModel.allRoom; RoomIndex++)
         {
             DungeonRoom[RoomIndex] = Instantiate(Room);
             DungeonRoom[RoomIndex].transform.SetParent(Panel.transform, false);
-            DungeonRoom[RoomIndex].name = RoomIndex+"";
-            DungeonRoom[RoomIndex].onClick.AddListener(PlayerPosition);
+            DungeonRoom[RoomIndex].name = RoomIndex + "";
+            DungeonRoom[RoomIndex].onClick.AddListener(PlayerControl);
 
             do
             {
-                randpos = Random.Range(1, 5);
+                randPos = Random.Range(1, 5);
                 randposition(RoomIndex, RoomPositionX, RoomPositionY);
 
-                RoomPosition= CheckRoom(RoomIndex,RoomPosition);
-                
-                SpawnCoridor(IndexCoridor, RoomPositionX, RoomPositionY);
+                RoomPosition = CheckRoom(RoomIndex, RoomPosition);
 
-                for (int K=0;K<IndexCoridor;K++) //Check Coridor
+                SpawnCoridor(DungeonModel.IndexCoridor, RoomPositionX, RoomPositionY);
+
+                for (int K = 0; K < DungeonModel.IndexCoridor; K++) //Check Coridor
                 {
-                    
-                    if (DungeonCoridor[K].offsetMin==DungeonCoridor[IndexCoridor].offsetMin)
+
+                    if (DungeonCoridor[K].offsetMin == DungeonCoridor[DungeonModel.IndexCoridor].offsetMin)
                     {
-                        Destroy(DungeonCoridor[IndexCoridor].gameObject);
-                        IndexCoridor -= 1;
+                        Destroy(DungeonCoridor[DungeonModel.IndexCoridor].gameObject);
+                        DungeonModel.IndexCoridor -= 1;
                         break;
                     }
-                    
+
                 }
-                
+
                 RoomPositionX = DungeonRoom[RoomIndex].GetComponent<RectTransform>().offsetMin.x;
                 RoomPositionY = DungeonRoom[RoomIndex].GetComponent<RectTransform>().offsetMin.y;
-                IndexCoridor += 1;
-                
+                DungeonModel.IndexCoridor += 1;
+
             } while (!RoomPosition);
-            
-                DungeonRoom[RoomIndex].GetComponent<RectTransform>().sizeDelta = new Vector2(70, 70);
+
+            DungeonRoom[RoomIndex].GetComponent<RectTransform>().sizeDelta = new Vector2(70, 70);
 
         }
         SizePanel();
@@ -97,7 +97,7 @@ public class DungeonGenerator : MonoBehaviour {
         EventSystem.current.SetSelectedGameObject(DungeonRoom[0].gameObject);
         EventSystem.current.currentSelectedGameObject.tag = "Entrance";
         DungeonRoom[0].GetComponent<Image>().color = Color.cyan;
-        PlayerPosition();
+        PlayerControl();
     }
 
     public void SpawnEntrancePoint()
@@ -105,15 +105,15 @@ public class DungeonGenerator : MonoBehaviour {
         DungeonRoom[0] = Instantiate(Room);                             //Set Entrance first
         DungeonRoom[0].transform.SetParent(Panel.transform, false);
         DungeonRoom[0].name = "0";
-        DungeonRoom[0].onClick.AddListener(PlayerPosition);
+        DungeonRoom[0].onClick.AddListener(PlayerControl);
         DungeonRoom[0].GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
         DungeonRoom[0].GetComponent<RectTransform>().sizeDelta = new Vector2(70, 70);
     }
 
-    public void randposition(int i,float RoomPositionX,float RoomPositionY)
+    public void randposition(int i, float RoomPositionX, float RoomPositionY)
     {
-        
-        switch (randpos)
+
+        switch (randPos)
         {
             case 1:
                 //North
@@ -132,7 +132,7 @@ public class DungeonGenerator : MonoBehaviour {
                 DungeonRoom[i].GetComponent<RectTransform>().offsetMin = new Vector2(RoomPositionX - 150, RoomPositionY);
                 break;
         }
-        
+
     }
 
     public bool CheckRoom(int RoomIndex, bool RoomPosition)
@@ -141,7 +141,7 @@ public class DungeonGenerator : MonoBehaviour {
         {
 
             if (DungeonRoom[RoomIndex].GetComponent<RectTransform>().offsetMin == DungeonRoom[PrevRoomIndex].GetComponent<RectTransform>().offsetMin
-                || DungeonRoom[RoomIndex].GetComponent<RectTransform>().offsetMin==new Vector2(0,0))
+                || DungeonRoom[RoomIndex].GetComponent<RectTransform>().offsetMin == new Vector2(0, 0))
             {
                 RoomPosition = false;
                 break;
@@ -156,7 +156,7 @@ public class DungeonGenerator : MonoBehaviour {
 
     public void SpawnCoridor(int IndexCoridor, float RoomPositionX, float RoomPositionY)
     {
-        switch (randpos)
+        switch (randPos)
         {
             case 1:
                 DungeonCoridor[IndexCoridor] = Instantiate(CoridorY);
@@ -193,149 +193,132 @@ public class DungeonGenerator : MonoBehaviour {
 
     public void SizePanel()
     {
-        
-        for (int j=0; j<= AllRoom; j++)
+
+        for (int j = 0; j <= dungeonModel.allRoom; j++)
         {
-            if (DungeonRoom[j].GetComponent<RectTransform>().offsetMin.y > PanelTop)//Top
+            if (DungeonRoom[j].GetComponent<RectTransform>().offsetMin.y > panelTop)//Top
             {
-                PanelTop = DungeonRoom[j].GetComponent<RectTransform>().offsetMin.y; 
+                panelTop = DungeonRoom[j].GetComponent<RectTransform>().offsetMin.y;
             }
 
-            if (DungeonRoom[j].GetComponent<RectTransform>().offsetMin.x > PanelRight) //Right
+            if (DungeonRoom[j].GetComponent<RectTransform>().offsetMin.x > panelRight) //Right
             {
-                PanelRight = DungeonRoom[j].GetComponent<RectTransform>().offsetMin.x;
+                panelRight = DungeonRoom[j].GetComponent<RectTransform>().offsetMin.x;
             }
 
-            if(DungeonRoom[j].GetComponent<RectTransform>().offsetMin.y < PanelBottom)//Bottom
+            if (DungeonRoom[j].GetComponent<RectTransform>().offsetMin.y < panelBottom)//Bottom
             {
-                PanelBottom = DungeonRoom[j].GetComponent<RectTransform>().offsetMin.y;
+                panelBottom = DungeonRoom[j].GetComponent<RectTransform>().offsetMin.y;
             }
 
-            if(DungeonRoom[j].GetComponent<RectTransform>().offsetMin.x < PanelLeft)//Left
+            if (DungeonRoom[j].GetComponent<RectTransform>().offsetMin.x < panelLeft)//Left
             {
-                PanelLeft = DungeonRoom[j].GetComponent<RectTransform>().offsetMin.x;
+                panelLeft = DungeonRoom[j].GetComponent<RectTransform>().offsetMin.x;
             }
 
         }
 
-        float MaxPanelTop = PanelTop;
-        float MaxPanelBottom = PanelBottom;
-        float MaxPanelRight = PanelRight;
-        float MaxPanelLeft = PanelLeft;
+        float MaxPanelTop = panelTop;
+        float MaxPanelBottom = panelBottom;
+        float MaxPanelRight = panelRight;
+        float MaxPanelLeft = panelLeft;
 
-        if (PanelTop>Mathf.Abs(PanelBottom))
+        if (panelTop > Mathf.Abs(panelBottom))
         {
-            MaxPanelTopBottom = PanelTop;
-            MaxPanelBottom = -PanelTop;
-        }
-        else
-        {
-            MaxPanelTopBottom = PanelBottom;
-            MaxPanelTop = Mathf.Abs(PanelBottom);
-        }
-
-        if (PanelRight>Mathf.Abs(PanelLeft))
-        {
-            MaxPanelRightLeft = PanelRight;
-            MaxPanelLeft = -PanelRight;
+            DungeonModel.MaxPanelTopBottom = panelTop;
+            MaxPanelBottom = -panelTop;
         }
         else
         {
-            MaxPanelRightLeft = PanelLeft;
-            MaxPanelRight = Mathf.Abs(PanelLeft);
+            DungeonModel.MaxPanelTopBottom = panelBottom;
+            MaxPanelTop = Mathf.Abs(panelBottom);
         }
 
-        Panel.offsetMin = new Vector2(MaxPanelLeft+200,  MaxPanelBottom+200 );//Left Bottom
-        Panel.offsetMax = new Vector2(MaxPanelRight-200, MaxPanelTop-200); //Right Top
-    }
-
-
-    public void PlayerPosition ()
-    {
-        int IndexRoom;
-        IndexRoom = int.Parse(EventSystem.current.currentSelectedGameObject.name);
-        Vector2 PlayerPosition= DungeonRoom[IndexRoom].GetComponent<RectTransform>().offsetMin ;
-        CenterOnClick(PlayerPosition);
-        ClickRoomAction();
-        WriteLog();
-        CheckAccessedRoom(PlayerPosition);
-        
-    }
-
-    public void CheckAccessedRoom (Vector2 PlayerPosition)
-    {
-        bool north = false;
-        bool south = false;
-        bool east = false;
-        bool west = false;
-
-        //Check coridor
-        for (int coridor = 0; coridor < IndexCoridor; coridor++)
+        if (panelRight > Mathf.Abs(panelLeft))
         {
-            if (PlayerPosition.y + 65 == DungeonCoridor[coridor].offsetMax.y
-                && PlayerPosition.x + 25 == DungeonCoridor[coridor].offsetMin.x) //North
-            {
-                north = true;
-            }
-            if (PlayerPosition.x + 65 == DungeonCoridor[coridor].offsetMin.x
-                && PlayerPosition.y + 45 == DungeonCoridor[coridor].offsetMax.y) //East
-            {
-                east = true;
-            }
-            if (PlayerPosition.x + 25 == DungeonCoridor[coridor].offsetMin.x
-               && PlayerPosition.y - 85 == DungeonCoridor[coridor].offsetMax.y) //South
-            {
-                south = true;
-            }
-            if (PlayerPosition.x - 85 == DungeonCoridor[coridor].offsetMin.x
-               && PlayerPosition.y + 45 == DungeonCoridor[coridor].offsetMax.y) //West
-            {
-                west = true;
-            }
-
+            DungeonModel.MaxPanelRightLeft = panelRight;
+            MaxPanelLeft = -panelRight;
+        }
+        else
+        {
+            DungeonModel.MaxPanelRightLeft = panelLeft;
+            MaxPanelRight = Mathf.Abs(panelLeft);
         }
 
-        //Check Room
-        for (int room = 0; room <= AllRoom; room++)
-        {
-            DungeonRoom[room].interactable = false;
-            if (north)
-            {
-                if (PlayerPosition.y + 150 == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.y
-                && PlayerPosition.x == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.x)//North
-                {
-                    DungeonRoom[room].interactable = true;
-                }
-            }
+        Panel.offsetMin = new Vector2(MaxPanelLeft + 200, MaxPanelBottom + 200);//Left Bottom
+        Panel.offsetMax = new Vector2(MaxPanelRight - 200, MaxPanelTop - 200); //Right Top
+    }
 
-            if (east)
+    public void CalculateMaxScroll()
+    {
+        float PositionPerRoomTopBottom;
+        float PositionPerRoomRightLeft;
+        float lerptime = 0.5f;
+
+        if (DungeonModel.MaxPanelTopBottom >= 0)
+        {
+            PositionPerRoomTopBottom = 0.5f / ((DungeonModel.MaxPanelTopBottom - 200) / 150f);
+        }
+        else
+        {
+            PositionPerRoomTopBottom = 0.5f / ((DungeonModel.MaxPanelTopBottom + 200) / 150f);
+        }
+
+        if (DungeonModel.MaxPanelRightLeft >= 0)
+        {
+            PositionPerRoomRightLeft = 0.5f / ((DungeonModel.MaxPanelRightLeft - 200) / 150f);
+        }
+        else
+        {
+            PositionPerRoomRightLeft = 0.5f / ((DungeonModel.MaxPanelRightLeft + 200) / 150f);
+        }
+
+        if (panelTop != Mathf.Abs(panelBottom))
+        {
+            if (PositionPerRoomTopBottom >= 0)
             {
-                if (PlayerPosition.x + 150 == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.x
-                && PlayerPosition.y == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.y) //East
+                DungeonModel.VerticalNormalPosition = 0.5f - (PositionPerRoomTopBottom * (Mathf.Abs(panelBottom + 200) / 150f));
+
+                if (ScrollPanel.verticalNormalizedPosition < DungeonModel.VerticalNormalPosition)
                 {
-                    DungeonRoom[room].interactable = true;
+                    ScrollPanel.verticalNormalizedPosition = Mathf.Lerp(ScrollPanel.verticalNormalizedPosition, DungeonModel.VerticalNormalPosition, Time.deltaTime / lerptime);
                 }
             }
-            if (south)
+            else
             {
-                if (PlayerPosition.x == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.x
-                && PlayerPosition.y - 150 == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.y) //South
-                {
-                    DungeonRoom[room].interactable = true;
+                DungeonModel.VerticalNormalPosition = 0.5f - (PositionPerRoomTopBottom * (Mathf.Abs(panelTop - 200) / 150f));
+
+                if (ScrollPanel.verticalNormalizedPosition > DungeonModel.VerticalNormalPosition)
+                { 
+                    ScrollPanel.verticalNormalizedPosition = Mathf.Lerp(ScrollPanel.verticalNormalizedPosition, DungeonModel.VerticalNormalPosition, Time.deltaTime / lerptime);
                 }
             }
-            if (west)
+        }
+
+        if (panelRight != Mathf.Abs(panelLeft))
+        {
+            if (PositionPerRoomRightLeft >= 0)
             {
-                if (PlayerPosition.x - 150 == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.x
-                && PlayerPosition.y == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.y) //West
+                DungeonModel.HorizontalNormalPosition = 0.5f - (PositionPerRoomRightLeft * (Mathf.Abs(panelLeft + 200) / 150f));
+
+                if (ScrollPanel.horizontalNormalizedPosition < DungeonModel.HorizontalNormalPosition)
                 {
-                    DungeonRoom[room].interactable = true;
+                    ScrollPanel.horizontalNormalizedPosition = Mathf.Lerp(ScrollPanel.horizontalNormalizedPosition, DungeonModel.HorizontalNormalPosition, Time.deltaTime / lerptime);
+                }
+            }
+            else
+            {
+                DungeonModel.HorizontalNormalPosition = 0.5f - (PositionPerRoomRightLeft * (Mathf.Abs(panelRight - 200) / 150f));
+
+                if (ScrollPanel.horizontalNormalizedPosition > DungeonModel.HorizontalNormalPosition)
+                {
+                    ScrollPanel.horizontalNormalizedPosition = Mathf.Lerp(ScrollPanel.horizontalNormalizedPosition, DungeonModel.HorizontalNormalPosition, Time.deltaTime / lerptime);
                 }
             }
         }
     }
 
-    public void RandomRoomTag ()
+    public void RandomRoomTag()
     {
         RandomBossRoom();
         RandomEnemyRoom();
@@ -353,10 +336,10 @@ public class DungeonGenerator : MonoBehaviour {
         BossRoom = new List<int>();
         for (int Boss = 0; Boss < MaxBoss; Boss++)
         {
-            AddBoss = Random.Range(AllRoom/2, AllRoom);
+            AddBoss = Random.Range(dungeonModel.allRoom / 2, dungeonModel.allRoom);
             while (BossRoom.Contains(AddBoss))
             {
-                AddBoss = Random.Range(1, AllRoom);
+                AddBoss = Random.Range(1, dungeonModel.allRoom);
             }
             BossRoom.Add(AddBoss);
             DungeonRoom[AddBoss].tag = "Boss";
@@ -374,13 +357,13 @@ public class DungeonGenerator : MonoBehaviour {
         EnemyRoom = new List<int>();
         for (int Enemy = 0; Enemy < MaxEnemy; Enemy++)
         {
-            AddEnemy = Random.Range(1, AllRoom);
-            while (EnemyRoom.Contains(AddEnemy) || DungeonRoom[AddEnemy].tag=="Boss")
+            AddEnemy = Random.Range(1, dungeonModel.allRoom);
+            while (EnemyRoom.Contains(AddEnemy) || DungeonRoom[AddEnemy].tag == "Boss")
             {
-                AddEnemy = Random.Range(1, AllRoom);
+                AddEnemy = Random.Range(1, dungeonModel.allRoom);
             }
             EnemyRoom.Add(AddEnemy);
-            DungeonRoom[AddEnemy].tag ="Enemy";
+            DungeonRoom[AddEnemy].tag = "Enemy";
             DungeonRoom[AddEnemy].GetComponent<Image>().color = Color.blue;
         }
     }
@@ -394,19 +377,19 @@ public class DungeonGenerator : MonoBehaviour {
         TreasureRoom = new List<int>();
         for (int Treasure = 0; Treasure < MaxTreasure; Treasure++)
         {
-            AddTreasure = Random.Range(1, AllRoom);
-            while (TreasureRoom.Contains(AddTreasure)|| DungeonRoom[AddTreasure].tag == "Boss")
+            AddTreasure = Random.Range(1, dungeonModel.allRoom);
+            while (TreasureRoom.Contains(AddTreasure) || DungeonRoom[AddTreasure].tag == "Boss")
             {
-                AddTreasure = Random.Range(1, AllRoom);
+                AddTreasure = Random.Range(1, dungeonModel.allRoom);
             }
             TreasureRoom.Add(AddTreasure);
-            if(DungeonRoom[AddTreasure].tag!="Untagged")
+            if (DungeonRoom[AddTreasure].tag != "Untagged")
             {
                 DungeonRoom[AddTreasure].tag = DungeonRoom[AddTreasure].tag + "Treasure";
             }
             else
             {
-                DungeonRoom[AddTreasure].tag ="Treasure";
+                DungeonRoom[AddTreasure].tag = "Treasure";
             }
 
             if (DungeonRoom[AddTreasure].tag.Contains("Enemy"))
@@ -421,7 +404,7 @@ public class DungeonGenerator : MonoBehaviour {
             {
                 DungeonRoom[AddTreasure].GetComponent<Image>().color = Color.yellow;
             }
-            
+
         }
     }
 
@@ -434,331 +417,60 @@ public class DungeonGenerator : MonoBehaviour {
         TrapRoom = new List<int>();
         for (int Treasure = 0; Treasure < MaxTrap; Treasure++)
         {
-            AddTrap = Random.Range(1, AllRoom);
+            AddTrap = Random.Range(1, dungeonModel.allRoom);
             while (TrapRoom.Contains(AddTrap) || DungeonRoom[AddTrap].tag == "Boss" || DungeonRoom[AddTrap].tag.Contains("Enemy"))
             {
-                AddTrap = Random.Range(1, AllRoom);
+                AddTrap = Random.Range(1, dungeonModel.allRoom);
             }
             TrapRoom.Add(AddTrap);
-           
+
             DungeonRoom[AddTrap].tag = "Trap";
 
             DungeonRoom[AddTrap].GetComponent<Image>().color = Color.black;
         }
     }
 
-    public void CalculateMaxScroll()
+    public void PlayerControl()
     {
-        float PositionPerRoomTopBottom;
-        float PositionPerRoomRightLeft;
-        float lerptime = 0.5f;
+        int IndexRoom;
+        IndexRoom = int.Parse(EventSystem.current.currentSelectedGameObject.name);
+        Vector2 PlayerPosition = DungeonRoom[IndexRoom].GetComponent<RectTransform>().offsetMin;
+        dungeonControl.CenterOnClick(PlayerPosition,ScrollPanel);
+        dungeonControl.ClickRoomAction(DungeonRoom,TreasureActionPanel,TrapActionPanel);
+        dungeonControl.WriteLog(Log);
+        dungeonControl.CheckAccessedRoom(PlayerPosition,DungeonCoridor,DungeonRoom);
 
-        if (MaxPanelTopBottom>=0)
-        {
-            PositionPerRoomTopBottom = 0.5f / ((MaxPanelTopBottom - 200) / 150f);
-        }
-        else
-        {
-            PositionPerRoomTopBottom = 0.5f / ((MaxPanelTopBottom + 200) / 150f);
-        }
-
-        if (MaxPanelRightLeft>=0)
-        {
-            PositionPerRoomRightLeft = 0.5f / ((MaxPanelRightLeft - 200) / 150f);
-        }
-        else
-        {
-            PositionPerRoomRightLeft = 0.5f / ((MaxPanelRightLeft + 200) / 150f);
-        }
-
-        if (PanelTop!=Mathf.Abs(PanelBottom))
-        {
-            if (PositionPerRoomTopBottom >= 0)
-            {
-                VerticalNormalPosition = 0.5f - (PositionPerRoomTopBottom * (Mathf.Abs(PanelBottom+200) / 150f));
-
-                if (ScrollPanel.verticalNormalizedPosition <= VerticalNormalPosition)
-                {
-                    ScrollPanel.verticalNormalizedPosition = Mathf.Lerp(ScrollPanel.verticalNormalizedPosition, VerticalNormalPosition, Time.deltaTime/lerptime);
-                }
-            }
-            else
-            {
-                VerticalNormalPosition = 0.5f - (PositionPerRoomTopBottom * (Mathf.Abs(PanelTop-200) / 150f));
-
-                if (ScrollPanel.verticalNormalizedPosition >= VerticalNormalPosition)
-                {
-                    ScrollPanel.verticalNormalizedPosition = Mathf.Lerp(ScrollPanel.verticalNormalizedPosition, VerticalNormalPosition, Time.deltaTime / lerptime);
-                }
-            }
-        }
-
-        if (PanelRight != Mathf.Abs(PanelLeft))
-        {
-            if (PositionPerRoomRightLeft >= 0)
-            {
-                HorizontalNormalPosition = 0.5f - (PositionPerRoomRightLeft * (Mathf.Abs(PanelLeft+200) / 150f));
-
-                if (ScrollPanel.horizontalNormalizedPosition <= HorizontalNormalPosition)
-                {
-                    ScrollPanel.horizontalNormalizedPosition = Mathf.Lerp(ScrollPanel.horizontalNormalizedPosition,HorizontalNormalPosition,Time.deltaTime/lerptime);
-                }
-            }
-            else
-            {
-                HorizontalNormalPosition = 0.5f - (PositionPerRoomRightLeft * (Mathf.Abs(PanelRight-200) / 150f));
-
-                if (ScrollPanel.horizontalNormalizedPosition >= HorizontalNormalPosition)
-                {
-                    ScrollPanel.horizontalNormalizedPosition = Mathf.Lerp(ScrollPanel.horizontalNormalizedPosition, HorizontalNormalPosition, Time.deltaTime / lerptime);
-                }
-            }
-        }
-    }
-
-    public void Zoom(float increment)
-    {
-        float MaxScale = 1f;
-        float MinScale = 0.5f;
-
-        CurrentScale += increment;
-        if (CurrentScale>=MaxScale)
-        {
-            CurrentScale = MaxScale;
-        }else if (CurrentScale<=MinScale)
-        {
-            CurrentScale = MinScale;
-        }
-
-        Panel.localScale = new Vector2(CurrentScale,CurrentScale);
-
-    }
-
-    public void CenterOnClick(Vector2 PlayerPosition)
-    {
-        float PositionRoomY;
-        float PositionRoomX;
-        float PositionPerRoomTopBottom;
-        float PositionPerRoomRightLeft;
-        float NormalizeRoomPositionY=0.5f;
-        float NormalizeRoomPositionX=0.5f;
-
-        if (MaxPanelTopBottom >= 0)
-        {
-            PositionPerRoomTopBottom = 0.5f / ((MaxPanelTopBottom - 200) / 150f);
-        }
-        else
-        {
-            PositionPerRoomTopBottom = 0.5f / ((MaxPanelTopBottom + 200) / 150f);
-        }
-
-        if (MaxPanelRightLeft >= 0)
-        {
-            PositionPerRoomRightLeft = 0.5f / ((MaxPanelRightLeft - 200) / 150f);
-        }
-        else
-        {
-            PositionPerRoomRightLeft = 0.5f / ((MaxPanelRightLeft + 200) / 150f);
-        }
-
-        PositionRoomY = (PlayerPosition.y / 150) * PositionPerRoomTopBottom;
-        PositionRoomX = (PlayerPosition.x / 150) * PositionPerRoomRightLeft;
-
-        if (PlayerPosition.y>=0)
-        {
-            NormalizeRoomPositionY = 0.5f + Mathf.Abs(PositionRoomY);
-        }
-        else if (PlayerPosition.y < 0)
-        {
-            NormalizeRoomPositionY = 0.5f - Mathf.Abs(PositionRoomY);
-        }
-
-        if (PlayerPosition.x >= 0)
-        {
-            NormalizeRoomPositionX = 0.5f + Mathf.Abs(PositionRoomX);
-        }
-        else if (PlayerPosition.x < 0)
-        {
-            NormalizeRoomPositionX = 0.5f - Mathf.Abs(PositionRoomX);
-        }
-
-        DoScrolling(NormalizeRoomPositionX,NormalizeRoomPositionY);
-        
-    }
-
-    public void DoScrolling(float NormalizeRoomPositionX, float NormalizeRoomPositionY)
-    {
-        if (NormalizeRoomPositionY >= 1)
-        {
-            ScrollPanel.verticalNormalizedPosition = 1f;
-        }
-        else if (NormalizeRoomPositionY <= 0)
-        {
-            ScrollPanel.verticalNormalizedPosition = 0f;
-        }
-        else
-        {
-            ScrollPanel.verticalNormalizedPosition = NormalizeRoomPositionY;
-        }
-
-        if (NormalizeRoomPositionX >= 1)
-        {
-            ScrollPanel.horizontalNormalizedPosition = 1f;
-        }
-        else if (NormalizeRoomPositionX <= 0)
-        {
-            ScrollPanel.horizontalNormalizedPosition = 0f;
-        }
-        else
-        {
-            ScrollPanel.horizontalNormalizedPosition = NormalizeRoomPositionX;
-        }
-
-        if (VerticalNormalPosition > 0.5f)
-        {
-            if (NormalizeRoomPositionY > VerticalNormalPosition)
-            {
-                ScrollPanel.verticalNormalizedPosition = VerticalNormalPosition;
-            }
-        }
-        else if (VerticalNormalPosition<0.5f)
-        {
-            if (NormalizeRoomPositionY < VerticalNormalPosition)
-            {
-                ScrollPanel.verticalNormalizedPosition = VerticalNormalPosition;
-            }
-        }
-
-        if (HorizontalNormalPosition > 0.5f)
-        {
-            if (NormalizeRoomPositionX > HorizontalNormalPosition)
-            {
-                ScrollPanel.horizontalNormalizedPosition = HorizontalNormalPosition;
-            }
-        }
-        else if (HorizontalNormalPosition < 0.5f)
-        {
-            if (NormalizeRoomPositionX < HorizontalNormalPosition)
-            {
-                ScrollPanel.horizontalNormalizedPosition = HorizontalNormalPosition;
-            }
-        }
-    }
-
-    public void ClickRoomAction()
-    {
-        PlayerInRoom= int.Parse(EventSystem.current.currentSelectedGameObject.name);
-        bool EnemyDefeated;
-
-        if (EventSystem.current.currentSelectedGameObject.tag.Contains("Enemy"))
-        {
-            //do something
-            EnemyDefeated = true;
-
-            if (EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure") && EnemyDefeated==true)
-            {
-                DungeonRoom[PlayerInRoom].tag = "Treasure";
-                DungeonRoom[PlayerInRoom].GetComponent<Image>().color = Color.yellow;
-                ClickRoomAction();
-            }
-            if (!EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure") && EnemyDefeated==true)
-            {
-                EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
-                EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
-            }
-        }
-
-        /*if (EventSystem.current.currentSelectedGameObject.tag.Contains("Trap"))
-        {
-            //do something
-            if (EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure"))
-            {
-                TreasureActionPanel.SetActive(true);
-            }
-            else
-            {
-                TreasureActionPanel.SetActive(false);
-            }
-            if (!EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure"))
-            {
-                EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
-                EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
-            }
-            
-        }*/
-
-        if (EventSystem.current.currentSelectedGameObject.tag=="Treasure")
-        {
-            TreasureActionPanel.SetActive(true);
-        }
-        else
-        {
-            TreasureActionPanel.SetActive(false);
-
-        }
-
-        if (EventSystem.current.currentSelectedGameObject.tag.Contains("Boss"))
-        {
-            //do something
-            EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
-            EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
-        }
-
-        if(EventSystem.current.currentSelectedGameObject.tag=="Untagged")
-        {
-            EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
-            EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
-        }
-
-
-    }
-    public void WriteLog()
-    {
-        if (EventSystem.current.currentSelectedGameObject.tag == "Treasure")
-        {
-            Log.text = "You see chest in this room";
-        }
-        else if (EventSystem.current.currentSelectedGameObject.tag.Contains("Enemy"))
-        {
-            Log.text = "Encountered enemy";
-        }
-        else
-        {
-            Log.text = " ";
-        }
     }
 
     public void GenerateActionButton()
     {
-        for (int Action=0; Action < 1; Action++)
+        for (int Action = 0; Action < 1; Action++)
         {
             TreasureAction[Action] = Instantiate(ActionButton);
-            TreasureAction[Action].transform.SetParent(TreasureActionPanel.transform,false);
+            TreasureAction[Action].transform.SetParent(TreasureActionPanel.transform, false);
         }
 
         TreasureAction[0].GetComponentInChildren<Text>().text = "Loot";
         TreasureAction[0].onClick.AddListener(LootAction);
 
-        for(int Action=0; Action<1;Action++)
+        for (int Action = 0; Action < 1; Action++)
         {
             TrapAction[Action] = Instantiate(ActionButton);
             TrapAction[Action].transform.SetParent(TrapActionPanel.transform, false);
         }
 
         TrapAction[0].GetComponentInChildren<Text>().text = "Disarm";
-        
+
     }
 
     public void LootAction()
     {
         //do something
         Debug.Log("Looted");
-        DungeonRoom[PlayerInRoom].GetComponent<Image>().color = Color.green;
-        DungeonRoom[PlayerInRoom].tag = "ClearRoom";
+        DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.green;
+        DungeonRoom[DungeonModel.PlayerInRoom].tag = "ClearRoom";
         TreasureActionPanel.SetActive(false);
     }
-
-    
 
 }
 
