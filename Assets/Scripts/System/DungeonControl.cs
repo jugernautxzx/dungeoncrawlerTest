@@ -227,24 +227,22 @@ public class DungeonControl
 
         if (EventSystem.current.currentSelectedGameObject.tag.Contains("Enemy"))
         {
-            //do something
-
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(2,LoadSceneMode.Additive);
             return;
 
-            //EnemyDefeated = true;
+            /*EnemyDefeated = true;
 
-            //if (EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure") && EnemyDefeated == true)
-            //{
-            //    DungeonRoom[DungeonModel.PlayerInRoom].tag = "Treasure";
-            //    DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.yellow;
-            //    ClickRoomAction(DungeonRoom,TreasureActionPanel,TrapActionPanel);
-            //}
-            //if (!EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure") && EnemyDefeated == true)
-            //{
-            //    EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
-            //    EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
-            //}
+            if (EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure") && EnemyDefeated == true)
+            {
+                DungeonRoom[DungeonModel.PlayerInRoom].tag = "Treasure";
+                DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.yellow;
+                ClickRoomAction(DungeonRoom,TreasureActionPanel,TrapActionPanel);
+            }
+            if (!EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure") && EnemyDefeated == true)
+            {
+                EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
+                EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
+            }*/
         }
 
         /*if (EventSystem.current.currentSelectedGameObject.tag.Contains("Trap"))

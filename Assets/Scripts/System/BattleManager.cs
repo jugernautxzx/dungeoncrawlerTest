@@ -254,7 +254,8 @@ public class BattleManager : BattleManagerLog
             }
         }
         listener.StopBattleTimer();
-        SceneManager.LoadScene(1);
+        SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(1));
+        SceneManager.UnloadSceneAsync(2);
     }
 
     int GetTimer(CharacterModel model)

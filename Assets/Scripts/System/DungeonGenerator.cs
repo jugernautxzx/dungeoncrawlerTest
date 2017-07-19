@@ -44,7 +44,7 @@ public class DungeonGenerator : MonoBehaviour {
     }
 
     public DungeonGenerator()
-    {
+    { 
         dungeonModel = new DungeonModel();
         dungeonControl = new DungeonControl();
     }
@@ -52,6 +52,7 @@ public class DungeonGenerator : MonoBehaviour {
     public void GenerateDungeon()
     {
         bool RoomPosition = true;
+        DungeonModel.IndexCoridor = 0;
 
         SpawnEntrancePoint();
         float RoomPositionX = DungeonRoom[0].GetComponent<RectTransform>().offsetMin.x;
