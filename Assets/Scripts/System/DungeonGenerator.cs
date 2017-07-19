@@ -24,6 +24,7 @@ public class DungeonGenerator : MonoBehaviour {
     float panelLeft = 0;
     float panelRight = 0;
     float panelBottom = 0;
+    bool mDrag;
 
     public Button[] DungeonRoom = new Button[200];
     public RectTransform[] DungeonCoridor = new RectTransform[200];
@@ -39,6 +40,7 @@ public class DungeonGenerator : MonoBehaviour {
     {
         CalculateMaxScroll();
         dungeonControl.Zoom(Panel,Input.GetAxis("Mouse ScrollWheel"));
+        OnDrag();
     }
 
     public DungeonGenerator()
@@ -279,7 +281,7 @@ public class DungeonGenerator : MonoBehaviour {
             {
                 DungeonModel.VerticalNormalPosition = 0.5f - (PositionPerRoomTopBottom * (Mathf.Abs(panelBottom + 200) / 150f));
 
-                if (ScrollPanel.verticalNormalizedPosition < DungeonModel.VerticalNormalPosition)
+                if (ScrollPanel.verticalNormalizedPosition <= DungeonModel.VerticalNormalPosition)
                 {
                     ScrollPanel.verticalNormalizedPosition = Mathf.Lerp(ScrollPanel.verticalNormalizedPosition, DungeonModel.VerticalNormalPosition, Time.deltaTime / lerptime);
                 }
@@ -288,7 +290,7 @@ public class DungeonGenerator : MonoBehaviour {
             {
                 DungeonModel.VerticalNormalPosition = 0.5f - (PositionPerRoomTopBottom * (Mathf.Abs(panelTop - 200) / 150f));
 
-                if (ScrollPanel.verticalNormalizedPosition > DungeonModel.VerticalNormalPosition)
+                if (ScrollPanel.verticalNormalizedPosition >= DungeonModel.VerticalNormalPosition)
                 { 
                     ScrollPanel.verticalNormalizedPosition = Mathf.Lerp(ScrollPanel.verticalNormalizedPosition, DungeonModel.VerticalNormalPosition, Time.deltaTime / lerptime);
                 }
@@ -301,7 +303,7 @@ public class DungeonGenerator : MonoBehaviour {
             {
                 DungeonModel.HorizontalNormalPosition = 0.5f - (PositionPerRoomRightLeft * (Mathf.Abs(panelLeft + 200) / 150f));
 
-                if (ScrollPanel.horizontalNormalizedPosition < DungeonModel.HorizontalNormalPosition)
+                if (ScrollPanel.horizontalNormalizedPosition <= DungeonModel.HorizontalNormalPosition)
                 {
                     ScrollPanel.horizontalNormalizedPosition = Mathf.Lerp(ScrollPanel.horizontalNormalizedPosition, DungeonModel.HorizontalNormalPosition, Time.deltaTime / lerptime);
                 }
@@ -310,7 +312,7 @@ public class DungeonGenerator : MonoBehaviour {
             {
                 DungeonModel.HorizontalNormalPosition = 0.5f - (PositionPerRoomRightLeft * (Mathf.Abs(panelRight - 200) / 150f));
 
-                if (ScrollPanel.horizontalNormalizedPosition > DungeonModel.HorizontalNormalPosition)
+                if (ScrollPanel.horizontalNormalizedPosition >= DungeonModel.HorizontalNormalPosition)
                 {
                     ScrollPanel.horizontalNormalizedPosition = Mathf.Lerp(ScrollPanel.horizontalNormalizedPosition, DungeonModel.HorizontalNormalPosition, Time.deltaTime / lerptime);
                 }
@@ -470,6 +472,19 @@ public class DungeonGenerator : MonoBehaviour {
         DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.green;
         DungeonRoom[DungeonModel.PlayerInRoom].tag = "ClearRoom";
         TreasureActionPanel.SetActive(false);
+    }
+
+    public bool OnDrag()
+    {
+        if (Input.GetKeyDown("mouse 0"))
+        {
+            mDrag = true;
+        }
+        else
+        {
+            mDrag = false;
+        }
+        return mDrag;
     }
 
 }
