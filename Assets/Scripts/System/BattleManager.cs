@@ -254,7 +254,8 @@ public class BattleManager : BattleManagerLog
             }
         }
         listener.StopBattleTimer();
-        SceneManager.LoadScene(0);
+        SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(1));
+        SceneManager.UnloadSceneAsync(2);
     }
 
     int GetTimer(CharacterModel model)
@@ -438,6 +439,6 @@ public class BattleManager : BattleManagerLog
     void CheckActorStillAlive()
     {
         //TODO More to do
-        //allActorsAlive = false;
+        allActorsAlive = false;
     }
 }

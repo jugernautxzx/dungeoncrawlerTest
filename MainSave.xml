@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="shift_jis"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <PlayerProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Gold="100">
   <Characters>
-    <Character IsMainCharacter="true" Name="Mc Hammer" Level="1" Experience="0">
+    <Character IsMainCharacter="true" Name="test" Level="1" Experience="0">
       <Attribute>
-        <Str>4</Str>
-        <Agi>4</Agi>
-        <Intel>3</Intel>
-        <Endurance>3</Endurance>
-        <Wisdom>3</Wisdom>
-        <Constitution>4</Constitution>
+        <Str>16</Str>
+        <Agi>1</Agi>
+        <Intel>1</Intel>
+        <Endurance>1</Endurance>
+        <Wisdom>1</Wisdom>
+        <Constitution>1</Constitution>
       </Attribute>
       <Elemental />
-      <BattleSetting Row="false" PlayerCharacter="false" MainHand="0" />
+      <BattleSetting Row="false" PlayerCharacter="false" />
       <Actives>
         <Active />
         <Active />
