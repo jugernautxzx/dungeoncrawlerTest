@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public interface BattleInterface
 {
@@ -249,9 +250,11 @@ public class BattleManager : BattleManagerLog
                 timer = false;
                 ActorTakeTurn();
                 yield return new WaitUntil(() => timer);
+                CheckActorStillAlive();
             }
         }
         listener.StopBattleTimer();
+        SceneManager.LoadScene(1);
     }
 
     int GetTimer(CharacterModel model)
@@ -430,5 +433,11 @@ public class BattleManager : BattleManagerLog
             default:
                 return null;
         }
+    }
+
+    void CheckActorStillAlive()
+    {
+        //TODO More to do
+        allActorsAlive = false;
     }
 }

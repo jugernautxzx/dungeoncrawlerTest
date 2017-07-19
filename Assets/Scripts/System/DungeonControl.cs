@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class DungeonControl
 {
@@ -227,19 +228,23 @@ public class DungeonControl
         if (EventSystem.current.currentSelectedGameObject.tag.Contains("Enemy"))
         {
             //do something
-            EnemyDefeated = true;
 
-            if (EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure") && EnemyDefeated == true)
-            {
-                DungeonRoom[DungeonModel.PlayerInRoom].tag = "Treasure";
-                DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.yellow;
-                ClickRoomAction(DungeonRoom,TreasureActionPanel,TrapActionPanel);
-            }
-            if (!EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure") && EnemyDefeated == true)
-            {
-                EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
-                EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
-            }
+            SceneManager.LoadScene(2);
+            return;
+
+            //EnemyDefeated = true;
+
+            //if (EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure") && EnemyDefeated == true)
+            //{
+            //    DungeonRoom[DungeonModel.PlayerInRoom].tag = "Treasure";
+            //    DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.yellow;
+            //    ClickRoomAction(DungeonRoom,TreasureActionPanel,TrapActionPanel);
+            //}
+            //if (!EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure") && EnemyDefeated == true)
+            //{
+            //    EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
+            //    EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
+            //}
         }
 
         /*if (EventSystem.current.currentSelectedGameObject.tag.Contains("Trap"))

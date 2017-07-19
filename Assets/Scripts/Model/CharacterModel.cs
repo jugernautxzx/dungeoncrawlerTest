@@ -69,7 +69,7 @@ public class CharacterModel
         battleAttribute.mDef = attribute.wisdom + eqAttribute.wisdom;
         battleAttribute.speed = attribute.speed + eqAttribute.speed;
         battleAttribute.baseMatk = battleAttribute.mAtk;
-        battleAttribute.basePAtk = battleAttribute.pAtk;
+        battleAttribute.basePAtk = battleAttribute.pAtk + equipBAttribute.basePAtk;
         battleAttribute.baseMDef = battleAttribute.mDef;
         battleAttribute.basePDef = battleAttribute.pDef;
         battleAttribute.backRow = battleSetting.backRow;

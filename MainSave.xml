@@ -11,7 +11,7 @@
         <Constitution>4</Constitution>
       </Attribute>
       <Elemental />
-      <BattleSetting Row="false" PlayerCharacter="false" />
+      <BattleSetting Row="false" PlayerCharacter="false" MainHand="0" />
       <Actives>
         <Active />
         <Active />
