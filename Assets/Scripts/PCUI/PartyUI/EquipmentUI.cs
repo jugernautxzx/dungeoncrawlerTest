@@ -43,8 +43,8 @@ public class EquipmentUI : MonoBehaviour, EquipInterface, SetSkillInterface
         eqOff.GetComponent<Button>().onClick.AddListener(delegate { OnEquipmentClicked(eqOff, EqSlot.OffHand, 1); });
         eqHead.GetComponent<Button>().onClick.AddListener(delegate { OnEquipmentClicked(eqHead, EqSlot.Head, 2); });
         eqBody.GetComponent<Button>().onClick.AddListener(delegate { OnEquipmentClicked(eqBody, EqSlot.Body, 3); });
-        eqAcc1.GetComponent<Button>().onClick.AddListener(delegate { OnEquipmentClicked(eqAcc1, EqSlot.Acc, 4); });
-        eqAcc2.GetComponent<Button>().onClick.AddListener(delegate { OnEquipmentClicked(eqAcc2, EqSlot.Acc, 5); });
+        eqAcc1.GetComponent<Button>().onClick.AddListener(delegate { OnEquipmentClicked(eqAcc1, EqSlot.Accessory, 4); });
+        eqAcc2.GetComponent<Button>().onClick.AddListener(delegate { OnEquipmentClicked(eqAcc2, EqSlot.Accessory, 5); });
         actives[0].GetComponent<Button>().onClick.AddListener(delegate { OnActiveSkillChange(0); });
         actives[1].GetComponent<Button>().onClick.AddListener(delegate { OnActiveSkillChange(1); });
         actives[2].GetComponent<Button>().onClick.AddListener(delegate { OnActiveSkillChange(2); });

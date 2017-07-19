@@ -11,11 +11,11 @@ public interface AttributeFieldInterface
 
 public class AttributeField : MonoBehaviour {
 
-    int minimal = 0, maximal = 30;
-    int currentVal;
+    int minimal = 1, maximal = 30;
+    int currentVal = 1;
 
     Button increase, decrease;
-    InputField field;
+    public InputField field;
     AttributeFieldInterface afInterface;
 
 	// Use this for initialization
@@ -24,7 +24,6 @@ public class AttributeField : MonoBehaviour {
         decrease.onClick.AddListener(OnButtonDecreasePressed);
         increase = transform.GetChild(3).GetComponent<Button>();
         increase.onClick.AddListener(OnButtonIncreasePressed);
-        field = GetComponent<InputField>();
     }
 	
 	// Update is called once per frame

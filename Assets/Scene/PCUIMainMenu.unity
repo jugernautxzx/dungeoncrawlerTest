@@ -7463,7 +7463,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 773787531}
   m_TextComponent: {fileID: 1438771078}
   m_Placeholder: {fileID: 1607187922}
@@ -7536,6 +7536,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b8f68cf4706b134196be0e6e61216ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  field: {fileID: 773787530}
 --- !u!1 &788083345
 GameObject:
   m_ObjectHideFlags: 0
@@ -10593,7 +10594,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1162877873}
   m_TextComponent: {fileID: 500179526}
   m_Placeholder: {fileID: 1207372735}
@@ -10666,6 +10667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b8f68cf4706b134196be0e6e61216ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  field: {fileID: 1162877872}
 --- !u!1 &1169498640
 GameObject:
   m_ObjectHideFlags: 0
@@ -11213,7 +11215,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1193184350}
   m_TextComponent: {fileID: 587538606}
   m_Placeholder: {fileID: 1443161135}
@@ -11286,6 +11288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b8f68cf4706b134196be0e6e61216ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  field: {fileID: 1193184349}
 --- !u!1 &1198879185
 GameObject:
   m_ObjectHideFlags: 0
@@ -14242,6 +14245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b8f68cf4706b134196be0e6e61216ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  field: {fileID: 1602455542}
 --- !u!1 &1607187920
 GameObject:
   m_ObjectHideFlags: 0
@@ -16645,7 +16649,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1886299459}
   m_TextComponent: {fileID: 333787077}
   m_Placeholder: {fileID: 255585787}
@@ -16718,6 +16722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b8f68cf4706b134196be0e6e61216ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  field: {fileID: 1886299458}
 --- !u!1 &1902050520
 GameObject:
   m_ObjectHideFlags: 0
@@ -18307,7 +18312,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 2143141397}
   m_TextComponent: {fileID: 1628609751}
   m_Placeholder: {fileID: 495026513}
@@ -18380,3 +18385,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b8f68cf4706b134196be0e6e61216ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  field: {fileID: 2143141396}

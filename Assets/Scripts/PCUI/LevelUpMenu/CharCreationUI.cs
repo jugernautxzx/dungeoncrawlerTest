@@ -79,11 +79,13 @@ public class CharCreationUI : MonoBehaviour, AttributeFieldInterface
     {
         isNewGame = true;
         pName.interactable = true;
+        bonusValue = 21;
+        RecalculateRemainingValue();
     }
 
     int TotalAttributeValue()
     {
-        return attStr.GetValue() + attAgi.GetValue() + attInt.GetValue() + attCon.GetValue() + attInt.GetValue() + attEnd.GetValue();
+        return attStr.GetValue() + attAgi.GetValue() + attInt.GetValue() + attCon.GetValue() + attWis.GetValue() + attEnd.GetValue();
     }
 
     void RecalculateRemainingValue()
@@ -95,8 +97,7 @@ public class CharCreationUI : MonoBehaviour, AttributeFieldInterface
 
     public void CheckValidForm()
     {
-        if (IsFormValid())
-            confirmButton.interactable = true;
+        confirmButton.interactable = IsFormValid();
     }
 
     bool IsFormValid()

@@ -81,7 +81,7 @@ public class InventoryUI : MonoBehaviour, InventoryItemInterface
                 FilterEquipmentSlot(EqSlot.Body);
                 break;
             default:
-                FilterEquipmentSlot(EqSlot.Acc);
+                FilterEquipmentSlot(EqSlot.Accessory);
                 break;
         }
         LoadAllEquipment();

@@ -33,7 +33,7 @@ public class PartyManager : MonoBehaviour, PartySelectionInterface
 
     void OnEnable()
     {
-        if(PlayerSession.GetProfile() != null && requireUpdate)
+        if (PlayerSession.GetProfile() != null && requireUpdate)
             UpdatePartyMembersInformation();
     }
 

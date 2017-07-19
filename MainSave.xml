@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <PlayerProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Gold="100">
   <Characters>
-    <Character IsMainCharacter="true" Name="Casdas" Level="1" Experience="0" LevelUp="true">
+    <Character IsMainCharacter="true" Name="Mc Hammer" Level="1" Experience="0">
       <Attribute>
-        <Str>1</Str>
-        <Agi>1</Agi>
-        <Intel>1</Intel>
-        <Endurance>1</Endurance>
-        <Wisdom>1</Wisdom>
-        <Constitution>15</Constitution>
+        <Str>4</Str>
+        <Agi>4</Agi>
+        <Intel>3</Intel>
+        <Endurance>3</Endurance>
+        <Wisdom>3</Wisdom>
+        <Constitution>4</Constitution>
       </Attribute>
       <Elemental />
-      <BattleSetting Row="false" PlayerCharacter="false" MainHand="9" OffHand="5" />
+      <BattleSetting Row="false" PlayerCharacter="false" />
       <Actives>
         <Active />
         <Active />
@@ -30,53 +30,7 @@
       <LearnedActives />
       <LearnedPassive />
     </Character>
-    <Character IsMainCharacter="false" Name="TheNewSociety" Level="1" Experience="0">
-      <Attribute>
-        <Str>3</Str>
-        <Agi>4</Agi>
-        <Intel>1</Intel>
-        <Endurance>4</Endurance>
-        <Wisdom>4</Wisdom>
-        <Constitution>4</Constitution>
-      </Attribute>
-      <Elemental />
-      <BattleSetting Row="false" PlayerCharacter="false" MainHand="2" />
-      <Actives>
-        <Active />
-        <Active />
-        <Active />
-        <Active />
-        <Active />
-      </Actives>
-      <Passives />
-      <Traits />
-      <LearnedActives />
-      <LearnedPassive />
-    </Character>
-    <Character IsMainCharacter="false" Name="Thermal" Level="1" Experience="0">
-      <Attribute>
-        <Str>5</Str>
-        <Agi>4</Agi>
-        <Intel>3</Intel>
-        <Endurance>2</Endurance>
-        <Wisdom>4</Wisdom>
-        <Constitution>2</Constitution>
-      </Attribute>
-      <Elemental />
-      <BattleSetting Row="false" PlayerCharacter="false" MainHand="4" />
-      <Actives>
-        <Active />
-        <Active />
-        <Active />
-        <Active />
-        <Active />
-      </Actives>
-      <Passives />
-      <Traits />
-      <LearnedActives />
-      <LearnedPassive />
-    </Character>
   </Characters>
   <MainCharacter Fame="10" Leadership="10" />
-  <Party Member1="1" Member2="2" Member3="-1" />
+  <Party Member1="-1" Member2="-1" Member3="-1" />
 </PlayerProfile>

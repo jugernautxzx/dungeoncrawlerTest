@@ -62,7 +62,10 @@ public class InventoryItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnte
                 eqAttack.text = "Attack " + model.battle.basePAtk;
                 break;
         }
-        eqType.text = model.weapon.ToString();
+        if (model.slot == EqSlot.MainHand)
+            eqType.text = model.weapon.ToString();
+        else
+            eqType.text = model.slot.ToString();
     }
 
     public void OnPointerClick(PointerEventData eventData)

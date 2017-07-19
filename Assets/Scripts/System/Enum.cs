@@ -40,5 +40,5 @@ public enum BuffTag : int
 
 public enum EqSlot : int
 {
-    MainHand, OffHand, Head, Body, Acc
+    MainHand, OffHand, Head, Body, Accessory
 }

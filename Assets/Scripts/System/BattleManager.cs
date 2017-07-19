@@ -64,14 +64,6 @@ public class BattleManager : BattleManagerLog
     void InitiateActors()
     {
         //TODO Debugging purpose
-        //player1 = Debugger.GenerateCharacterModel("John McHammer");
-        //player1.isMainCharacter = true;
-        //player1.actives.Add("Sweep");
-        //player1.actives.Add("Sweep2");
-        //player1.actives.Add("PoisonSting");
-        //player1.actives.Add("MuscleUp");
-        //player2 = Debugger.GenerateCharacterModel("Ramboman");
-        //player2.battleSetting.backRow = true;
         player1 = PlayerSession.GetProfile().characters[0];
         if (PlayerSession.GetProfile().party.member1 > 0)
         {
@@ -91,21 +83,21 @@ public class BattleManager : BattleManagerLog
         }
 
         enemy1 = Debugger.GenerateCharacterModel("Skeleton 1");
-        enemy2 = Debugger.GenerateCharacterModel("Skeleton 2");
-        enemy3 = Debugger.GenerateCharacterModel("Skeleton 3");
-        enemy3.battleSetting.backRow = true;
-        enemy4 = Debugger.GenerateCharacterModel("Skeleton 4");
-        enemy4.battleSetting.backRow = true;
+        //enemy2 = Debugger.GenerateCharacterModel("Skeleton 2");
+        //enemy3 = Debugger.GenerateCharacterModel("Skeleton 3");
+        //enemy3.battleSetting.backRow = true;
+        //enemy4 = Debugger.GenerateCharacterModel("Skeleton 4");
+        //enemy4.battleSetting.backRow = true;
         //
         player1.GenerateBasicBattleAttribute();
         enemy1.GenerateBasicBattleAttribute();
-        enemy2.GenerateBasicBattleAttribute();
-        enemy3.GenerateBasicBattleAttribute();
-        enemy4.GenerateBasicBattleAttribute();
+        //enemy2.GenerateBasicBattleAttribute();
+        //enemy3.GenerateBasicBattleAttribute();
+        //enemy4.GenerateBasicBattleAttribute();
         enemyAI.InitMonster(enemy1);
-        enemyAI.InitMonster(enemy2);
-        enemyAI.InitMonster(enemy3);
-        enemyAI.InitMonster(enemy4);
+        //enemyAI.InitMonster(enemy2);
+        //enemyAI.InitMonster(enemy3);
+        //enemyAI.InitMonster(enemy4);
     }
 
     public void WriteLog(string log)
