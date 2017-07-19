@@ -67,8 +67,7 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
     public void StartMockupBattle()
     {
         //TODO Move to dungeon generation
-        SceneManager.LoadScene(1);
-
+        SceneManager.LoadScene(2);
     }
 
     public void ShowRecruitWindow()
