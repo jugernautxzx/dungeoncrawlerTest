@@ -36,6 +36,8 @@ public class BattleManager : BattleManagerLog
     PassiveManager passiveSkill;
     ActiveUse active;
     EnemyAI enemyAI;
+    DungeonModel dungeonModel;
+    DungeonGenerator dungeonGenerator;
 
     public BattleManager(BattleInterface listener)
     {
