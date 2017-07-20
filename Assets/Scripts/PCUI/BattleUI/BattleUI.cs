@@ -202,6 +202,7 @@ public class BattleUI : MonoBehaviour, BattleInterface
 
     void CancelTargetingIndicator()
     {
+        attackButton.targetGraphic.color = Color.white;
         for (int i = 0; i < 4; i++)
         {
             EnableTargetingIndicator(i, true, false);

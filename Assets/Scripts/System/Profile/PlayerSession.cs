@@ -49,6 +49,11 @@ public class PlayerSession  {
         return player == null;
     }
 
+    public bool IsSessionAvailable()
+    {
+        return player != null;
+    }
+
     public bool SaveSession()
     {
         manager.SaveProfile(player);

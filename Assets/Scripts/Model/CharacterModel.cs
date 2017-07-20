@@ -78,6 +78,8 @@ public class CharacterModel
     public void GetExperience(int ex)
     {
         exp += ex;
+        //TODO Calculating exp needed for next level
+        levelUp = LevelCalculator.CalculateLevelUp(exp, level);
     }
 
     public void CalculateEqAttribute()

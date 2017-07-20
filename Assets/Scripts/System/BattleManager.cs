@@ -221,6 +221,7 @@ public class BattleManager : BattleManagerLog
         listener.WriteLog(turnTaker.name + " attack " + target.name + " for " + damage + " damage.", false);
         target.battleAttribute.ModifyHp(-damage);
         UpdateAllTeam();
+        WriteActorStillAlive(target);
     }
     //------------------------------- END OF NORMAL ATTACK ---------------------------------------------------------------------------------------------------
     //------------------------------- ACTIVE SKILLS ----------------------------------------------------------------------------------------------------------
@@ -230,6 +231,7 @@ public class BattleManager : BattleManagerLog
         listener.WriteLog("", true);
         active.SetTurn(turnTaker);
         active.PlayerActorSkillTarget(index, isPlayerSide, skillIndex);
+        WriteActorStillAlive(GetCharacter(index, isPlayerSide));
         timer = true;
     }
 
@@ -250,10 +252,12 @@ public class BattleManager : BattleManagerLog
                 timer = false;
                 ActorTakeTurn();
                 yield return new WaitUntil(() => timer);
-                CheckActorStillAlive();
+                CheckAllActorStillAlive();
             }
         }
+        OnBattleFinished();
         listener.StopBattleTimer();
+        yield return new WaitForSeconds(3);
         SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(1));
         SceneManager.UnloadSceneAsync(2);
     }
@@ -373,6 +377,7 @@ public class BattleManager : BattleManagerLog
         {
             turnTaker.battleAttribute.buffs.Remove(buff);
         }
+        WriteActorStillAlive(turnTaker);
     }
 
     public bool IsValid(CharacterModel model)
@@ -436,9 +441,36 @@ public class BattleManager : BattleManagerLog
         }
     }
 
-    void CheckActorStillAlive()
+    void WriteActorStillAlive(CharacterModel model)
+    {
+        if (!IsValid(model))
+            listener.WriteLog(model.name + " is dead", false);
+    }
+
+    void CheckAllActorStillAlive()
     {
         //TODO More to do
         allActorsAlive = IsValid(enemy1);
+    }
+
+    void OnBattleFinished()
+    {
+        listener.WriteLog("Battle completed!", false);
+        AllPlayerGetExperience();
+    }
+
+    void AllPlayerGetExperience()
+    {
+        if (IsValid(player1))
+            player1.GetExperience(50);
+        if (IsValid(player2))
+            player2.GetExperience(50);
+        if (IsValid(player3))
+            player3.GetExperience(50);
+        if (IsValid(player4))
+            player4.GetExperience(50);
+        Debugger.GenerateMainHand();//TODO Remove
+        Debugger.GenerateOffHand();
+        PlayerSession.GetInstance().SaveSession();
     }
 }

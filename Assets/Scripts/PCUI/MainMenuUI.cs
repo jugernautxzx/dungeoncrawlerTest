@@ -27,17 +27,39 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         inventoryUI.SetItemShowImpl(this);
         equipmentUI.SetEquipmentShowImpl(this);
         equipmentUI.SetLevelUpInterface(this);
-        if (PlayerSession.GetInstance().LoadSession())
+        LoadGameSession();
+
+    }
+
+    void LoadGameSession()
+    {
+        if (PlayerSession.GetInstance().IsSessionAvailable())
         {
-            charCreate.gameObject.SetActive(true);
-            charCreate.SetForNewGame();
+            ContinueGameSession();
         }
         else
         {
-            partyManager.RequestUpdateMember();
-            ShowPartyWindow();
+            if (PlayerSession.GetInstance().LoadSession())
+            {
+                CreateNewSession();
+            }
+            else
+            {
+                ContinueGameSession();
+            }
         }
+    }
 
+    void CreateNewSession()
+    {
+        charCreate.gameObject.SetActive(true);
+        charCreate.SetForNewGame();
+    }
+
+    void ContinueGameSession()
+    {
+        partyManager.RequestUpdateMember();
+        ShowPartyWindow();
     }
 
     void Update()
