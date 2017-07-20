@@ -222,47 +222,45 @@ public class DungeonControl
 
     public void ClickRoomAction(Button[] DungeonRoom, GameObject TreasureActionPanel, GameObject TrapActionPanel)
     {
-        DungeonModel.PlayerInRoom = int.Parse(EventSystem.current.currentSelectedGameObject.name);
-        bool EnemyDefeated;
+            DungeonModel.PlayerInRoom = int.Parse(EventSystem.current.currentSelectedGameObject.name);
 
-        if (EventSystem.current.currentSelectedGameObject.tag.Contains("Enemy"))
-        {
-            SceneManager.LoadScene(2,LoadSceneMode.Additive);
-            return;
-
-            /*EnemyDefeated = true;
-
-            if (EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure") && EnemyDefeated == true)
+            if (EventSystem.current.currentSelectedGameObject.tag.Contains("Enemy"))
             {
-                DungeonRoom[DungeonModel.PlayerInRoom].tag = "Treasure";
-                DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.yellow;
-                ClickRoomAction(DungeonRoom,TreasureActionPanel,TrapActionPanel);
-            }
-            if (!EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure") && EnemyDefeated == true)
-            {
-                EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
-                EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
-            }*/
+               
+                SceneManager.LoadScene(2, LoadSceneMode.Additive);
+                
+                if (EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure"))
+                {
+                    DungeonRoom[DungeonModel.PlayerInRoom].tag = "Treasure";
+                    DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.yellow;
+                    ClickRoomAction(DungeonRoom, TreasureActionPanel, TrapActionPanel);
+                }
+                else
+                {
+                    EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
+                    EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
+                }
+                return;
+
         }
+            /*if (EventSystem.current.currentSelectedGameObject.tag.Contains("Trap"))
+            {
+                //do something
+                if (EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure"))
+                {
+                    TreasureActionPanel.SetActive(true);
+                }
+                else
+                {
+                    TreasureActionPanel.SetActive(false);
+                }
+                if (!EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure"))
+                {
+                    EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
+                    EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
+                }
 
-        /*if (EventSystem.current.currentSelectedGameObject.tag.Contains("Trap"))
-        {
-            //do something
-            if (EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure"))
-            {
-                TreasureActionPanel.SetActive(true);
-            }
-            else
-            {
-                TreasureActionPanel.SetActive(false);
-            }
-            if (!EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure"))
-            {
-                EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
-                EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
-            }
-            
-        }*/
+            }*/
 
         if (EventSystem.current.currentSelectedGameObject.tag == "Treasure")
         {
@@ -286,7 +284,7 @@ public class DungeonControl
             EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
             EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
         }
-
+        
 
     }
     public void WriteLog(Text Log)
