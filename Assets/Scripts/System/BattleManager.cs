@@ -83,7 +83,7 @@ public class BattleManager : BattleManagerLog
             player4.GenerateBasicBattleAttribute();
         }
 
-        enemy1 = Debugger.GenerateCharacterModel("Skeleton 1");
+        enemy1 = MonsterLoader.LoadMonster("Skeleton 1");
         //enemy2 = Debugger.GenerateCharacterModel("Skeleton 2");
         //enemy3 = Debugger.GenerateCharacterModel("Skeleton 3");
         //enemy3.battleSetting.backRow = true;
