@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="shift_jis"?>
 <PlayerProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Gold="100">
   <Characters>
     <Character IsMainCharacter="true" Name="test" Level="1" Experience="0">
@@ -11,7 +11,7 @@
         <Constitution>1</Constitution>
       </Attribute>
       <Elemental />
-      <BattleSetting Row="false" PlayerCharacter="false" />
+      <BattleSetting Row="false" PlayerCharacter="false" MainHand="1" />
       <Actives>
         <Active />
         <Active />

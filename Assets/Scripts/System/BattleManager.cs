@@ -439,6 +439,6 @@ public class BattleManager : BattleManagerLog
     void CheckActorStillAlive()
     {
         //TODO More to do
-        allActorsAlive = false;
+        allActorsAlive = IsValid(enemy1);
     }
 }
