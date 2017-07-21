@@ -55,7 +55,10 @@ public class CharCreationUI : MonoBehaviour, AttributeFieldInterface
     {
         //TODO Badly need new recalculation on total attributes
         isNewGame = false;
-        bonusValue = LevelCalculator.CalculateGainedLevel(model.exp, model.level) * 3;
+        if (model.exp > 0)
+            bonusValue = LevelCalculator.CalculateGainedLevel(model.exp, model.level) * 3;
+        else
+            bonusValue = 15;
         //pName.interactable = false;
         initialAttr = (Attribute)model.attribute.Clone();
         pName.text = model.name;

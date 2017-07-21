@@ -7,15 +7,17 @@ using UnityEngine;
 [XmlRoot("Character")]
 public class CharacterModel
 {
-
+    [DefaultValue(false)]
     [XmlAttribute("IsMainCharacter")]
     public bool isMainCharacter;
     [XmlAttribute("MonsterId")]
     public string monsterId;
     [XmlAttribute("Name")]
     public string name;
+    [DefaultValue(0)]
     [XmlAttribute("Level")]
     public int level;
+    [DefaultValue(0)]
     [XmlAttribute("Experience")]
     public int exp;
     [DefaultValue(false)]

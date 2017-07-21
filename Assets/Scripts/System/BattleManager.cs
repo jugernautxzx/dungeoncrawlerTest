@@ -85,7 +85,8 @@ public class BattleManager : BattleManagerLog
             player4.GenerateBasicBattleAttribute();
         }
 
-        enemy1 = MonsterLoader.LoadMonster("Skeleton 1");
+        enemy1 = MonsterLoader.LoadMonsterData("Goblin", 10);
+        enemy2 = MonsterLoader.LoadMonsterData("Skeleton", 10);
         //enemy2 = Debugger.GenerateCharacterModel("Skeleton 2");
         //enemy3 = Debugger.GenerateCharacterModel("Skeleton 3");
         //enemy3.battleSetting.backRow = true;
@@ -94,11 +95,11 @@ public class BattleManager : BattleManagerLog
         //
         player1.GenerateBasicBattleAttribute();
         enemy1.GenerateBasicBattleAttribute();
-        //enemy2.GenerateBasicBattleAttribute();
+        enemy2.GenerateBasicBattleAttribute();
         //enemy3.GenerateBasicBattleAttribute();
         //enemy4.GenerateBasicBattleAttribute();
         enemyAI.InitMonster(enemy1);
-        //enemyAI.InitMonster(enemy2);
+        enemyAI.InitMonster(enemy2);
         //enemyAI.InitMonster(enemy3);
         //enemyAI.InitMonster(enemy4);
     }
@@ -258,10 +259,10 @@ public class BattleManager : BattleManagerLog
             }
         }
         OnBattleFinished();
-        listener.StopBattleTimer();
         yield return new WaitForSeconds(3);
         SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(1));
         SceneManager.UnloadSceneAsync(2);
+        listener.StopBattleTimer();
     }
 
     int GetTimer(CharacterModel model)
@@ -471,8 +472,6 @@ public class BattleManager : BattleManagerLog
             player3.GetExperience(50);
         if (IsValid(player4))
             player4.GetExperience(50);
-        Debugger.GenerateMainHand();//TODO Remove
-        Debugger.GenerateOffHand();
         PlayerSession.GetInstance().SaveSession();
     }
 }
