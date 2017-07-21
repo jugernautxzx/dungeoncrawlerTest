@@ -259,7 +259,7 @@ public class BattleManager : BattleManagerLog
         }
         OnBattleFinished();
         listener.StopBattleTimer();
-        yield return new WaitForSeconds(3);
+        //yield return new WaitForSeconds(3);
         SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(1));
         SceneManager.UnloadSceneAsync(2);
     }

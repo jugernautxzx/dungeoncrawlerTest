@@ -226,7 +226,6 @@ public class DungeonControl
 
             if (EventSystem.current.currentSelectedGameObject.tag.Contains("Enemy"))
             {
-               
                 SceneManager.LoadScene(2, LoadSceneMode.Additive);
                 
                 if (EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure"))

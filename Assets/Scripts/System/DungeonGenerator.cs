@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class DungeonGenerator : MonoBehaviour {
 
+    public Text DungeonName;
     public Button Room;
     public Text Log;
     public RectTransform Panel;
@@ -18,13 +19,14 @@ public class DungeonGenerator : MonoBehaviour {
     public Button ActionButton;
     DungeonControl dungeonControl;
     DungeonModel dungeonModel;
+    DungeonManager dungeonManager;
+
 
     int randPos;
     float panelTop = 0;
     float panelLeft = 0;
     float panelRight = 0;
     float panelBottom = 0;
-    bool mDrag;
 
     public Button[] DungeonRoom = new Button[200];
     public RectTransform[] DungeonCoridor = new RectTransform[200];
@@ -32,6 +34,7 @@ public class DungeonGenerator : MonoBehaviour {
     public Button[] TrapAction = new Button[5];
 
     void Start () {
+        dungeonManager = new DungeonManager();
         GenerateDungeon();
         GenerateActionButton();
     }
@@ -40,7 +43,6 @@ public class DungeonGenerator : MonoBehaviour {
     {
         CalculateMaxScroll();
         dungeonControl.Zoom(Panel,Input.GetAxis("Mouse ScrollWheel"));
-        OnDrag();
     }
 
     public DungeonGenerator()
@@ -473,19 +475,6 @@ public class DungeonGenerator : MonoBehaviour {
         DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.green;
         DungeonRoom[DungeonModel.PlayerInRoom].tag = "ClearRoom";
         TreasureActionPanel.SetActive(false);
-    }
-
-    public bool OnDrag()
-    {
-        if (Input.GetKeyDown("mouse 0"))
-        {
-            mDrag = true;
-        }
-        else
-        {
-            mDrag = false;
-        }
-        return mDrag;
     }
 
 }

@@ -1,6 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Xml.Serialization;
+
+[XmlRoot("Dungeons")]
+public class DungeonInfo {
+    [XmlAttribute("Name")]
+    public string name;
+}
 
 public class DungeonModel {
 
@@ -13,3 +20,11 @@ public class DungeonModel {
     public static int PlayerInRoom = 0;
 }
 
+public class DungeonManager {
+    
+    public DungeonManager()
+    {
+        XmlLoader.LoadFromXmlResource<DungeonInfo>("Xml/DungeonList");
+    }
+
+}
