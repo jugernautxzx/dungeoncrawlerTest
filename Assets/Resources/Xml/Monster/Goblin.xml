@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="shift_jis"?>
+<Character xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Goblin" Level="1" Experience="0">
+  <Attribute>
+    <Str>2</Str>
+    <Agi>2</Agi>
+    <Intel>2</Intel>
+    <Endurance>3</Endurance>
+    <Wisdom>1</Wisdom>
+    <Constitution>3</Constitution>
+    <Speed>3</Speed>
+  </Attribute>
+  <Elemental />
+  <BattleSetting Row="false" PlayerCharacter="false" />
+  <Actives>
+  </Actives>
+  <Passives />
+</Character>

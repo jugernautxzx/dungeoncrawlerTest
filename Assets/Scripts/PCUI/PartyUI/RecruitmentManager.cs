@@ -28,9 +28,33 @@ public class RecruitmentManager : MonoBehaviour {
 
     public void RecruitNewMember()
     {
-        CharacterModel newModel = Debugger.GenerateCharacterModel("NewMan");
+        CharacterModel newModel = GenerateCharacter();
         PlayerSession.GetProfile().characters.Add(newModel);
         listener.RecruitNewCharacter(newModel);
+    }
+
+    CharacterModel GenerateCharacter()
+    {
+        CharacterModel model = new CharacterModel();
+        model.name = "";
+        model.attribute = new Attribute();
+        model.attribute.agi = 1;
+        model.attribute.cons = 1;
+        model.attribute.endurance = 1;
+        model.attribute.intel = 1;
+        model.attribute.wisdom = 1;
+        model.attribute.str = 1;
+        model.attribute.speed = 1;
+        model.battleSetting = new BattleSetting();
+        model.elemental = new ElementAttribute();
+        model.actives = new List<string>();
+        model.actives.Add("");
+        model.actives.Add("");
+        model.actives.Add("");
+        model.actives.Add("");
+        model.actives.Add("");
+        model.passives = new List<string>();
+        return model;
     }
 
     public void Debug1()
