@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class DungeonGenerator : MonoBehaviour {
 
+    public Text DungeonName;
     public Button Room;
     public Text Log;
     public RectTransform Panel;
@@ -18,20 +19,23 @@ public class DungeonGenerator : MonoBehaviour {
     public Button ActionButton;
     DungeonControl dungeonControl;
     DungeonModel dungeonModel;
+    DungeonManager dungeonManager;
+    DungeonInfo dungeonInfo;
 
     int randPos;
     float panelTop = 0;
     float panelLeft = 0;
     float panelRight = 0;
     float panelBottom = 0;
-    bool mDrag;
 
     public Button[] DungeonRoom = new Button[200];
     public RectTransform[] DungeonCoridor = new RectTransform[200];
     public Button[] TreasureAction = new Button[5];
     public Button[] TrapAction = new Button[5];
+    public static DungeonInfo Info;
 
     void Start () {
+        dungeonManager = new DungeonManager();
         GenerateDungeon();
         GenerateActionButton();
     }
@@ -40,7 +44,6 @@ public class DungeonGenerator : MonoBehaviour {
     {
         CalculateMaxScroll();
         dungeonControl.Zoom(Panel,Input.GetAxis("Mouse ScrollWheel"));
-        OnDrag();
     }
 
     public DungeonGenerator()
@@ -51,14 +54,16 @@ public class DungeonGenerator : MonoBehaviour {
 
     public void GenerateDungeon()
     {
+        Info = DungeonManager.DungeonLoad("Stage1_1");
         bool RoomPosition = true;
         DungeonModel.IndexCoridor = 0;
+        DungeonName.text = Info.name;
 
         SpawnEntrancePoint();
         float RoomPositionX = DungeonRoom[0].GetComponent<RectTransform>().offsetMin.x;
         float RoomPositionY = DungeonRoom[0].GetComponent<RectTransform>().offsetMin.y;
 
-        for (int RoomIndex = 1; RoomIndex <= dungeonModel.allRoom; RoomIndex++)
+        for (int RoomIndex = 1; RoomIndex <= Info.allRoom; RoomIndex++)
         {
             DungeonRoom[RoomIndex] = Instantiate(Room);
             DungeonRoom[RoomIndex].transform.SetParent(Panel.transform, false);
@@ -197,7 +202,7 @@ public class DungeonGenerator : MonoBehaviour {
     public void SizePanel()
     {
 
-        for (int j = 0; j <= dungeonModel.allRoom; j++)
+        for (int j = 0; j <= Info.allRoom; j++)
         {
             if (DungeonRoom[j].GetComponent<RectTransform>().offsetMin.y > panelTop)//Top
             {
@@ -339,10 +344,10 @@ public class DungeonGenerator : MonoBehaviour {
         BossRoom = new List<int>();
         for (int Boss = 0; Boss < MaxBoss; Boss++)
         {
-            AddBoss = Random.Range(dungeonModel.allRoom / 2, dungeonModel.allRoom);
+            AddBoss = Random.Range(Info.allRoom / 2, Info.allRoom);
             while (BossRoom.Contains(AddBoss))
             {
-                AddBoss = Random.Range(1, dungeonModel.allRoom);
+                AddBoss = Random.Range(1, Info.allRoom);
             }
             BossRoom.Add(AddBoss);
             DungeonRoom[AddBoss].tag = "Boss";
@@ -360,10 +365,10 @@ public class DungeonGenerator : MonoBehaviour {
         EnemyRoom = new List<int>();
         for (int Enemy = 0; Enemy < MaxEnemy; Enemy++)
         {
-            AddEnemy = Random.Range(1, dungeonModel.allRoom);
+            AddEnemy = Random.Range(1, Info.allRoom);
             while (EnemyRoom.Contains(AddEnemy) || DungeonRoom[AddEnemy].tag == "Boss")
             {
-                AddEnemy = Random.Range(1, dungeonModel.allRoom);
+                AddEnemy = Random.Range(1, Info.allRoom);
             }
             EnemyRoom.Add(AddEnemy);
             DungeonRoom[AddEnemy].tag = "Enemy";
@@ -380,10 +385,10 @@ public class DungeonGenerator : MonoBehaviour {
         TreasureRoom = new List<int>();
         for (int Treasure = 0; Treasure < MaxTreasure; Treasure++)
         {
-            AddTreasure = Random.Range(1, dungeonModel.allRoom);
+            AddTreasure = Random.Range(1, Info.allRoom);
             while (TreasureRoom.Contains(AddTreasure) || DungeonRoom[AddTreasure].tag == "Boss")
             {
-                AddTreasure = Random.Range(1, dungeonModel.allRoom);
+                AddTreasure = Random.Range(1, Info.allRoom);
             }
             TreasureRoom.Add(AddTreasure);
             if (DungeonRoom[AddTreasure].tag != "Untagged")
@@ -420,10 +425,10 @@ public class DungeonGenerator : MonoBehaviour {
         TrapRoom = new List<int>();
         for (int Treasure = 0; Treasure < MaxTrap; Treasure++)
         {
-            AddTrap = Random.Range(1, dungeonModel.allRoom);
+            AddTrap = Random.Range(1, Info.allRoom);
             while (TrapRoom.Contains(AddTrap) || DungeonRoom[AddTrap].tag == "Boss" || DungeonRoom[AddTrap].tag.Contains("Enemy"))
             {
-                AddTrap = Random.Range(1, dungeonModel.allRoom);
+                AddTrap = Random.Range(1, Info.allRoom);
             }
             TrapRoom.Add(AddTrap);
 
@@ -473,19 +478,6 @@ public class DungeonGenerator : MonoBehaviour {
         DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.green;
         DungeonRoom[DungeonModel.PlayerInRoom].tag = "ClearRoom";
         TreasureActionPanel.SetActive(false);
-    }
-
-    public bool OnDrag()
-    {
-        if (Input.GetKeyDown("mouse 0"))
-        {
-            mDrag = true;
-        }
-        else
-        {
-            mDrag = false;
-        }
-        return mDrag;
     }
 
 }
