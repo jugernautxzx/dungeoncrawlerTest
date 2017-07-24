@@ -9,6 +9,7 @@ public class DungeonControl
 {
     DungeonModel dungeonModel;
     DungeonGenerator dungeonGenerator;
+    BattleManager battleManager;
     
     float CurrentScale = 1f;
 
@@ -70,7 +71,7 @@ public class DungeonControl
         }
 
         //Check Room
-        for (int room = 0; room <= dungeonModel.allRoom; room++)
+        for (int room = 0; room <= DungeonGenerator.Info.allRoom; room++)
         {
             DungeonRoom[room].interactable = false;
             if (north)
@@ -222,24 +223,35 @@ public class DungeonControl
 
     public void ClickRoomAction(Button[] DungeonRoom, GameObject TreasureActionPanel, GameObject TrapActionPanel)
     {
-            DungeonModel.PlayerInRoom = int.Parse(EventSystem.current.currentSelectedGameObject.name);
+        DungeonModel.currentDungeonRoom = DungeonRoom;
+        DungeonModel.currentTreasureActionPanel = TreasureActionPanel;
+        DungeonModel.currentTrapActionPanel = TrapActionPanel;
 
-            if (EventSystem.current.currentSelectedGameObject.tag.Contains("Enemy"))
+        if (EventSystem.current.currentSelectedGameObject!=null)
+        {
+            DungeonModel.PlayerInRoom = int.Parse(EventSystem.current.currentSelectedGameObject.name);
+        }
+
+        if (DungeonRoom[DungeonModel.PlayerInRoom].tag.Contains("Enemy"))
+        {
+            if(DungeonModel.battleWon==false)
             {
                 SceneManager.LoadScene(2, LoadSceneMode.Additive);
-                
-                if (EventSystem.current.currentSelectedGameObject.tag.Contains("Treasure"))
-                {
-                    DungeonRoom[DungeonModel.PlayerInRoom].tag = "Treasure";
-                    DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.yellow;
-                    ClickRoomAction(DungeonRoom, TreasureActionPanel, TrapActionPanel);
-                }
-                else
-                {
-                    EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
-                    EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
-                }
-                return;
+            }
+            else if (DungeonRoom[DungeonModel.PlayerInRoom].tag.Contains("Treasure"))
+            {
+                DungeonRoom[DungeonModel.PlayerInRoom].tag = "Treasure";
+                DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.yellow;
+                ClickRoomAction(DungeonRoom, TreasureActionPanel, TrapActionPanel);
+                DungeonModel.battleWon = false;
+            }
+            else
+            {
+                DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.green;
+                DungeonRoom[DungeonModel.PlayerInRoom].tag = "ClearRoom";
+                DungeonModel.battleWon = false;
+            }
+            return;
 
         }
             /*if (EventSystem.current.currentSelectedGameObject.tag.Contains("Trap"))
@@ -261,7 +273,7 @@ public class DungeonControl
 
             }*/
 
-        if (EventSystem.current.currentSelectedGameObject.tag == "Treasure")
+        if (DungeonRoom[DungeonModel.PlayerInRoom].tag == "Treasure")
         {
             TreasureActionPanel.SetActive(true);
         }
@@ -271,17 +283,17 @@ public class DungeonControl
 
         }
 
-        if (EventSystem.current.currentSelectedGameObject.tag.Contains("Boss"))
+        if (DungeonRoom[DungeonModel.PlayerInRoom].tag.Contains("Boss"))
         {
             //do something
-            EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
-            EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
+            DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.green;
+            DungeonRoom[DungeonModel.PlayerInRoom].tag = "ClearRoom";
         }
 
-        if (EventSystem.current.currentSelectedGameObject.tag == "Untagged")
+        if (DungeonRoom[DungeonModel.PlayerInRoom].tag == "Untagged")
         {
-            EventSystem.current.currentSelectedGameObject.GetComponent<Image>().color = Color.green;
-            EventSystem.current.currentSelectedGameObject.tag = "ClearRoom";
+            DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.green;
+            DungeonRoom[DungeonModel.PlayerInRoom].tag = "ClearRoom";
         }
         
 

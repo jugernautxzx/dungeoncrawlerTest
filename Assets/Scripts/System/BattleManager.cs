@@ -37,7 +37,7 @@ public class BattleManager : BattleManagerLog
     ActiveUse active;
     EnemyAI enemyAI;
     DungeonModel dungeonModel;
-    DungeonGenerator dungeonGenerator;
+    DungeonControl dungeonControl;
 
     public BattleManager(BattleInterface listener)
     {
@@ -47,6 +47,7 @@ public class BattleManager : BattleManagerLog
         passiveSkill = new PassiveManager();
         active = new ActiveUse(this);
         enemyAI = new EnemyAI(this);
+        dungeonControl = new DungeonControl();
     }
 
     public void BattleStart()
@@ -85,8 +86,8 @@ public class BattleManager : BattleManagerLog
             player4.GenerateBasicBattleAttribute();
         }
 
-        enemy1 = MonsterLoader.LoadMonsterData("Goblin", 10);
-        enemy2 = MonsterLoader.LoadMonsterData("Skeleton", 10);
+        enemy1 = MonsterLoader.LoadMonsterData("Goblin", 1);
+        enemy2 = MonsterLoader.LoadMonsterData("Skeleton", 1);
         //enemy2 = Debugger.GenerateCharacterModel("Skeleton 2");
         //enemy3 = Debugger.GenerateCharacterModel("Skeleton 3");
         //enemy3.battleSetting.backRow = true;
@@ -260,6 +261,8 @@ public class BattleManager : BattleManagerLog
         }
         OnBattleFinished();
         yield return new WaitForSeconds(3);
+        DungeonModel.battleWon = true;
+        dungeonControl.ClickRoomAction(DungeonModel.currentDungeonRoom, DungeonModel.currentTreasureActionPanel, DungeonModel.currentTrapActionPanel);
         SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(1));
         SceneManager.UnloadSceneAsync(2);
         listener.StopBattleTimer();
