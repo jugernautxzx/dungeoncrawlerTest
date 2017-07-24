@@ -15,6 +15,7 @@ public class Equipment : ClassWithId {
     public EqSlot slot;
     [XmlAttribute("Name")]
     public string name;
+    [DefaultValue(false)]
     [XmlAttribute("Used")]
     public bool isUsed;
     [DefaultValue(Weapon.None)]

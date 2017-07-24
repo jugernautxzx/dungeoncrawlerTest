@@ -23,7 +23,10 @@ public class EquipmentShowUI : MonoBehaviour {
     public void setModel(Equipment eq)
     {
         eqName.text = eq.name;
-        eqType.text = eq.weapon.ToString();
+        if (eq.slot == EqSlot.MainHand)
+            eqType.text = eq.weapon.ToString();
+        else
+            eqType.text = eq.slot.ToString();
         UpdateEquipmentBonus(eq.battle.basePAtk, bonusTxt[0], bonusDigit[0]);
         UpdateEquipmentBonus(eq.battle.baseMatk, bonusTxt[1], bonusDigit[1]);
         UpdateEquipmentBonus(eq.battle.basePDef, bonusTxt[2], bonusDigit[2]);

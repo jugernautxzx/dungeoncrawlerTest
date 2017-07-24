@@ -29,7 +29,7 @@ public class BattleManager : BattleManagerLog
     CharacterModel turnTaker;
     int turnTakerIndex;
 
-    bool timer, allActorsAlive;
+    bool timer;
     BattleInterface listener;
     BattleCalculator calculate;
     ActiveSkillManager activeManager;
@@ -51,7 +51,6 @@ public class BattleManager : BattleManagerLog
 
     public void BattleStart()
     {
-        allActorsAlive = true;
         timer = true;
         InitiateActors();
         UpdateAllTeam();
@@ -78,7 +77,6 @@ public class BattleManager : BattleManagerLog
             player3 = PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member2];
             player3.GenerateBasicBattleAttribute();
         }
-
         if (PlayerSession.GetProfile().party.member3 > 0)
         {
             player4 = PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member3];
@@ -244,18 +242,17 @@ public class BattleManager : BattleManagerLog
     IEnumerator BattleTimer()
     {
         yield return new WaitForSeconds(1f);
-        while (allActorsAlive)
+        while (CheckAllActorStillAlive())
         {
             yield return new WaitUntil(() => timer);
             yield return new WaitForFixedUpdate();
             AllActorsActionBarFill();
             listener.UpdateTimer(GetTimer(player1), GetTimer(player2), GetTimer(player3), GetTimer(player4));
-            while (AnyActorCanMove())
+            while (AnyActorCanMove() && CheckAllActorStillAlive())
             {
                 timer = false;
                 ActorTakeTurn();
                 yield return new WaitUntil(() => timer);
-                CheckAllActorStillAlive();
             }
         }
         OnBattleFinished();
@@ -447,13 +444,21 @@ public class BattleManager : BattleManagerLog
     void WriteActorStillAlive(CharacterModel model)
     {
         if (!IsValid(model))
+        {
+            model.battleAttribute.actionBar = 0;
             listener.WriteLog(model.name + " is dead", false);
+        }
     }
 
-    void CheckAllActorStillAlive()
+    bool CheckAllActorStillAlive()
     {
         //TODO More to do
-        allActorsAlive = IsValid(enemy1);
+        return (IsValid(enemy1) || IsValid(enemy2)) && IsPlayerAlive();
+    }
+
+    public bool IsPlayerAlive()
+    {
+        return IsValid(player1) || IsValid(player2);
     }
 
     void OnBattleFinished()
@@ -465,13 +470,27 @@ public class BattleManager : BattleManagerLog
     void AllPlayerGetExperience()
     {
         if (IsValid(player1))
-            player1.GetExperience(50);
+            player1.GetExperience(GetAllMonsterExperience());
         if (IsValid(player2))
-            player2.GetExperience(50);
+            player2.GetExperience(GetAllMonsterExperience());
         if (IsValid(player3))
-            player3.GetExperience(50);
+            player3.GetExperience(GetAllMonsterExperience());
         if (IsValid(player4))
-            player4.GetExperience(50);
+            player4.GetExperience(GetAllMonsterExperience());
         PlayerSession.GetInstance().SaveSession();
+    }
+
+    int GetAllMonsterExperience()
+    {
+        int total = 0;
+        if (enemy1 != null)
+            total += enemy1.exp;
+        if (enemy2 != null)
+            total += enemy2.exp;
+        if (enemy3 != null)
+            total += enemy3.exp;
+        if (enemy4 != null)
+            total += enemy4.exp;
+        return total;
     }
 }

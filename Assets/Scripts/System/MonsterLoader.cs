@@ -55,6 +55,7 @@ public class MonsterLoader
         //monster.attribute.intel += MaxIncrease(monster.level, monster.attribute.intel);
 
         int points = (monster.level - 1) * 3;
+        monster.exp += points;
         while (points > 0)
         {
             switch (Random.Range(0, 5))
