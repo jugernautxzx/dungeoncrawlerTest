@@ -31,6 +31,10 @@ public class MonsterLoader
 
     public static CharacterModel LoadMonsterData(string id, int level, string alternateName)
     {
+        if (id == null)
+            return null;
+        if (id.Equals(""))
+            return null;
         CharacterModel monster = LoadMonsterData(id, level);
         monster.name = "Lv. " + level + " " + alternateName;
         return monster;

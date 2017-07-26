@@ -36,8 +36,6 @@ public class BattleManager : BattleManagerLog
     PassiveManager passiveSkill;
     ActiveUse active;
     EnemyAI enemyAI;
-    DungeonModel dungeonModel;
-    DungeonControl dungeonControl;
 
     public BattleManager(BattleInterface listener)
     {
@@ -47,7 +45,6 @@ public class BattleManager : BattleManagerLog
         passiveSkill = new PassiveManager();
         active = new ActiveUse(this);
         enemyAI = new EnemyAI(this);
-        dungeonControl = new DungeonControl();
     }
 
     public void BattleStart()
@@ -267,9 +264,7 @@ public class BattleManager : BattleManagerLog
         OnBattleFinished();
         yield return new WaitForSeconds(3);
         DungeonModel.battleWon = true;
-        dungeonControl.ClickRoomAction(DungeonModel.currentDungeonRoom, DungeonModel.currentTreasureActionPanel, DungeonModel.currentTrapActionPanel);
-        SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(1));
-        SceneManager.UnloadSceneAsync(2);
+        UnloadScene();
         listener.StopBattleTimer();
     }
 
@@ -505,5 +500,13 @@ public class BattleManager : BattleManagerLog
         if (enemy4 != null)
             total += enemy4.exp;
         return total;
+    }
+
+    void UnloadScene()
+    {
+        DungeonControl dungeonControl = new DungeonControl();
+        dungeonControl.ClickRoomAction(DungeonModel.currentDungeonRoom, DungeonModel.currentTreasureActionPanel, DungeonModel.currentTrapActionPanel);
+        SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(1));
+        SceneManager.UnloadSceneAsync(2);
     }
 }

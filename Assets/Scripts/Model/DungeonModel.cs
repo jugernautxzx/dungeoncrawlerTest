@@ -63,8 +63,7 @@ public class DungeonManager {
 
     public static DungeonInfo DungeonLoad(string Id)
     {
-        DungeonInfo dungeon= XmlLoader.LoadFromXmlResource<DungeonInfo>("Xml/Dungeon/" + Id);
-        return dungeon;
+        return XmlLoader.LoadFromXmlResource<DungeonInfo>("Xml/Dungeon/" + Id);
     }
 
 }
