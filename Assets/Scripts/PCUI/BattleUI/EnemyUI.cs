@@ -12,6 +12,7 @@ public class EnemyUI : MonoBehaviour
     public Image rowColor;
     public GameObject statusEffect;
     public Button selectionButton;
+    public GameObject cover;
 
     void Start()
     {
@@ -50,6 +51,14 @@ public class EnemyUI : MonoBehaviour
 
     public void UpdateCharacter(CharacterModel model)
     {
+        if (model != null)
+            UpdateInfo(model);
+        else
+            HideInfo();
+    }
+
+    void UpdateInfo(CharacterModel model)
+    {
         nameText.text = model.name;
         if (model.battleAttribute.backRow)
         {
@@ -63,5 +72,10 @@ public class EnemyUI : MonoBehaviour
         }
         SetHealth(model.battleAttribute.currHp / (float)model.battleAttribute.hp);
         UpdateStatusEffect(model);
+    }
+
+    void HideInfo()
+    {
+        cover.SetActive(true);
     }
 }

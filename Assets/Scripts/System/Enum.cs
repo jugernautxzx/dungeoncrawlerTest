@@ -42,3 +42,8 @@ public enum EqSlot : int
 {
     MainHand, OffHand, Head, Body, Accessory
 }
+
+public enum MonsterId : int
+{
+    None, BoneCaster
+}

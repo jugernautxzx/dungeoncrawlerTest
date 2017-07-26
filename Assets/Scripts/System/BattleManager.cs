@@ -84,8 +84,8 @@ public class BattleManager : BattleManagerLog
             player4.GenerateBasicBattleAttribute();
         }
 
-        enemy1 = MonsterLoader.LoadMonsterData("Goblin", 1);
-        enemy2 = MonsterLoader.LoadMonsterData("Skeleton", 1);
+        enemy1 = MonsterLoader.LoadMonsterData("Skeleton", 90, "Immoral Warrior");
+        enemy2 = MonsterLoader.LoadMonsterData("BoneCaster", 2);
         //enemy2 = Debugger.GenerateCharacterModel("Skeleton 2");
         //enemy3 = Debugger.GenerateCharacterModel("Skeleton 3");
         //enemy3.battleSetting.backRow = true;
@@ -231,17 +231,23 @@ public class BattleManager : BattleManagerLog
     public void PlayerActorSkillTarget(int index, bool isPlayerSide, int skillIndex)
     {
         listener.WriteLog("", true);
-        active.SetTurn(turnTaker);
-        active.PlayerActorSkillTarget(index, isPlayerSide, skillIndex);
-        WriteActorStillAlive(GetCharacter(index, isPlayerSide));
+        ActorSkillTarget(index, isPlayerSide, skillIndex);
         timer = true;
     }
 
+    public void ActorSkillTarget(int index, bool isPlayerSide, int skillIndex)
+    {
+        listener.WriteLog(turnTaker.name + " use " + activeManager.GetName(turnTaker.actives[skillIndex]), false);
+        active.SetTurn(turnTaker);
+        active.PlayerActorSkillTarget(index, isPlayerSide, skillIndex);
+        WriteActorStillAlive(GetCharacter(index, isPlayerSide));
+    }
 
     //------------------------------- END OF ACTIVE SKILLS ----------------------------------------------------------------------------------------------------------
 
     IEnumerator BattleTimer()
     {
+        listener.WriteLog("Battle start", true);
         yield return new WaitForSeconds(1f);
         while (CheckAllActorStillAlive())
         {
@@ -394,11 +400,13 @@ public class BattleManager : BattleManagerLog
 
     IEnumerator AITakeTurn()
     {
+        Debug.Log("Waiting for " + turnTaker.name);
         yield return new WaitForSeconds(0.5f);
         //TODO Insert EnemyAI
         //ActorAttackTarget(0, true);
         turnTaker.monster.TakeTurn();
         yield return new WaitForSeconds(0.25f);
+        Debug.Log("Done waiting for " + turnTaker.name);
         timer = true;
     }
 

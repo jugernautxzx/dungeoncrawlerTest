@@ -2,7 +2,13 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInterface, EquipmentUIInterface, EquipmentUILevelUpInterface, InventoryItemShowInterface
+public interface TooltipInterface
+{
+    void ShowTooltip(string text);
+    void HideTooltip();
+}
+
+public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInterface, EquipmentUIInterface, EquipmentUILevelUpInterface, InventoryItemShowInterface, TooltipInterface
 {
 
     public CharCreationUI charCreate;
@@ -10,7 +16,7 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
     public RecruitmentManager recruitmentManager;
     public EquipmentUI equipmentUI;
     public InventoryUI inventoryUI;
-    public RectTransform equipmentShowPopUp;
+    public RectTransform equipmentShowPopUp, tooltip;
 
     public void OnCreateNewChar()
     {
@@ -26,7 +32,7 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         partyManager.SetEquipmentImpl(this);
         inventoryUI.SetItemShowImpl(this);
         equipmentUI.SetEquipmentShowImpl(this);
-        equipmentUI.SetLevelUpInterface(this);
+        equipmentUI.SetLevelUpInterface(this, this);
         LoadGameSession();
 
     }
@@ -68,6 +74,10 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         {
             UpdateEquipmentShowPos();
         }
+        if (tooltip.gameObject.activeInHierarchy)
+        {
+            UpdateTooltipShowPos();
+        }
     }
 
     void UpdateEquipmentShowPos()
@@ -86,9 +96,24 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         equipmentShowPopUp.transform.position = newPos;
     }
 
+    void UpdateTooltipShowPos()
+    {
+        float height = tooltip.rect.height;
+        float width = tooltip.rect.width;
+        Vector3 newPos = Input.mousePosition;
+        if (newPos.y - height < 0)
+        {
+            newPos.y += height - newPos.y;
+        }
+        if (newPos.x + width > Screen.width)
+        {
+            newPos.x -= (newPos.x + width) - Screen.width;
+        }
+        tooltip.transform.position = newPos;
+    }
+
     public void StartMockupBattle()
     {
-        //TODO Move to dungeon generation
         SceneManager.LoadScene(1);
     }
 
@@ -104,7 +129,6 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         partyManager.gameObject.SetActive(true);
         PlayerSession.GetInstance().SaveSession();
     }
-
 
     public void ShowInventory()
     {
@@ -161,5 +185,16 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
     public void RequestLevelUpMenu(CharacterModel model)
     {
         LevelUpCharacter(model);
+    }
+
+    public void ShowTooltip(string text)
+    {
+        tooltip.GetComponent<TooltipUI>().SetText(text);
+        tooltip.gameObject.SetActive(true);
+    }
+
+    public void HideTooltip()
+    {
+        tooltip.gameObject.SetActive(false);
     }
 }

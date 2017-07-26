@@ -16,6 +16,7 @@ public class PlayerCharaUI : MonoBehaviour
     public GameObject statusEffect;
     public Button selectionButton;
     public RectTransform turnBar;
+    public GameObject cover;
 
     Text[] status;
 
@@ -55,6 +56,14 @@ public class PlayerCharaUI : MonoBehaviour
 
     public void UpdateCharacter(CharacterModel model)
     {
+        if (model != null)
+            UpdateInfo(model);
+        else
+            HideInfo();
+    }
+
+    void UpdateInfo(CharacterModel model)
+    {
         charName.text = model.name;
         charHp.text = model.battleAttribute.currHp + "/" + model.battleAttribute.hp;
         charMana.text = model.battleAttribute.currMp + "/" + model.battleAttribute.mp;
@@ -71,5 +80,10 @@ public class PlayerCharaUI : MonoBehaviour
             rowText.text = "Front";
         }
         UpdateStatusEffect(model);
+    }
+
+    void HideInfo()
+    {
+        cover.SetActive(true);
     }
 }

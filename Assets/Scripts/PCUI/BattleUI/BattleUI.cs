@@ -170,26 +170,18 @@ public class BattleUI : MonoBehaviour, BattleInterface
 
     public void UpdatePlayerTeam(CharacterModel model1, CharacterModel model2, CharacterModel model3, CharacterModel model4)
     {
-        if (model1 != null)
-            playerChar[0].UpdateCharacter(model1);
-        if (model2 != null)
-            playerChar[1].UpdateCharacter(model2);
-        if (model3 != null)
-            playerChar[2].UpdateCharacter(model3);
-        if (model4 != null)
-            playerChar[3].UpdateCharacter(model4);
+        playerChar[0].UpdateCharacter(model1);
+        playerChar[1].UpdateCharacter(model2);
+        playerChar[2].UpdateCharacter(model3);
+        playerChar[3].UpdateCharacter(model4);
     }
 
     public void UpdateEnemyTeam(CharacterModel model1, CharacterModel model2, CharacterModel model3, CharacterModel model4)
     {
-        if (model1 != null)
-            enemyChar[0].UpdateCharacter(model1);
-        if (model2 != null)
-            enemyChar[1].UpdateCharacter(model2);
-        if (model3 != null)
-            enemyChar[2].UpdateCharacter(model3);
-        if (model4 != null)
-            enemyChar[3].UpdateCharacter(model4);
+        enemyChar[0].UpdateCharacter(model1);
+        enemyChar[1].UpdateCharacter(model2);
+        enemyChar[2].UpdateCharacter(model3);
+        enemyChar[3].UpdateCharacter(model4);
     }
 
     public void EnableTargetingIndicator(int index, bool isPlayerSide, bool enabled)

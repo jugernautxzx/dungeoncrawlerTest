@@ -3,11 +3,11 @@
     <Effects>
       <Effect Target="allenemy" Row="front" Type="damage" Formula="PAtk" FormulaParam="0.7"/>
     </Effects>
-    <Info>Deal 70% %damage% to all enemy on %front% row.</Info>
+    <Info>Deal 70% damage to all enemy on front row.</Info>
   </Item>
-  <Item Id="Sweep2" Name="Great cleave" Stamina="55" Weapons="Sword2H" Targetable="allenemy">
+  <Item Id="Fireball" Name="Fireball" Mana="10" Weapons="Staff" Targetable="allenemy">
     <Effects>
-      <Effect Target="allenemy" Type="damage" Formula="PAtk" FormulaParam="0.7"/>
+      <Effect Target="target" Type="damage" Formula="MAtk" FormulaParam="1.2"/>
     </Effects>
     <Info>Deal 50% %damage% to all enemy.</Info>
   </Item>

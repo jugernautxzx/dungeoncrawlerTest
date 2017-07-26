@@ -34,7 +34,18 @@ public class EnemyAI
 
     public void InitMonster(CharacterModel model)
     {
-        model.monster = new SimpleMonster(model, manager);
+        switch (model.monsterId)
+        {
+            case MonsterId.None:
+                model.monster = new SimpleMonster(model, manager);
+                break;
+            case MonsterId.BoneCaster:
+                model.monster = new BoneCaster(model, manager);
+                break;
+            default:
+                model.monster = new SimpleMonster(model, manager);
+                break;
+        }
     }
 
     public EnemyAI(BattleManager manager)

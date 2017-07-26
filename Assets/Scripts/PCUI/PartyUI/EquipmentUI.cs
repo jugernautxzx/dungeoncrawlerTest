@@ -37,7 +37,6 @@ public class EquipmentUI : MonoBehaviour, EquipInterface, SetSkillInterface
     {
         invUI.SetEquipImpl(this);
         invUI.gameObject.SetActive(false);
-        skillUI.SetInterface(this);
         clevel.GetComponent<Button>().onClick.AddListener(LevelUpCharacter);
         eqMain.GetComponent<Button>().onClick.AddListener(delegate { OnEquipmentClicked(eqMain, EqSlot.MainHand, 0); });
         eqOff.GetComponent<Button>().onClick.AddListener(delegate { OnEquipmentClicked(eqOff, EqSlot.OffHand, 1); });
@@ -79,9 +78,10 @@ public class EquipmentUI : MonoBehaviour, EquipInterface, SetSkillInterface
         skillUI.gameObject.SetActive(false);
     }
 
-    public void SetLevelUpInterface(EquipmentUILevelUpInterface impl)
+    public void SetLevelUpInterface(EquipmentUILevelUpInterface impl, TooltipInterface tooltip)
     {
         levelUpInterface = impl;
+        skillUI.SetInterface(this, tooltip);
     }
 
     void LevelUpCharacter()

@@ -10,8 +10,9 @@ public class CharacterModel
     [DefaultValue(false)]
     [XmlAttribute("IsMainCharacter")]
     public bool isMainCharacter;
+    [DefaultValue(MonsterId.None)]
     [XmlAttribute("MonsterId")]
-    public string monsterId;
+    public MonsterId monsterId;
     [XmlAttribute("Name")]
     public string name;
     [DefaultValue(0)]

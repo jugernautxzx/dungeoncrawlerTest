@@ -18,6 +18,7 @@ public class SkillsUI : MonoBehaviour, SkillItemInterface
     List<string> desc = new List<string>();
 
     SetSkillInterface setInterface;
+    TooltipInterface tooltip;
 
     // Use this for initialization
     void Start()
@@ -31,9 +32,10 @@ public class SkillsUI : MonoBehaviour, SkillItemInterface
 
     }
 
-    public void SetInterface(SetSkillInterface impl)
+    public void SetInterface(SetSkillInterface impl, TooltipInterface tooltip)
     {
         setInterface = impl;
+        this.tooltip = tooltip;
     }
 
     public void LoadAllAvailableActives(List<string> learned, List<string> equiped)
@@ -54,7 +56,10 @@ public class SkillsUI : MonoBehaviour, SkillItemInterface
 
         for (int i = 0; i < names.Count; i++)
         {
-            PopulateList(names[i], desc[i]);
+            if (i < container.transform.childCount)
+                UpdateItem(names[i], desc[i], i);
+            else
+                PopulateList(names[i], desc[i]);
         }
     }
 
@@ -73,11 +78,17 @@ public class SkillsUI : MonoBehaviour, SkillItemInterface
         }
     }
 
+    void UpdateItem(string name, string desc, int index)
+    {
+        container.transform.GetChild(index).GetComponent<SkillsItemUI>().SetSkill(name, desc);
+    }
+
     void PopulateList(string name, string desc)
     {
         GameObject instan = Instantiate(prefab, container, false);
         instan.GetComponent<SkillsItemUI>().SetSkill(name, desc);
         instan.GetComponent<SkillsItemUI>().SetInterface(this);
+        instan.GetComponent<SkillsItemUI>().SetTooltip(tooltip);
     }
 
     public void OnItemClicked(string id)

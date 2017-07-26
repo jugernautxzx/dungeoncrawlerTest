@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="shift_jis"?>
+<Character xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="BoneCaster" MonsterId="BoneCaster" Level="1" Experience="5">
+  <Attribute>
+    <Str>1</Str>
+    <Agi>1</Agi>
+    <Intel>3</Intel>
+    <Endurance>1</Endurance>
+    <Wisdom>2</Wisdom>
+    <Constitution>3</Constitution>
+    <Speed>2</Speed>
+  </Attribute>
+  <Elemental />
+  <BattleSetting Row="true" PlayerCharacter="false" />
+  <Actives>
+    <Active>Fireball</Active>
+  </Actives>
+  <Passives />
+</Character>

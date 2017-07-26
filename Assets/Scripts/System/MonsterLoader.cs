@@ -29,6 +29,13 @@ public class MonsterLoader
         return model;
     }
 
+    public static CharacterModel LoadMonsterData(string id, int level, string alternateName)
+    {
+        CharacterModel monster = LoadMonsterData(id, level);
+        monster.name = "Lv. " + level + " " + alternateName;
+        return monster;
+    }
+
     public static CharacterModel LoadMonsterData(string id, int level)
     {
         CharacterModel monster = XmlLoader.LoadFromXmlResource<CharacterModel>("Xml/Monster/" + id);
@@ -58,7 +65,7 @@ public class MonsterLoader
         monster.exp += points;
         while (points > 0)
         {
-            switch (Random.Range(0, 5))
+            switch (Random.Range(0, 6))
             {
                 case 0:
                     monster.attribute.agi++;
