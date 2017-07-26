@@ -71,7 +71,7 @@ public class DungeonControl
         }
 
         //Check Room
-        for (int room = 0; room <= DungeonGenerator.Info.allRoom; room++)
+        for (int room = 0; room <= DungeonGenerator.info.allRoom; room++)
         {
             DungeonRoom[room].interactable = false;
             if (north)
@@ -234,6 +234,7 @@ public class DungeonControl
 
         if (DungeonRoom[DungeonModel.PlayerInRoom].tag.Contains("Enemy"))
         {
+            EnemyEncounter();
             if(DungeonModel.battleWon==false)
             {
                 SceneManager.LoadScene(2, LoadSceneMode.Additive);
@@ -298,6 +299,7 @@ public class DungeonControl
         
 
     }
+
     public void WriteLog(Text Log)
     {
         if (EventSystem.current.currentSelectedGameObject.tag == "Treasure")
@@ -312,6 +314,26 @@ public class DungeonControl
         {
             Log.text = " ";
         }
+    }
+
+    public void EnemyEncounter()
+    {
+        int[] randEnemy=new int[4];
+
+        for (int enemy=0;enemy<4;enemy++)
+        {
+            randEnemy[enemy] = Random.Range(0,DungeonGenerator.info.enemy.Count);
+           
+        }
+        DungeonModel.enemy1 = DungeonGenerator.info.enemy[randEnemy[0]].enemyId;
+        DungeonModel.lvEnemy1 = DungeonGenerator.info.enemy[randEnemy[0]].enemyLv;
+        DungeonModel.enemy2 = DungeonGenerator.info.enemy[randEnemy[1]].enemyId;
+        DungeonModel.lvEnemy2 = DungeonGenerator.info.enemy[randEnemy[1]].enemyLv;
+        DungeonModel.enemy3 = DungeonGenerator.info.enemy[randEnemy[2]].enemyId;
+        DungeonModel.lvEnemy3 = DungeonGenerator.info.enemy[randEnemy[2]].enemyLv;
+        DungeonModel.enemy4 = DungeonGenerator.info.enemy[randEnemy[3]].enemyId;
+        DungeonModel.lvEnemy4 = DungeonGenerator.info.enemy[randEnemy[3]].enemyLv;
+
     }
 
 }

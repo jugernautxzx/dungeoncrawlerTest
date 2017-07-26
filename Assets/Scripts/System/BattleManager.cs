@@ -84,8 +84,10 @@ public class BattleManager : BattleManagerLog
             player4.GenerateBasicBattleAttribute();
         }
 
-        enemy1 = MonsterLoader.LoadMonsterData("Skeleton", 90, "Immoral Warrior");
-        enemy2 = MonsterLoader.LoadMonsterData("BoneCaster", 2);
+        enemy1 = MonsterLoader.LoadMonsterData(DungeonModel.enemy1, DungeonModel.lvEnemy1);
+        enemy2 = MonsterLoader.LoadMonsterData(DungeonModel.enemy2, DungeonModel.lvEnemy2);
+        enemy3 = MonsterLoader.LoadMonsterData(DungeonModel.enemy3, DungeonModel.lvEnemy3);
+        enemy4 = MonsterLoader.LoadMonsterData(DungeonModel.enemy4, DungeonModel.lvEnemy4);
         //enemy2 = Debugger.GenerateCharacterModel("Skeleton 2");
         //enemy3 = Debugger.GenerateCharacterModel("Skeleton 3");
         //enemy3.battleSetting.backRow = true;
@@ -95,12 +97,12 @@ public class BattleManager : BattleManagerLog
         player1.GenerateBasicBattleAttribute();
         enemy1.GenerateBasicBattleAttribute();
         enemy2.GenerateBasicBattleAttribute();
-        //enemy3.GenerateBasicBattleAttribute();
-        //enemy4.GenerateBasicBattleAttribute();
+        enemy3.GenerateBasicBattleAttribute();
+        enemy4.GenerateBasicBattleAttribute();
         enemyAI.InitMonster(enemy1);
         enemyAI.InitMonster(enemy2);
-        //enemyAI.InitMonster(enemy3);
-        //enemyAI.InitMonster(enemy4);
+        enemyAI.InitMonster(enemy3);
+        enemyAI.InitMonster(enemy4);
     }
 
     public void WriteLog(string log)
