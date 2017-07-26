@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Dungeon Name="Testing" Room="30">
-	
+<Dungeon Name="Testing" Room="30" TreasureRoom="10" TrapRoom="5" EnemyRoom="5">
+  <EnemyType>
+    <Enemy Id="Skeleton" Lv="1"></Enemy>
+    <Enemy Id="Goblin" Lv="1"></Enemy>
+  </EnemyType>
 </Dungeon>
 
