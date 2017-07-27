@@ -18,9 +18,8 @@ public class DungeonGenerator : MonoBehaviour {
     public GameObject TrapActionPanel;
     public Button ActionButton;
     DungeonControl dungeonControl;
-    DungeonModel dungeonModel;
     DungeonManager dungeonManager;
-    DungeonInfo dungeoninfo;
+    ProfileManager profileManager;
 
     int randPos;
     float panelTop = 0;
@@ -48,13 +47,15 @@ public class DungeonGenerator : MonoBehaviour {
 
     public DungeonGenerator()
     { 
-        dungeonModel = new DungeonModel();
         dungeonControl = new DungeonControl();
+        profileManager = new ProfileManager();
     }
 
     public void GenerateDungeon()
     {
         info = DungeonManager.DungeonLoad("Stage1_1");
+        profileManager.LoadProfile();
+
         bool RoomPosition = true;
         DungeonModel.IndexCoridor = 0;
         DungeonName.text = info.name;
@@ -93,11 +94,13 @@ public class DungeonGenerator : MonoBehaviour {
 
                 RoomPositionX = DungeonRoom[RoomIndex].GetComponent<RectTransform>().offsetMin.x;
                 RoomPositionY = DungeonRoom[RoomIndex].GetComponent<RectTransform>().offsetMin.y;
+                DungeonCoridor[DungeonModel.IndexCoridor].gameObject.SetActive(false);
                 DungeonModel.IndexCoridor += 1;
 
             } while (!RoomPosition);
 
             DungeonRoom[RoomIndex].GetComponent<RectTransform>().sizeDelta = new Vector2(70, 70);
+            DungeonRoom[RoomIndex].gameObject.SetActive(false);
 
         }
         SizePanel();
@@ -441,8 +444,8 @@ public class DungeonGenerator : MonoBehaviour {
         IndexRoom = int.Parse(EventSystem.current.currentSelectedGameObject.name);
         Vector2 PlayerPosition = DungeonRoom[IndexRoom].GetComponent<RectTransform>().offsetMin;
         dungeonControl.CenterOnClick(PlayerPosition,ScrollPanel);
-        dungeonControl.ClickRoomAction(DungeonRoom,TreasureActionPanel,TrapActionPanel);
-        dungeonControl.WriteLog(Log);
+        dungeonControl.ClickRoomAction(DungeonRoom,TreasureActionPanel,TrapActionPanel,Log);
+        dungeonControl.WriteLog(Log, DungeonRoom);
         dungeonControl.CheckAccessedRoom(PlayerPosition,DungeonCoridor,DungeonRoom);
 
     }

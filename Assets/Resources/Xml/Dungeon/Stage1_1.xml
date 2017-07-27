@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Dungeon Name="Testing" Room="30" TreasureRoom="10" TrapRoom="5" EnemyRoom="5">
+<Dungeon Name="Testing" Room="30" TreasureRoom="10" TrapRoom="5" EnemyRoom="5" MinGetTreasure="0" MaxGetTreasure="1">
   <EnemyType>
     <Enemy Id="Skeleton" Lv="1"></Enemy>
     <Enemy Id="Goblin" Lv="1"></Enemy>
   </EnemyType>
+  <Treasure>
+    <Item ItemId="Old Painting" ValueMin="5" ValueMax="20" Weight="5" Chance="2"/>
+    <Item ItemId="Golden Pot" FixedValue="50" Weight="2" Chance="1"/>
+  </Treasure>
 </Dungeon>
 

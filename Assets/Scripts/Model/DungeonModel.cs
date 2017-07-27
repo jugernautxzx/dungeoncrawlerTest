@@ -22,9 +22,16 @@ public class DungeonInfo {
     [DefaultValue(0)]
     [XmlAttribute("EnemyRoom")]
     public int maxEnemy;
+    [XmlAttribute("MinGetTreasure")]
+    public int minGet;
+    [XmlAttribute("MaxGetTreasure")]
+    public int maxGet;
     [XmlArray("EnemyType")]
     [XmlArrayItem("Enemy")]
     public List<EnemyList> enemy;
+    [XmlArray("Treasure")]
+    [XmlArrayItem("Item")]
+    public List<ItemList> item;
 
 }
 
@@ -35,6 +42,28 @@ public class EnemyList
     public string enemyId;
     [XmlAttribute("Lv")]
     public int enemyLv;
+}
+
+[XmlRoot("Item")]
+public class ItemList
+{
+    [XmlAttribute("ItemId")]
+    public string itemId;
+    [DefaultValue(0)]
+    [XmlAttribute("ValueMin")]
+    public int valueMin;
+    [DefaultValue(0)]
+    [XmlAttribute("ValueMax")]
+    public int valueMax;
+    [DefaultValue(0)]
+    [XmlAttribute("FixedValue")]
+    public int fixedValue;
+    [DefaultValue(1)]
+    [XmlAttribute("Weight")]
+    public int weight;
+    [DefaultValue(1)]
+    [XmlAttribute("Chance")]
+    public int chance;
 }
 
 public class DungeonModel {
@@ -48,6 +77,7 @@ public class DungeonModel {
     public static Button[] currentDungeonRoom;
     public static GameObject currentTreasureActionPanel;
     public static GameObject currentTrapActionPanel;
+    public static Text CurrentLog;
     public static string enemy1;
     public static int lvEnemy1;
     public static string enemy2;
