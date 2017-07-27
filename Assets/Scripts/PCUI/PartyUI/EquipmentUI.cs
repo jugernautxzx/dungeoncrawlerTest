@@ -78,10 +78,12 @@ public class EquipmentUI : MonoBehaviour, EquipInterface, SetSkillInterface
         skillUI.gameObject.SetActive(false);
     }
 
-    public void SetLevelUpInterface(EquipmentUILevelUpInterface impl, TooltipInterface tooltip)
+    public void SetLevelUpInterface(MainMenuUI mainmenu)
     {
-        levelUpInterface = impl;
-        skillUI.SetInterface(this, tooltip);
+        levelUpInterface = mainmenu;
+        skillUI.SetInterface(this, mainmenu);
+        for (int i = 0; i < 5; i++)
+            actives[i].GetComponent<EquipedSkillUI>().SetInterface(mainmenu);
     }
 
     void LevelUpCharacter()
@@ -168,10 +170,12 @@ public class EquipmentUI : MonoBehaviour, EquipInterface, SetSkillInterface
         if (activeName == null || activeName.Length == 0)
         {
             act.text = "None";
+            act.GetComponent<EquipedSkillUI>().SetDescription("No active skill");
         }
         else
         {
             act.text = ActiveSkillManager.GetInstance().GetActive(activeName).name;
+            act.GetComponent<EquipedSkillUI>().SetDescription(ActiveSkillManager.GetInstance().GetActive(activeName).info);
         }
     }
 
@@ -319,10 +323,11 @@ public class EquipmentUI : MonoBehaviour, EquipInterface, SetSkillInterface
 
     void EquipSelectedActives(string id)
     {
-        if (id.Length != 0)
-            actives[selectedSlot].text = ActiveSkillManager.GetInstance().GetActive(id).name;
-        else
-            actives[selectedSlot].text = "None";
+        //if (id.Length != 0)
+        //    actives[selectedSlot].text = ActiveSkillManager.GetInstance().GetActive(id).name;
+        //else
+        //    actives[selectedSlot].text = "None";
         model.actives[selectedSlot] = id;
+        SetActives(actives[selectedSlot], id);
     }
 }

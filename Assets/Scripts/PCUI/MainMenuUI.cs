@@ -16,6 +16,7 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
     public RecruitmentManager recruitmentManager;
     public EquipmentUI equipmentUI;
     public InventoryUI inventoryUI;
+    public ConsumableItemUI consumableUI;
     public RectTransform equipmentShowPopUp, tooltip;
 
     public void OnCreateNewChar()
@@ -32,7 +33,7 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         partyManager.SetEquipmentImpl(this);
         inventoryUI.SetItemShowImpl(this);
         equipmentUI.SetEquipmentShowImpl(this);
-        equipmentUI.SetLevelUpInterface(this, this);
+        equipmentUI.SetLevelUpInterface(this);
         LoadGameSession();
 
     }
@@ -64,6 +65,8 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
 
     void ContinueGameSession()
     {
+
+        //ADD on dungeon clear condition
         partyManager.RequestUpdateMember();
         ShowPartyWindow();
     }
@@ -128,6 +131,11 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         HideAllWindow();
         partyManager.gameObject.SetActive(true);
         PlayerSession.GetInstance().SaveSession();
+    }
+
+    public void ShowOwnedItems()
+    {
+        HideAllWindow();//TODO show item inventory
     }
 
     public void ShowInventory()

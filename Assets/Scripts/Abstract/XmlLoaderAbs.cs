@@ -29,7 +29,10 @@ public abstract class RealListWithDictionary<T> where T : ClassWithId
 
     public T Get(string id)
     {
-        return list[dict[id]];
+        if (DictContains(id))
+            return list[dict[id]];
+        else
+            return null;
     }
 
     public bool DictContains(string id)

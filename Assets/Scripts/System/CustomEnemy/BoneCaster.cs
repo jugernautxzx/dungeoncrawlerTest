@@ -15,10 +15,10 @@ public class BoneCaster : BaseMonster
 
     public void TakeTurn()
     {
-        int i = Random.Range(0, 3);
+        int i = Random.Range(0, 4);
         while (!manager.IsValid(manager.GetPlayer(i)))
         {
-            i = Random.Range(0, 3);
+            i = Random.Range(0, 4);
         }
         manager.ActorSkillTarget(i, true, 0);
     }

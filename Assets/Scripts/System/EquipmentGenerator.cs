@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EquipmentGenerator
 {
-
+    //========================================================================================== Weapon generator ==========================================================
     public Equipment GenerateWeapon(int tier)
     {
         Equipment generated = new Equipment();
@@ -51,8 +51,7 @@ public class EquipmentGenerator
             case Weapon.Wand:
                 break;
             default:
-                Debug.Log("Unidentified weapon type");
-                break;
+                throw new System.Exception("Unknown equipment type");
         }
     }
 
@@ -74,7 +73,6 @@ public class EquipmentGenerator
             case Weapon.Staff:
                 break;
             case Weapon.Sword:
-                SwordBonus(eq);
                 break;
             case Weapon.Sword2H:
                 break;
@@ -83,8 +81,7 @@ public class EquipmentGenerator
             case Weapon.Wand:
                 break;
             default:
-                Debug.Log("Unidentified weapon type");
-                break;
+                throw new System.Exception("Unknown weapon type");
         }
     }
 
@@ -140,8 +137,7 @@ public class EquipmentGenerator
         eq.attribute.agi = Random.Range(tier, tier + 2);
         eq.attribute.speed = 2;
     }
+    //===================================================================== END OF WEAPON GENERATOR =============================================================================================
 
-    void SwordBonus(Equipment eq)//TODO Incomplete
-    {
-    }
+
 }

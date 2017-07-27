@@ -47,3 +47,8 @@ public enum MonsterId : int
 {
     None, BoneCaster
 }
+
+public enum ItemType
+{
+    Treasure, Consumable, KeyItem, SkillBook
+}

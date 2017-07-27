@@ -16,9 +16,8 @@ public class PlayerProfileModel
     [XmlElement("MainCharacter")]
     public MainCharaModel mainChara;
 
-    //[XmlArray("Parties")]
-    //[XmlArrayItem("Party")]
-    //public List<PartyModel> parties;
+    [XmlIgnore]
+    public SessionInfo session;
 
     [XmlElement("Party")]
     public PartyModel party = new PartyModel();
@@ -50,4 +49,9 @@ public class MainCharaModel
     public int fame;
     [XmlAttribute("Leadership")]
     public int leadership;
+}
+
+public class SessionInfo
+{
+
 }

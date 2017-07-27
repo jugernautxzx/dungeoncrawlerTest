@@ -65,6 +65,7 @@ public class BattleManager : BattleManagerLog
     {
         //TODO Debugging purpose
         player1 = PlayerSession.GetProfile().characters[0];
+        player1.GenerateBasicBattleAttribute();
         if (PlayerSession.GetProfile().party.member1 > 0)
         {
             player2 = PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member1];
@@ -85,21 +86,19 @@ public class BattleManager : BattleManagerLog
         enemy2 = MonsterLoader.LoadMonsterData(DungeonModel.enemy2, DungeonModel.lvEnemy2);
         enemy3 = MonsterLoader.LoadMonsterData(DungeonModel.enemy3, DungeonModel.lvEnemy3);
         enemy4 = MonsterLoader.LoadMonsterData(DungeonModel.enemy4, DungeonModel.lvEnemy4);
-        //enemy2 = Debugger.GenerateCharacterModel("Skeleton 2");
-        //enemy3 = Debugger.GenerateCharacterModel("Skeleton 3");
-        //enemy3.battleSetting.backRow = true;
-        //enemy4 = Debugger.GenerateCharacterModel("Skeleton 4");
-        //enemy4.battleSetting.backRow = true;
-        //
-        player1.GenerateBasicBattleAttribute();
-        enemy1.GenerateBasicBattleAttribute();
-        enemy2.GenerateBasicBattleAttribute();
-        enemy3.GenerateBasicBattleAttribute();
-        enemy4.GenerateBasicBattleAttribute();
-        enemyAI.InitMonster(enemy1);
-        enemyAI.InitMonster(enemy2);
-        enemyAI.InitMonster(enemy3);
-        enemyAI.InitMonster(enemy4);
+        InitEnemy(enemy1);
+        InitEnemy(enemy2);
+        InitEnemy(enemy3);
+        InitEnemy(enemy4);
+    }
+
+    void InitEnemy(CharacterModel model)
+    {
+        if (model != null)
+        {
+            model.GenerateBasicBattleAttribute();
+            enemyAI.InitMonster(model);
+        }
     }
 
     public void WriteLog(string log)
@@ -259,6 +258,7 @@ public class BattleManager : BattleManagerLog
                 timer = false;
                 ActorTakeTurn();
                 yield return new WaitUntil(() => timer);
+                listener.UpdateTimer(GetTimer(player1), GetTimer(player2), GetTimer(player3), GetTimer(player4));
             }
         }
         OnBattleFinished();
