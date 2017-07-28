@@ -49,18 +49,6 @@ public class ItemList
 {
     [XmlAttribute("ItemId")]
     public string itemId;
-    [DefaultValue(0)]
-    [XmlAttribute("ValueMin")]
-    public int valueMin;
-    [DefaultValue(0)]
-    [XmlAttribute("ValueMax")]
-    public int valueMax;
-    [DefaultValue(0)]
-    [XmlAttribute("FixedValue")]
-    public int fixedValue;
-    [DefaultValue(1)]
-    [XmlAttribute("Weight")]
-    public int weight;
     [DefaultValue(1)]
     [XmlAttribute("Chance")]
     public int chance;
