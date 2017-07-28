@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class DungeonGenerator : MonoBehaviour {
 
-    public Text DungeonName;
+    public Text dungeonName;
     public Button Room;
     public Text Log;
     public RectTransform Panel;
@@ -17,9 +17,11 @@ public class DungeonGenerator : MonoBehaviour {
     public GameObject TreasureActionPanel;
     public GameObject TrapActionPanel;
     public Button ActionButton;
+    public Text completeDungeon;
     DungeonControl dungeonControl;
     DungeonManager dungeonManager;
     ProfileManager profileManager;
+    DungeonModel dungeonModel;
 
     int randPos;
     float panelTop = 0;
@@ -49,6 +51,7 @@ public class DungeonGenerator : MonoBehaviour {
     { 
         dungeonControl = new DungeonControl();
         profileManager = new ProfileManager();
+        dungeonModel = new DungeonModel();
     }
 
     public void GenerateDungeon()
@@ -58,7 +61,8 @@ public class DungeonGenerator : MonoBehaviour {
 
         bool RoomPosition = true;
         DungeonModel.IndexCoridor = 0;
-        DungeonName.text = info.name;
+        dungeonName.text = info.name;
+        completeDungeon.gameObject.SetActive(false);
 
         SpawnEntrancePoint();
         float RoomPositionX = DungeonRoom[0].GetComponent<RectTransform>().offsetMin.x;
@@ -474,7 +478,37 @@ public class DungeonGenerator : MonoBehaviour {
     public void LootAction()
     {
         //do something
-        Debug.Log("Looted");
+        int totalChance = 0;
+        string getItemText="";
+        int getTreasure = Random.Range(info.minGet,info.maxGet+1);
+        foreach (ItemList item in info.item)
+        {
+            totalChance+= item.chance;
+        }
+
+        if (getTreasure==0)
+        {
+            Log.text = "Unfotunetly the chest is empty";
+            
+        }
+        else
+        {
+            for (int treasureCount = 1; treasureCount <= getTreasure; treasureCount++)
+            {
+                int currentChance = 0;
+                int randomChance = Random.Range(0, totalChance);
+                foreach (ItemList item in info.item)
+                {
+                    currentChance += item.chance;
+                    if (randomChance <= currentChance)
+                    {
+                        getItemText += "You get " + item.itemId + "\n";
+                        break;
+                    }
+                }
+                Log.text = getItemText;
+            }
+        }
         DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.green;
         DungeonRoom[DungeonModel.PlayerInRoom].tag = "ClearRoom";
         TreasureActionPanel.SetActive(false);
