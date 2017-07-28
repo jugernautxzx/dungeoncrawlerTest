@@ -16,11 +16,20 @@ public class PlayerProfileModel
     [XmlElement("MainCharacter")]
     public MainCharaModel mainChara;
 
+    [XmlElement("Items")]
+    public string itemString;
+
     [XmlIgnore]
     public SessionInfo session;
 
     [XmlElement("Party")]
     public PartyModel party = new PartyModel();
+
+    [XmlIgnore]
+    public List<string> itemsId;
+
+    [XmlIgnore]
+    public List<int> itemsOwned;
 
     public CharacterModel GetCharacter(int index)
     {
@@ -28,6 +37,32 @@ public class PlayerProfileModel
             return null;
         else
             return characters[index];
+    }
+
+    public void ParseItemToList()
+    {
+        itemsId = new List<string>();
+        itemsOwned = new List<int>();
+        string[] separated = itemString.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+        foreach (string item in separated)
+        {
+            string[] splits = item.Split('%');
+            itemsId.Add(splits[0]);
+            itemsOwned.Add(int.Parse(splits[1]));
+        }
+    }
+
+    public void ParseItemToText()
+    {
+        itemString = "";
+        int total = itemsId.Count;
+        for (int i = 0; i < total; i++)
+        {
+            if(itemsOwned[i] > 0)
+            {
+                itemString += "|" + itemsId[i] + "%" + itemsOwned[i];
+            }
+        }
     }
 }
 

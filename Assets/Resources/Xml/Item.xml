@@ -1,3 +1,4 @@
 <Items>
-    <Item/>
+  <Item Id="Pot1" Name="Potion" Type="Consumable" Value="HP|10" Description="Heal user hp by 10."/>
+  <Item Id="Skill1" Name="Fireball scroll" Type="SkillBook" Value="Fireball" Description="Allow the user to learn fireball spell."/>
 </Items>

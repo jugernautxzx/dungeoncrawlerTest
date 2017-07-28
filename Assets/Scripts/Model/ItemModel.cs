@@ -2,6 +2,7 @@
 using System.Xml.Serialization;
 using UnityEngine;
 
+[XmlRoot("Items")]
 public class ItemModelList : RealListWithDictionary<ItemModel>
 {
 }

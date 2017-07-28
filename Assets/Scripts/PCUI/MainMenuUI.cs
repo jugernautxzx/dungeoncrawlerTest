@@ -34,6 +34,7 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         inventoryUI.SetItemShowImpl(this);
         equipmentUI.SetEquipmentShowImpl(this);
         equipmentUI.SetLevelUpInterface(this);
+        ItemManager.GetInstance();
         LoadGameSession();
 
     }
@@ -135,7 +136,8 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
 
     public void ShowOwnedItems()
     {
-        HideAllWindow();//TODO show item inventory
+        HideAllWindow();
+        consumableUI.gameObject.SetActive(true);
     }
 
     public void ShowInventory()
@@ -152,6 +154,7 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         partyManager.gameObject.SetActive(false);
         equipmentUI.gameObject.SetActive(false);
         inventoryUI.gameObject.SetActive(false);
+        consumableUI.gameObject.SetActive(false);
     }
 
     void LevelUpCharacter(CharacterModel model)

@@ -4,6 +4,8 @@ public class ProfileManager{
 	public PlayerProfileModel CreateNewProfile(CharacterModel mainChara)
     {
         PlayerProfileModel profile = new PlayerProfileModel();
+        profile.itemsId = new System.Collections.Generic.List<string>();
+        profile.itemsOwned = new System.Collections.Generic.List<int>();
         mainChara.isMainCharacter = true;
         profile.mainChara = new MainCharaModel();
         profile.mainChara.fame = 10;

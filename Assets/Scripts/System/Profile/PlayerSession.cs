@@ -45,6 +45,8 @@ public class PlayerSession  {
     public bool LoadSession()
     {
         player = manager.LoadProfile();
+        if(player != null)
+            player.ParseItemToList();
         equipments = manager.LoadEquipments();
         return player == null;
     }
@@ -56,6 +58,7 @@ public class PlayerSession  {
 
     public bool SaveSession()
     {
+        player.ParseItemToText();
         manager.SaveProfile(player);
         manager.SaveEquipments(equipments);
         return true;
