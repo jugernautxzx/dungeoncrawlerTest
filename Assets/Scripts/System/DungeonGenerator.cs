@@ -20,7 +20,6 @@ public class DungeonGenerator : MonoBehaviour {
     public Text completeDungeon;
     DungeonControl dungeonControl;
     DungeonManager dungeonManager;
-    ProfileManager profileManager;
     DungeonModel dungeonModel;
 
     int randPos;
@@ -50,14 +49,12 @@ public class DungeonGenerator : MonoBehaviour {
     public DungeonGenerator()
     { 
         dungeonControl = new DungeonControl();
-        profileManager = new ProfileManager();
         dungeonModel = new DungeonModel();
     }
 
     public void GenerateDungeon()
     {
         info = DungeonManager.DungeonLoad("Stage1_1");
-        profileManager.LoadProfile();
 
         bool RoomPosition = true;
         DungeonModel.IndexCoridor = 0;

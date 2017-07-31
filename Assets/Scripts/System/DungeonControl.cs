@@ -395,7 +395,8 @@ public class DungeonControl
             Debug.Log(getItem.Count);
             for (int itemIndex = 0; itemIndex < getItem.Count; itemIndex++)
             {
-                getItemText += "You get " + getItem[itemIndex] + " x" + getAmount[itemIndex] + "\n";
+                PlayerSession.GetProfile().AddItem(getItem[itemIndex], getAmount[itemIndex]);
+                getItemText += "You get " + ItemManager.GetInstance().GetItem(getItem[itemIndex]).name + " x" + getAmount[itemIndex] + "\n";
             }
             Log.text = getItemText;
         }

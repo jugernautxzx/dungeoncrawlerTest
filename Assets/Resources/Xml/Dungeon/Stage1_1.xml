@@ -6,8 +6,8 @@
     <Enemy Id="Goblin" Lv="1"></Enemy>
   </EnemyType>
   <Treasure>
-    <Item ItemId="Old Painting" Chance="50" AmountMin="2" AmountMax="3"/>
-    <Item ItemId="Golden Pot" Chance="50" AmountMin="1" AmountMax="3"/>
+    <Item ItemId="OldPaint" Chance="50" AmountMin="2" AmountMax="3"/>
+    <Item ItemId="OldPot" Chance="50" AmountMin="1" AmountMax="3"/>
   </Treasure>
 </Dungeon>
 
