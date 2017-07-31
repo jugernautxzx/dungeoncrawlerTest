@@ -64,6 +64,24 @@ public class PlayerProfileModel
             }
         }
     }
+
+    public void AddItem(string id, int qty)
+    {
+        if (itemsId.Contains(id))
+        {
+            itemsOwned[itemsId.IndexOf(id)] += qty;
+        }
+        else
+        {
+            itemsId.Add(id);
+            itemsOwned.Add(qty);
+        }
+    }
+
+    public void RemoveItem(string id, int qty)
+    {
+        //TODO later
+    }
 }
 
 

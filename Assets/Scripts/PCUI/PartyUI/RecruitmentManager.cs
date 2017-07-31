@@ -11,15 +11,15 @@ public class RecruitmentManager : MonoBehaviour {
 
     RecruitmentInterface listener;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    // Use this for initialization
+    void Start() {
+
+    }
+
+    // Update is called once per frame
+    void Update() {
+
+    }
 
     public void SetListener(RecruitmentInterface listener)
     {
@@ -59,11 +59,23 @@ public class RecruitmentManager : MonoBehaviour {
 
     public void Debug1()
     {
-        Debugger.GenerateMainHand();
+        //Debugger.GenerateMainHand();
+        GeneratePotion();
     }
 
     public void Debug2()
     {
-        Debugger.GenerateOffHand();
+        //Debugger.GenerateOffHand();
+        GenerateSkillBook();
+    }
+
+    void GeneratePotion()
+    {
+        PlayerSession.GetProfile().AddItem("Pot1", 1);
+    }
+
+    void GenerateSkillBook()
+    {
+        PlayerSession.GetProfile().AddItem("Skill1", 1);
     }
 }

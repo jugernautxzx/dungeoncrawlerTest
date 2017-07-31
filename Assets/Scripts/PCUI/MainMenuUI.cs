@@ -8,7 +8,7 @@ public interface TooltipInterface
     void HideTooltip();
 }
 
-public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInterface, EquipmentUIInterface, EquipmentUILevelUpInterface, InventoryItemShowInterface, TooltipInterface
+public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInterface, EquipmentUIInterface, EquipmentUILevelUpInterface, InventoryItemShowInterface, TooltipInterface, ConsumableInterface
 {
 
     public CharCreationUI charCreate;
@@ -34,6 +34,7 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         inventoryUI.SetItemShowImpl(this);
         equipmentUI.SetEquipmentShowImpl(this);
         equipmentUI.SetLevelUpInterface(this);
+        consumableUI.SetListener(this);
         ItemManager.GetInstance();
         LoadGameSession();
 
@@ -138,6 +139,7 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
     {
         HideAllWindow();
         consumableUI.gameObject.SetActive(true);
+        consumableUI.ChangeFilter(consumableUI.filter.value);
     }
 
     public void ShowInventory()
@@ -208,4 +210,5 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
     {
         tooltip.gameObject.SetActive(false);
     }
+
 }
