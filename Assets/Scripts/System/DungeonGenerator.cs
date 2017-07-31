@@ -477,41 +477,7 @@ public class DungeonGenerator : MonoBehaviour {
 
     public void LootAction()
     {
-        //do something
-        int totalChance = 0;
-        string getItemText="";
-        int getTreasure = Random.Range(info.minGet,info.maxGet+1);
-        foreach (ItemList item in info.item)
-        {
-            totalChance+= item.chance;
-        }
-
-        if (getTreasure==0)
-        {
-            Log.text = "Unfotunetly the chest is empty";
-            
-        }
-        else
-        {
-            for (int treasureCount = 1; treasureCount <= getTreasure; treasureCount++)
-            {
-                int currentChance = 0;
-                int randomChance = Random.Range(0, totalChance);
-                foreach (ItemList item in info.item)
-                {
-                    currentChance += item.chance;
-                    if (randomChance <= currentChance)
-                    {
-                        getItemText += "You get " + item.itemId + "\n";
-                        break;
-                    }
-                }
-                Log.text = getItemText;
-            }
-        }
-        DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.green;
-        DungeonRoom[DungeonModel.PlayerInRoom].tag = "ClearRoom";
-        TreasureActionPanel.SetActive(false);
+        dungeonControl.ItemLoot(Log,DungeonRoom,TreasureActionPanel);
     }
 
 }

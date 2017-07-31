@@ -52,6 +52,10 @@ public class ItemList
     [DefaultValue(1)]
     [XmlAttribute("Chance")]
     public int chance;
+    [XmlAttribute("AmountMin")]
+    public int amountMin;
+    [XmlAttribute("AmountMax")]
+    public int amountMax;
 }
 
 public class DungeonModel {
