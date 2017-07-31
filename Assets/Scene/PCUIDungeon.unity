@@ -7737,7 +7737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3726182569af0e44196ae366a75c913c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DungeonName: {fileID: 2131474993}
+  dungeonName: {fileID: 2131474993}
   Room: {fileID: 114380683235909794, guid: a4e02d320d4d0cd42b4199d7cb2247bb, type: 2}
   Log: {fileID: 2120403344}
   Panel: {fileID: 1705849126}

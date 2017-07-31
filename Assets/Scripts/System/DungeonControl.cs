@@ -344,4 +344,63 @@ public class DungeonControl
 
     }
 
+    public void ItemLoot(Text Log, Button[] DungeonRoom, GameObject TreasureActionPanel)
+    {
+        //do something
+        int totalChance = 0;
+        string getItemText = "";
+        int randomAmount = 0;
+        List<string> getItem = new List<string>();
+        List<int> getAmount = new List<int>();
+
+        int getTreasure = Random.Range(DungeonGenerator.info.minGet, DungeonGenerator.info.maxGet + 1);
+        foreach (ItemList item in DungeonGenerator.info.item)
+        {
+            totalChance += item.chance;
+        }
+
+        if (getTreasure == 0)
+        {
+            Log.text = "Unfotunetly the chest is empty";
+
+        }
+        else
+        {
+            for (int treasureCount = 1; treasureCount <= getTreasure; treasureCount++)
+            {
+                int currentChance = 0;
+                int randomChance = Random.Range(0, totalChance);
+                foreach (ItemList item in DungeonGenerator.info.item)
+                {
+                    currentChance += item.chance;
+                    if (randomChance <= currentChance)
+                    {
+                        randomAmount = Random.Range(item.amountMin, item.amountMax + 1);
+                        
+                        if (!getItem.Contains(item.itemId))
+                        {
+                            getItem.Add(item.itemId);
+                            getAmount.Add(randomAmount);
+                        }
+                        else
+                        {
+                            int itemIndex = getItem.FindIndex(x=>x==item.itemId);
+                            getAmount[itemIndex] += randomAmount;
+                        }
+                        break;
+                    }
+                }
+                
+            }
+            Debug.Log(getItem.Count);
+            for (int itemIndex = 0; itemIndex < getItem.Count; itemIndex++)
+            {
+                getItemText += "You get " + getItem[itemIndex] + " x" + getAmount[itemIndex] + "\n";
+            }
+            Log.text = getItemText;
+        }
+        DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.green;
+        DungeonRoom[DungeonModel.PlayerInRoom].tag = "ClearRoom";
+        TreasureActionPanel.SetActive(false);
+    }
 }
