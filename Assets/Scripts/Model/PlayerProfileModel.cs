@@ -82,6 +82,16 @@ public class PlayerProfileModel
     {
         //TODO later
     }
+
+    public void RemoveItem(int index, int qty)
+    {
+        itemsOwned[index] -= qty;
+        if(itemsOwned[index] <= 0)
+        {
+            itemsOwned.RemoveAt(index);
+            itemsId.RemoveAt(index);
+        }
+    }
 }
 
 

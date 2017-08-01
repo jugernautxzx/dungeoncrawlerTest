@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public interface TooltipInterface
@@ -8,7 +9,12 @@ public interface TooltipInterface
     void HideTooltip();
 }
 
-public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInterface, EquipmentUIInterface, EquipmentUILevelUpInterface, InventoryItemShowInterface, TooltipInterface, ConsumableInterface
+public interface ConfirmationDialogInterface
+{
+    void RequestConfirmationDialog(string text, UnityAction onYes, UnityAction onNo, UnityAction onCancel);
+}
+
+public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInterface, EquipmentUIInterface, EquipmentUILevelUpInterface, InventoryItemShowInterface, TooltipInterface, ConsumableInterface, ConfirmationDialogInterface
 {
 
     public CharCreationUI charCreate;
@@ -18,6 +24,7 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
     public InventoryUI inventoryUI;
     public ConsumableItemUI consumableUI;
     public RectTransform equipmentShowPopUp, tooltip;
+    public ConfirmationDialog dialog;
 
     public void OnCreateNewChar()
     {
@@ -211,4 +218,11 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         tooltip.gameObject.SetActive(false);
     }
 
+    public void RequestConfirmationDialog(string text, UnityAction onYes, UnityAction onNo, UnityAction onCancel)
+    {
+        dialog.SetYesClicked(onYes);
+        dialog.SetNoClicked(onNo);
+        dialog.SetText(text);
+        dialog.gameObject.SetActive(true);
+    }
 }
