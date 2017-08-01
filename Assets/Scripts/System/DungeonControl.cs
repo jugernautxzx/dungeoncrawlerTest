@@ -256,8 +256,7 @@ public class DungeonControl
             }
             else
             {
-                DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.green;
-                DungeonRoom[DungeonModel.PlayerInRoom].tag = "ClearRoom";
+                ClearRoomTag(DungeonRoom);
                 DungeonModel.battleWon = false;
             }
             //return;
@@ -295,14 +294,12 @@ public class DungeonControl
         if (DungeonRoom[DungeonModel.PlayerInRoom].tag.Contains("Boss"))
         {
             //do something
-            DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.green;
-            DungeonRoom[DungeonModel.PlayerInRoom].tag = "ClearRoom";
+            ClearRoomTag(DungeonRoom);
         }
 
         if (DungeonRoom[DungeonModel.PlayerInRoom].tag == "Untagged")
         {
-            DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.green;
-            DungeonRoom[DungeonModel.PlayerInRoom].tag = "ClearRoom";
+            ClearRoomTag(DungeonRoom);
         }
         WriteLog(Log,DungeonRoom);
 
@@ -346,7 +343,6 @@ public class DungeonControl
 
     public void ItemLoot(Text Log, Button[] DungeonRoom, GameObject TreasureActionPanel)
     {
-        //do something
         int totalChance = 0;
         string getItemText = "";
         int randomAmount = 0;
@@ -392,7 +388,6 @@ public class DungeonControl
                 }
                 
             }
-            Debug.Log(getItem.Count);
             for (int itemIndex = 0; itemIndex < getItem.Count; itemIndex++)
             {
                 PlayerSession.GetProfile().AddItem(getItem[itemIndex], getAmount[itemIndex]);
@@ -400,8 +395,52 @@ public class DungeonControl
             }
             Log.text = getItemText;
         }
-        DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.green;
-        DungeonRoom[DungeonModel.PlayerInRoom].tag = "ClearRoom";
+        ClearRoomTag(DungeonRoom);
         TreasureActionPanel.SetActive(false);
     }
+
+    public void EquipmentLoot(Text Log, Button[] DungeonRoom, GameObject TreasureActionPanel)
+    {
+        int totalChance = 0;
+        
+        int getEquipment = Random.Range(DungeonGenerator.info.minGetEq, DungeonGenerator.info.maxGetEq + 1);
+        foreach (EquipList equip in DungeonGenerator.info.equip)
+        {
+            totalChance += equip.chance;
+        }
+
+        if (getEquipment == 0)
+        {
+            Log.text = "Unfotunetly the chest is empty";
+
+        }
+        else
+        {
+            for (int equipmentCount = 1; equipmentCount <= getEquipment; equipmentCount++)
+            {
+                int currentChance = 0;
+                int randomEquipmentLv = Random.Range(DungeonGenerator.info.minEqLv,DungeonGenerator.info.maxEqLv+1);
+                int randomChance = Random.Range(0, totalChance);
+                foreach (EquipList equip in DungeonGenerator.info.equip)
+                {
+                    currentChance += equip.chance;
+                    if (randomChance <= currentChance)
+                    {
+                        Log.text = "You got " + equip.tier + " Lv" + randomEquipmentLv;
+                        break;
+                    }
+                }
+            }
+        }
+        ClearRoomTag(DungeonRoom);
+        TreasureActionPanel.SetActive(false);
+
+    }
+
+    public void ClearRoomTag(Button[] DungeonRoom)
+    {
+        DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.green;
+        DungeonRoom[DungeonModel.PlayerInRoom].tag = "ClearRoom";
+    }
+
 }

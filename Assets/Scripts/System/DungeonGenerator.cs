@@ -18,6 +18,7 @@ public class DungeonGenerator : MonoBehaviour {
     public GameObject TrapActionPanel;
     public Button ActionButton;
     public Text completeDungeon;
+    public Button surrender;
     DungeonControl dungeonControl;
     DungeonManager dungeonManager;
     DungeonModel dungeonModel;
@@ -55,9 +56,9 @@ public class DungeonGenerator : MonoBehaviour {
     public void GenerateDungeon()
     {
         info = DungeonManager.DungeonLoad("Stage1_1");
-
         bool RoomPosition = true;
         DungeonModel.IndexCoridor = 0;
+
         dungeonName.text = info.name;
         completeDungeon.gameObject.SetActive(false);
 
@@ -109,6 +110,7 @@ public class DungeonGenerator : MonoBehaviour {
         EventSystem.current.SetSelectedGameObject(DungeonRoom[0].gameObject);
         EventSystem.current.currentSelectedGameObject.tag = "Entrance";
         DungeonRoom[0].GetComponent<Image>().color = Color.cyan;
+        surrender.onClick.AddListener(Surrender);
         PlayerControl();
     }
 
@@ -474,7 +476,22 @@ public class DungeonGenerator : MonoBehaviour {
 
     public void LootAction()
     {
-        dungeonControl.ItemLoot(Log,DungeonRoom,TreasureActionPanel);
+        int randomItem = Random.Range(0,100);
+
+        if (randomItem<=info.chanceGetEq)
+        {
+            dungeonControl.EquipmentLoot(Log, DungeonRoom, TreasureActionPanel);
+        }
+        else
+        {
+            dungeonControl.ItemLoot(Log, DungeonRoom, TreasureActionPanel);
+        }
+    }
+
+    public void Surrender()
+    {
+        //PlayerSession.GetInstance().SaveSession();
+        SceneManager.LoadScene(0);
     }
 
 }

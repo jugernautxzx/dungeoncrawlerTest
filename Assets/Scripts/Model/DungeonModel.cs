@@ -26,12 +26,25 @@ public class DungeonInfo {
     public int minGet;
     [XmlAttribute("MaxGetTreasure")]
     public int maxGet;
+    [XmlAttribute("ChanceGetEquipment")]
+    public int chanceGetEq;
+    [XmlAttribute("MinGetEquipment")]
+    public int minGetEq;
+    [XmlAttribute("MaxGetEquipment")]
+    public int maxGetEq;
+    [XmlAttribute("MinEquipmentLv")]
+    public int minEqLv;
+    [XmlAttribute("MaxEquipmentLv")]
+    public int maxEqLv;
     [XmlArray("EnemyType")]
     [XmlArrayItem("Enemy")]
     public List<EnemyList> enemy;
     [XmlArray("Treasure")]
     [XmlArrayItem("Item")]
     public List<ItemList> item;
+    [XmlArray("Equipment")]
+    [XmlArrayItem("Equip")]
+    public List<EquipList> equip;
 
 }
 
@@ -58,7 +71,16 @@ public class ItemList
     public int amountMax;
 }
 
-public class DungeonModel {
+[XmlRoot("Equip")]
+public class EquipList
+{
+    [XmlAttribute("Tier")]
+    public int tier;
+    [XmlAttribute("Chance")]
+    public int chance;
+}
+
+    public class DungeonModel {
     public static int IndexCoridor=0;
     public static float MaxPanelTopBottom = 0;
     public static float MaxPanelRightLeft = 0;
