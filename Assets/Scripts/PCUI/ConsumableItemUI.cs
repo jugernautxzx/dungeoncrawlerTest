@@ -21,7 +21,9 @@ public class ConsumableItemUI : MonoBehaviour, ConsumableItemInterface
     public GameObject prefab;
 
     TooltipInterface tooltip;
-    List<int> sorting = new List<int>();
+    ConfirmationDialogInterface dialog;
+    List<int> filteredList = new List<int>();
+    int selectedItemIndex;
 
     // Use this for initialization
     void Start()
@@ -38,6 +40,7 @@ public class ConsumableItemUI : MonoBehaviour, ConsumableItemInterface
     public void SetListener(MainMenuUI ui)
     {
         tooltip = ui;
+        dialog = ui;
     }
 
     public void ChangeFilter(int code)
@@ -55,16 +58,16 @@ public class ConsumableItemUI : MonoBehaviour, ConsumableItemInterface
             case FILTER_TREASURE:
                 break;
         }
-        UpdateSorting();
+        UpdateFilteredList();
         UpdateList();
     }
 
-    void UpdateSorting()
+    void UpdateFilteredList()
     {
-        sorting.Clear();
-        for(int i=0; i<PlayerSession.GetProfile().itemsId.Count; i++)
+        filteredList.Clear();
+        for (int i = 0; i < PlayerSession.GetProfile().itemsId.Count; i++)
         {
-            sorting.Add(i);
+            filteredList.Insert(0, i);
         }
     }
 
@@ -76,16 +79,16 @@ public class ConsumableItemUI : MonoBehaviour, ConsumableItemInterface
     IEnumerator LoadItemUI()
     {
         yield return null;
-        foreach(Transform child in viewPort.transform)
+        foreach (Transform child in viewPort.transform)
         {
             child.gameObject.SetActive(false);
         }
-        for(int i=0; i<sorting.Count; i++)
+        for (int i = 0; i < filteredList.Count; i++)
         {
             if (i < viewPort.transform.childCount)
-                UpdateItem(sorting[i], viewPort.transform.GetChild(i).GetComponent<ConsumableListItemUI>());
+                UpdateItem(filteredList[i], viewPort.transform.GetChild(i).GetComponent<ConsumableListItemUI>());
             else
-                CreateNewItem(sorting[i]);
+                CreateNewItem(filteredList[i]);
         }
     }
 
@@ -104,7 +107,47 @@ public class ConsumableItemUI : MonoBehaviour, ConsumableItemInterface
 
     public void OnItemClicked(int index)
     {
-
+        selectedItemIndex = filteredList[index];//TODO Fix dialog
+        switch (ItemManager.GetInstance().GetItem(PlayerSession.GetProfile().itemsId[selectedItemIndex]).item)
+        {
+            case ItemType.Consumable:
+                DialogUseConsumable();
+                break;
+            case ItemType.SkillBook:
+                break;
+            case ItemType.Treasure:
+                DialogSellTreasure();
+                break;
+        }
     }
 
+    void DialogUseConsumable()
+    {
+        dialog.RequestConfirmationDialog("Request to use item?", OnItemUseYes, null, null);
+    }
+
+    void DialogSellTreasure()
+    {
+        dialog.RequestConfirmationDialog("Sell all " + ItemManager.GetInstance().GetItem(PlayerSession.GetProfile().itemsId[selectedItemIndex]).name + "?", OnTreasureSellYes, null, null);
+    }
+
+    void OnItemUseYes()
+    {
+
+        PlayerSession.GetProfile().RemoveItem(selectedItemIndex, 1);
+        UpdateFilteredList();
+        UpdateList();
+    }
+
+    void OnTreasureSellYes()
+    {
+        PlayerSession.GetProfile().RemoveItem(selectedItemIndex, PlayerSession.GetProfile().itemsOwned[selectedItemIndex]);
+        UpdateFilteredList();
+        UpdateList();
+    }
+
+    void UseConsumableItem()
+    {
+
+    }
 }
