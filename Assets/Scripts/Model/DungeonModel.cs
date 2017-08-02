@@ -103,6 +103,19 @@ public class EquipList
 
 }
 
+public class Loot
+{
+    public string itemId;
+    public int amount;
+
+    public Loot(string newItemId, int newAmount){
+        itemId = newItemId;
+        amount = newAmount;
+    }
+
+
+}
+
 public class DungeonManager {
 
     public static DungeonInfo DungeonLoad(string Id)
