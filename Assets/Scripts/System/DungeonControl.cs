@@ -8,7 +8,9 @@ using UnityEngine.SceneManagement;
 public class DungeonControl
 {
     DungeonModel dungeonModel;
-    
+    BattleManager battleManager;
+    List<Button> activeRoom = new List<Button>();
+
     float CurrentScale = 1f;
 
     public DungeonControl()
@@ -73,9 +75,15 @@ public class DungeonControl
         }
 
         //Check Room
+        foreach(Button dungeon in activeRoom)
+        {
+            dungeon.GetComponent<Animator>().SetBool("Animate", false);
+            dungeon.interactable = false;
+        }
+        activeRoom.Clear();
         for (int room = 0; room <= DungeonGenerator.info.allRoom; room++)
         {
-            DungeonRoom[room].interactable = false;
+            //DungeonRoom[room].interactable = false;
             if (north)
             {
                 if (PlayerPosition.y + 150 == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.y
@@ -83,6 +91,8 @@ public class DungeonControl
                 {
                     DungeonRoom[room].interactable = true;
                     DungeonRoom[room].gameObject.SetActive(true);
+                    activeRoom.Add(DungeonRoom[room]);
+                    DungeonRoom[room].GetComponent<Animator>().SetBool("Animate", true);
                 }
             }
 
@@ -93,6 +103,8 @@ public class DungeonControl
                 {
                     DungeonRoom[room].interactable = true;
                     DungeonRoom[room].gameObject.SetActive(true);
+                    activeRoom.Add(DungeonRoom[room]);
+                    DungeonRoom[room].GetComponent<Animator>().SetBool("Animate", true);
                 }
             }
             if (south)
@@ -102,6 +114,8 @@ public class DungeonControl
                 {
                     DungeonRoom[room].interactable = true;
                     DungeonRoom[room].gameObject.SetActive(true);
+                    activeRoom.Add(DungeonRoom[room]);
+                    DungeonRoom[room].GetComponent<Animator>().SetBool("Animate", true);
                 }
             }
             if (west)
@@ -111,6 +125,8 @@ public class DungeonControl
                 {
                     DungeonRoom[room].interactable = true;
                     DungeonRoom[room].gameObject.SetActive(true);
+                    activeRoom.Add(DungeonRoom[room]);
+                    DungeonRoom[room].GetComponent<Animator>().SetBool("Animate", true);
                 }
             }
         }
@@ -244,7 +260,7 @@ public class DungeonControl
             EnemyEncounter();
             if(DungeonModel.battleWon==false)
             {
-                SceneManager.LoadScene(2, LoadSceneMode.Additive);
+                //SceneManager.LoadScene(2, LoadSceneMode.Additive);
             }
             else if (DungeonRoom[DungeonModel.PlayerInRoom].tag.Contains("Treasure"))
             {
