@@ -8,7 +8,7 @@ public interface ConsumableInterface
 {
 }
 
-public class ConsumableItemUI : MonoBehaviour, ConsumableItemInterface
+public class ConsumableItemUI : MonoBehaviour, ConsumableItemInterface, CharListInterface
 {
     public const int FILTER_ALL = 0;
     public const int FILTER_CONSUMABLE = 1;
@@ -19,22 +19,30 @@ public class ConsumableItemUI : MonoBehaviour, ConsumableItemInterface
     public Dropdown filter;
     public GameObject viewPort;
     public GameObject prefab;
+    public CharList charList;
 
     TooltipInterface tooltip;
     ConfirmationDialogInterface dialog;
     List<int> filteredList = new List<int>();
     int selectedItemIndex;
+    int selectedCharacterIndex;
 
     // Use this for initialization
     void Start()
     {
         filter.onValueChanged.AddListener(ChangeFilter);
+        charList.SetListener(this);
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    void OnDisable()
+    {
+        charList.gameObject.SetActive(false);
     }
 
     public void SetListener(MainMenuUI ui)
@@ -95,7 +103,7 @@ public class ConsumableItemUI : MonoBehaviour, ConsumableItemInterface
     void UpdateItem(int index, ConsumableListItemUI ui)
     {
         ui.gameObject.SetActive(true);
-        ui.SetModel(ItemManager.GetInstance().GetItem(PlayerSession.GetProfile().itemsId[index]), PlayerSession.GetProfile().itemsOwned[index]);
+        ui.SetModel(GetItemInIndex(index), PlayerSession.GetProfile().itemsOwned[index]);
     }
 
     void CreateNewItem(int index)
@@ -108,12 +116,13 @@ public class ConsumableItemUI : MonoBehaviour, ConsumableItemInterface
     public void OnItemClicked(int index)
     {
         selectedItemIndex = filteredList[index];//TODO Fix dialog
-        switch (ItemManager.GetInstance().GetItem(PlayerSession.GetProfile().itemsId[selectedItemIndex]).item)
+        switch (GetItemInIndex(selectedItemIndex).item)
         {
             case ItemType.Consumable:
-                DialogUseConsumable();
+                //DialogUseConsumable();
                 break;
             case ItemType.SkillBook:
+                ShowSkillLearnUI();
                 break;
             case ItemType.Treasure:
                 DialogSellTreasure();
@@ -128,12 +137,11 @@ public class ConsumableItemUI : MonoBehaviour, ConsumableItemInterface
 
     void DialogSellTreasure()
     {
-        dialog.RequestConfirmationDialog("Sell all " + ItemManager.GetInstance().GetItem(PlayerSession.GetProfile().itemsId[selectedItemIndex]).name + "?", OnTreasureSellYes, null, null);
+        dialog.RequestConfirmationDialog("Sell all " + GetItemInIndex(selectedItemIndex).name + "?", OnTreasureSellYes, null, null);
     }
 
     void OnItemUseYes()
     {
-
         PlayerSession.GetProfile().RemoveItem(selectedItemIndex, 1);
         UpdateFilteredList();
         UpdateList();
@@ -141,13 +149,42 @@ public class ConsumableItemUI : MonoBehaviour, ConsumableItemInterface
 
     void OnTreasureSellYes()
     {
+        UseItem.SellTreasures(ItemManager.GetItemFromPlayer(selectedItemIndex));
         PlayerSession.GetProfile().RemoveItem(selectedItemIndex, PlayerSession.GetProfile().itemsOwned[selectedItemIndex]);
         UpdateFilteredList();
         UpdateList();
     }
 
-    void UseConsumableItem()
+    void ShowSkillLearnUI()
     {
-
+        charList.gameObject.SetActive(true);
+        charList.FilterActiveLearnable(ItemManager.GetItemFromPlayer(selectedItemIndex).value);
+        charList.StartUpdateAllMember();
     }
+
+    ItemModel GetItemInIndex(int index)
+    {
+        return ItemManager.GetInstance().GetItem(PlayerSession.GetProfile().itemsId[index]);
+    }
+
+    public void ClickedItemIndex(int index)
+    {
+        selectedCharacterIndex = index;
+        DialogUseSkillBook();
+    }
+
+    void DialogUseSkillBook()
+    {
+        dialog.RequestConfirmationDialog("Allow this character to learn " + ItemManager.GetItemFromPlayer(selectedItemIndex).value + "?"
+            , OnSkillBookUseYes, null, null);
+    }
+
+    void OnSkillBookUseYes()
+    {
+        UseItem.LearnActiveSkills(PlayerSession.GetProfile().characters[selectedCharacterIndex]
+            , ItemManager.GetItemFromPlayer(selectedItemIndex));
+        OnItemUseYes();
+        charList.gameObject.SetActive(false);
+    }
+
 }

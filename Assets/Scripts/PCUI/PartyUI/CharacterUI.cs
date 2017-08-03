@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public interface PartySelectionInterface
 {
@@ -9,13 +8,19 @@ public interface PartySelectionInterface
     void RemoveFromParty(int index);
 }
 
-public class CharacterUI : MonoBehaviour
+public interface OnCharacterUIClicked
+{
+    void OnClicked(int index);
+}
+
+public class CharacterUI : MonoBehaviour, IPointerClickHandler
 {
     public Text cName, cLevel;
     public GameObject inPartyNotice;
 
     PartySelectionInterface listener;
     EquipmentUIInterface eqListener;
+    OnCharacterUIClicked clickListener;
 
     // Use this for initialization
     void Start()
@@ -26,6 +31,16 @@ public class CharacterUI : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public void SetClickListener(OnCharacterUIClicked listener)
+    {
+        clickListener = listener;
+    }
+
+    public void RemoveEquipmentButton()
+    {
+        transform.GetChild(3).gameObject.SetActive(false);
     }
 
     public void SetEquipmentUI(EquipmentUIInterface eqImpl)
@@ -75,5 +90,11 @@ public class CharacterUI : MonoBehaviour
     public void LoadEquipmentInformation()
     {
         eqListener.LoadEquipmentUI(PlayerSession.GetProfile().characters[transform.GetSiblingIndex()]);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (clickListener != null)
+            clickListener.OnClicked(transform.GetSiblingIndex());
     }
 }
