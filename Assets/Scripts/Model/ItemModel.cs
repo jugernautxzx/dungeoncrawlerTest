@@ -43,6 +43,19 @@ public class ItemManager
 
     public ItemModel GetItem(string id)
     {
-        return itemList.Get(id);
+        if(itemList.DictContains(id))
+            return itemList.Get(id);
+        else
+        {
+            ItemModel error = new ItemModel();
+            error.name = "ITEM NOT FOUND";
+            error.description = "ITEM ID DOES NOT EXIST";
+            return error;
+        }
+    }
+
+    public static ItemModel GetItemFromPlayer(int index)
+    {
+        return instance.GetItem(PlayerSession.GetProfile().itemsId[index]);
     }
 }
