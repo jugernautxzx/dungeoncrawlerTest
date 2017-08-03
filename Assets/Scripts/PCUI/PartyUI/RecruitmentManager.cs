@@ -71,7 +71,7 @@ public class RecruitmentManager : MonoBehaviour {
 
     void GeneratePotion()
     {
-        PlayerSession.GetProfile().AddItem("Pot1", 1);
+        PlayerSession.GetProfile().AddItem("OldPot", 1);
     }
 
     void GenerateSkillBook()

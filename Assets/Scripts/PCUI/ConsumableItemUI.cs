@@ -149,6 +149,7 @@ public class ConsumableItemUI : MonoBehaviour, ConsumableItemInterface, CharList
 
     void OnTreasureSellYes()
     {
+        UseItem.SellTreasures(ItemManager.GetItemFromPlayer(selectedItemIndex));
         PlayerSession.GetProfile().RemoveItem(selectedItemIndex, PlayerSession.GetProfile().itemsOwned[selectedItemIndex]);
         UpdateFilteredList();
         UpdateList();

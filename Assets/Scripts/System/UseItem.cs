@@ -13,4 +13,11 @@ public class UseItem{
         }
     }
 
+
+    public static void SellTreasures(ItemModel treasure)
+    {
+        int gold = 0;
+        gold += int.TryParse(treasure.value, out gold) ? int.Parse(treasure.value) : 0;
+        PlayerSession.GetProfile().Gold += gold;
+    }
 }
