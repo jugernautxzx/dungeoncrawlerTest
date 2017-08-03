@@ -19,9 +19,9 @@ public class DungeonGenerator : MonoBehaviour {
     public Button ActionButton;
     public Text completeDungeon;
     public Button surrender;
+    public Button win;
+    public Text item;
     DungeonControl dungeonControl;
-    DungeonManager dungeonManager;
-    DungeonModel dungeonModel;
 
     int randPos;
     float panelTop = 0;
@@ -36,7 +36,6 @@ public class DungeonGenerator : MonoBehaviour {
     public static DungeonInfo info;
 
     void Start () {
-        dungeonManager = new DungeonManager();
         GenerateDungeon();
         GenerateActionButton();
     }
@@ -50,7 +49,6 @@ public class DungeonGenerator : MonoBehaviour {
     public DungeonGenerator()
     { 
         dungeonControl = new DungeonControl();
-        dungeonModel = new DungeonModel();
     }
 
     public void GenerateDungeon()
@@ -60,6 +58,7 @@ public class DungeonGenerator : MonoBehaviour {
         DungeonModel.IndexCoridor = 0;
 
         dungeonName.text = info.name;
+        item.text = "";
         completeDungeon.gameObject.SetActive(false);
 
         SpawnEntrancePoint();
@@ -111,6 +110,7 @@ public class DungeonGenerator : MonoBehaviour {
         EventSystem.current.currentSelectedGameObject.tag = "Entrance";
         DungeonRoom[0].GetComponent<Image>().color = Color.cyan;
         surrender.onClick.AddListener(Surrender);
+        win.onClick.AddListener(WinUI);
         PlayerControl();
     }
 
@@ -478,20 +478,28 @@ public class DungeonGenerator : MonoBehaviour {
     {
         int randomItem = Random.Range(0,100);
 
-        if (randomItem<=info.chanceGetEq)
+        /*if (randomItem<=info.chanceGetEq)
         {
-            dungeonControl.EquipmentLoot(Log, DungeonRoom, TreasureActionPanel);
+            dungeonControl.EquipmentLoot(Log, DungeonRoom, TreasureActionPanel,item);
         }
         else
         {
-            dungeonControl.ItemLoot(Log, DungeonRoom, TreasureActionPanel);
-        }
+            dungeonControl.ItemLoot(Log, DungeonRoom, TreasureActionPanel,item);
+        }*/
+        dungeonControl.ItemLoot(Log, DungeonRoom, TreasureActionPanel, item);
     }
 
     public void Surrender()
     {
         //PlayerSession.GetInstance().SaveSession();
         SceneManager.LoadScene(0);
+    }
+
+    public void WinUI()
+    {
+        completeDungeon.gameObject.SetActive(true);
+        Time.timeScale = 0;
+        dungeonControl.DungeonWin();
     }
 
 }
