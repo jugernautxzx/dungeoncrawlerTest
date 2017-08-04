@@ -1,10 +1,59 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EquipmentGenerator
 {
+    public readonly string[] TIER_NAMES = {"Wooden", "Iron", "Steel"};
+
+    EqSlot genSlot = EqSlot.MainHand;
+    Weapon genWeapon = Weapon.Dagger;
+    int genTier = 1;
+
+    //=================================================================================== GENERATOR SETTING ===============================================================
+    public void Randomize()
+    {
+        genSlot = (EqSlot)Random.Range(0, 5);
+        if (genSlot == EqSlot.MainHand)
+            genWeapon = (Weapon)Random.Range(2, 11);
+    }
+
+    public EquipmentGenerator SetEquipmentSlot(EqSlot slot)
+    {
+        genSlot = slot;
+        return this;
+    }
+
+    public EquipmentGenerator SetWeapon(Weapon w)
+    {
+        genWeapon = w;
+        return this;
+    }
+
+    public EquipmentGenerator SetTier(int tier)
+    {
+        genTier = tier;
+        return this;
+    }
+
+    public Equipment Generate()
+    {
+        Equipment generated = new Equipment();
+        generated.slot = genSlot;
+        if (genSlot == EqSlot.MainHand)
+            generated.weapon = genWeapon;
+        generated.id = GenerateId();
+        return generated;
+    }
+
+    string GenerateId()
+    {
+        System.DateTime epoch = new System.DateTime(2000, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
+        double unix = (System.DateTime.Now - epoch).TotalMilliseconds;
+        return unix.ToString();
+    }
+    //=============================================================================END OF GENERATOR SETTING ===============================================================
+
     //========================================================================================== Weapon generator ==========================================================
+
     public Equipment GenerateWeapon(int tier)
     {
         Equipment generated = new Equipment();

@@ -52,3 +52,9 @@ public enum ItemType
 {
     Treasure, Consumable, KeyItem, SkillBook
 }
+
+public class MouseInput
+{
+    public const int MOUSE_LEFT = 0;
+    public const int MOUSE_RIGHT = 1;
+}

@@ -15,6 +15,8 @@ public class ItemModel : ClassWithId{
     public ItemType item;
     [XmlAttribute("Value")]
     public string value;
+    [XmlAttribute("Gold")]
+    public int gold;
     [XmlAttribute("Description")]
     public string description;
     [XmlAttribute("Weight")]

@@ -136,9 +136,10 @@ public class InventoryUI : MonoBehaviour, InventoryItemInterface
     }
 
   
-    public void OnItemClicked(int index)
+    public void OnItemClicked(int index, int mouseIndex)
     {
-        eqImpl.OnItemEquiped(sorting[index]);
+        if(mouseIndex == MouseInput.MOUSE_LEFT)
+            eqImpl.OnItemEquiped(sorting[index]);
     }
 
     public void ClearItemList()

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public interface InventoryItemInterface
 {
-    void OnItemClicked(int index);
+    void OnItemClicked(int index, int mouseIndex);
 }
 
 public interface InventoryItemShowInterface
@@ -72,7 +72,14 @@ public class InventoryItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnte
     {
         if (selectedImpl != null)
         {
-            selectedImpl.OnItemClicked(transform.GetSiblingIndex());
+            if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                selectedImpl.OnItemClicked(transform.GetSiblingIndex(), 0);
+            }
+            else if(eventData.button == PointerEventData.InputButton.Right)
+            {
+                selectedImpl.OnItemClicked(transform.GetSiblingIndex(), 1);
+            }
             if (showImpl != null)
                 showImpl.OnCloseEquipmentStatus();
         }

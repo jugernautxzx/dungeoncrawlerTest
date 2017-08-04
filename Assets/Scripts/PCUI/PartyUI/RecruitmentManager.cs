@@ -7,17 +7,20 @@ public interface RecruitmentInterface
     void RecruitNewCharacter(CharacterModel model);
 }
 
-public class RecruitmentManager : MonoBehaviour {
+public class RecruitmentManager : MonoBehaviour
+{
 
     RecruitmentInterface listener;
 
     // Use this for initialization
-    void Start() {
+    void Start()
+    {
 
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
 
     }
 

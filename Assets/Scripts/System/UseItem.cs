@@ -14,10 +14,9 @@ public class UseItem{
     }
 
 
-    public static void SellTreasures(ItemModel treasure)
+    public static void SellItem(ItemModel treasure, int totalAmount)
     {
-        int gold = 0;
-        gold += int.TryParse(treasure.value, out gold) ? int.Parse(treasure.value) : 0;
+        int gold = treasure.gold * totalAmount;
         PlayerSession.GetProfile().Gold += gold;
     }
 }

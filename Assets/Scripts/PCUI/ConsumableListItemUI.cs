@@ -3,11 +3,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public interface ConsumableItemInterface{
-    void OnItemClicked(int index);
+public interface ConsumableItemInterface
+{
+    void OnItemClicked(int index, int mouseIndex);
 }
 
-public class ConsumableListItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
+public class ConsumableListItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+{
 
     public Text itemName;
     public Text itemTotal;
@@ -28,7 +30,7 @@ public class ConsumableListItemUI : MonoBehaviour, IPointerEnterHandler, IPointe
         this.model = model;
         itemName.text = model.name;
         itemType.text = model.item.ToString();
-        itemTotal.text = "X "+ qty.ToString();
+        itemTotal.text = "X " + qty.ToString();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -44,6 +46,14 @@ public class ConsumableListItemUI : MonoBehaviour, IPointerEnterHandler, IPointe
     public void OnPointerClick(PointerEventData eventData)
     {
         tooltip.HideTooltip();
-        consumable.OnItemClicked(transform.GetSiblingIndex());
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            consumable.OnItemClicked(transform.GetSiblingIndex(), 0);
+        }
+        //else if (eventData.button == PointerEventData.InputButton.Middle)
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            consumable.OnItemClicked(transform.GetSiblingIndex(), 1);
+        }
     }
 }

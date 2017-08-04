@@ -113,20 +113,25 @@ public class ConsumableItemUI : MonoBehaviour, ConsumableItemInterface, CharList
         UpdateItem(index, item.GetComponent<ConsumableListItemUI>());
     }
 
-    public void OnItemClicked(int index)
+    public void OnItemClicked(int index, int mouseIndex)
     {
         selectedItemIndex = filteredList[index];//TODO Fix dialog
-        switch (GetItemInIndex(selectedItemIndex).item)
+        if (mouseIndex == MouseInput.MOUSE_LEFT)
+            switch (GetItemInIndex(selectedItemIndex).item)
+            {
+                case ItemType.Consumable:
+                    //DialogUseConsumable();
+                    break;
+                case ItemType.SkillBook:
+                    ShowSkillLearnUI();
+                    break;
+                case ItemType.Treasure:
+                    DialogSellItem();
+                    break;
+            }
+        else if(mouseIndex == MouseInput.MOUSE_RIGHT)
         {
-            case ItemType.Consumable:
-                //DialogUseConsumable();
-                break;
-            case ItemType.SkillBook:
-                ShowSkillLearnUI();
-                break;
-            case ItemType.Treasure:
-                DialogSellTreasure();
-                break;
+            DialogSellItem();
         }
     }
 
@@ -135,7 +140,7 @@ public class ConsumableItemUI : MonoBehaviour, ConsumableItemInterface, CharList
         dialog.RequestConfirmationDialog("Request to use item?", OnItemUseYes, null, null);
     }
 
-    void DialogSellTreasure()
+    void DialogSellItem()
     {
         dialog.RequestConfirmationDialog("Sell all " + GetItemInIndex(selectedItemIndex).name + "?", OnTreasureSellYes, null, null);
     }
@@ -149,7 +154,7 @@ public class ConsumableItemUI : MonoBehaviour, ConsumableItemInterface, CharList
 
     void OnTreasureSellYes()
     {
-        UseItem.SellTreasures(ItemManager.GetItemFromPlayer(selectedItemIndex));
+        UseItem.SellItem(ItemManager.GetItemFromPlayer(selectedItemIndex), PlayerSession.GetProfile().itemsOwned[selectedItemIndex]);
         PlayerSession.GetProfile().RemoveItem(selectedItemIndex, PlayerSession.GetProfile().itemsOwned[selectedItemIndex]);
         UpdateFilteredList();
         UpdateList();
@@ -175,7 +180,7 @@ public class ConsumableItemUI : MonoBehaviour, ConsumableItemInterface, CharList
 
     void DialogUseSkillBook()
     {
-        dialog.RequestConfirmationDialog("Allow this character to learn " + ItemManager.GetItemFromPlayer(selectedItemIndex).value + "?"
+        dialog.RequestConfirmationDialog("Teach this character " + ItemManager.GetItemFromPlayer(selectedItemIndex).value + "?"
             , OnSkillBookUseYes, null, null);
     }
 

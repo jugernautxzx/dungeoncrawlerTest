@@ -12,18 +12,6 @@ public class ConfirmationDialog : MonoBehaviour
     public Button noButton;
     public Button yesButton;
 
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void SetText(string text)
     {
         dialog.text = text;
