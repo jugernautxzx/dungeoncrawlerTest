@@ -7,15 +7,15 @@ using UnityEngine.SceneManagement;
 
 public class DungeonControl
 {
-    DungeonModel dungeonModel;
     BattleManager battleManager;
+    DungeonInventory dungeonInventory;
     List<Button> activeRoom = new List<Button>();
 
     float CurrentScale = 1f;
 
     public DungeonControl()
     {
-        dungeonModel = new DungeonModel();
+        dungeonInventory = new DungeonInventory();
     }
 
     public void Zoom(RectTransform panel, float increment)
@@ -356,7 +356,7 @@ public class DungeonControl
 
     }
 
-    public void ItemLoot(Text Log, Button[] DungeonRoom, GameObject TreasureActionPanel)
+    public void ItemLoot(Text Log, Button[] DungeonRoom, GameObject TreasureActionPanel, Text itemText)
     {
         int totalChance = 0;
         string getItemText = "";
@@ -405,7 +405,9 @@ public class DungeonControl
             }
             for (int itemIndex = 0; itemIndex < getItem.Count; itemIndex++)
             {
-                PlayerSession.GetProfile().AddItem(getItem[itemIndex], getAmount[itemIndex]);
+                //PlayerSession.GetProfile().AddItem(getItem[itemIndex], getAmount[itemIndex]);
+                
+                dungeonInventory.getLoot(getItem[itemIndex],getAmount[itemIndex],itemText);
                 getItemText += "You get " + ItemManager.GetInstance().GetItem(getItem[itemIndex]).name + " x" + getAmount[itemIndex] + "\n";
             }
             Log.text = getItemText;
@@ -414,7 +416,7 @@ public class DungeonControl
         TreasureActionPanel.SetActive(false);
     }
 
-    public void EquipmentLoot(Text Log, Button[] DungeonRoom, GameObject TreasureActionPanel)
+    public void EquipmentLoot(Text Log, Button[] DungeonRoom, GameObject TreasureActionPanel, Text itemText)
     {
         int totalChance = 0;
         
@@ -456,6 +458,11 @@ public class DungeonControl
     {
         DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.green;
         DungeonRoom[DungeonModel.PlayerInRoom].tag = "ClearRoom";
+    }
+
+    public void DungeonWin()
+    {
+        dungeonInventory.WinDungeonLoot();
     }
 
 }
