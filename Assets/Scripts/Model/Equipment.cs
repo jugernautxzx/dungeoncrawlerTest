@@ -25,5 +25,7 @@ public class Equipment : ClassWithId {
     public Attribute attribute;
     [XmlElement("Bonus")]
     public BattleAttribute battle;
+    [XmlElement("Rarity")]
+    public int rarity;
 }
 

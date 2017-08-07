@@ -62,14 +62,14 @@ public class RecruitmentManager : MonoBehaviour
 
     public void Debug1()
     {
-        //Debugger.GenerateMainHand();
-        GeneratePotion();
+        Debugger.GenerateMainHand();
+        //GeneratePotion();
     }
 
     public void Debug2()
     {
         //Debugger.GenerateOffHand();
-        GenerateSkillBook();
+        //GenerateSkillBook();
     }
 
     void GeneratePotion()

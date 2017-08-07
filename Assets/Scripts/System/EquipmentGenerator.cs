@@ -2,11 +2,14 @@
 
 public class EquipmentGenerator
 {
-    public readonly string[] TIER_NAMES = {"Wooden", "Iron", "Steel"};
+    public readonly string[] TIER_NAMES = { "Old","Wooden", "Iron", "Steel"};
+    public readonly string[] DAGGER = {"Knife", "Dagger", "Combat knife", "Baselard"};
 
     EqSlot genSlot = EqSlot.MainHand;
     Weapon genWeapon = Weapon.Dagger;
-    int genTier = 1;
+    int genTier = 0;
+    string presetName;
+    Rarity setRarity;
 
     //=================================================================================== GENERATOR SETTING ===============================================================
     public void Randomize()
@@ -14,6 +17,18 @@ public class EquipmentGenerator
         genSlot = (EqSlot)Random.Range(0, 5);
         if (genSlot == EqSlot.MainHand)
             genWeapon = (Weapon)Random.Range(2, 11);
+    }
+
+    public EquipmentGenerator SetName(string name)
+    {
+        presetName = name;
+        return this;
+    }
+
+    public EquipmentGenerator SetRarity(Rarity rare)
+    {
+        setRarity = rare;
+        return this;
     }
 
     public EquipmentGenerator SetEquipmentSlot(EqSlot slot)
@@ -38,9 +53,13 @@ public class EquipmentGenerator
     {
         Equipment generated = new Equipment();
         generated.slot = genSlot;
+        generated.name = GenerateName();
         if (genSlot == EqSlot.MainHand)
             generated.weapon = genWeapon;
         generated.id = GenerateId();
+        generated.rarity = (int)setRarity;
+        generated.battle = new BattleAttribute();
+        generated.attribute = new Attribute();
         return generated;
     }
 
@@ -50,31 +69,22 @@ public class EquipmentGenerator
         double unix = (System.DateTime.Now - epoch).TotalMilliseconds;
         return unix.ToString();
     }
-    //=============================================================================END OF GENERATOR SETTING ===============================================================
 
+    string GenerateName()
+    {
+        if (presetName == null)
+            return genWeapon.ToString();
+        else
+            return presetName;
+    }
+
+    //=============================================================================END OF GENERATOR SETTING ===============================================================
+    //===============================================================================START GENERATING======================================================================
+
+    //========================================================================END OF START GENERATING======================================================================
     //========================================================================================== Weapon generator ==========================================================
 
-    public Equipment GenerateWeapon(int tier)
-    {
-        Equipment generated = new Equipment();
-        generated.attribute = new Attribute();
-        generated.battle = new BattleAttribute();
-        generated.id = Time.timeSinceLevelLoad.ToString() + Time.deltaTime.ToString();
-        generated.slot = EqSlot.MainHand;
-        RandomizeWeaponType(generated);
-        GenerateName(generated, tier);
-        RandomizedAttribute(generated, tier);
-        RandomizedBonus(generated, tier);
-        return generated;
-    }
-
-    void RandomizeWeaponType(Equipment equip)
-    {
-        //equip.weapon = (Weapon)Random.Range(2, 11);
-        equip.weapon = Weapon.Dagger;
-    }
-
-    void RandomizedBonus(Equipment eq, int tier)
+    void RandomizedBonus(Equipment eq)
     {
         switch (eq.weapon)
         {
@@ -83,7 +93,7 @@ public class EquipmentGenerator
             case Weapon.Crossbow:
                 break;
             case Weapon.Dagger:
-                DaggerBonus(eq, tier);
+                DaggerBonus(eq);
                 break;
             case Weapon.Shield:
                 break;
@@ -104,7 +114,7 @@ public class EquipmentGenerator
         }
     }
 
-    void RandomizedAttribute(Equipment eq, int tier)
+    void RandomizedAttribute(Equipment eq)
     {
         switch (eq.weapon)
         {
@@ -113,7 +123,7 @@ public class EquipmentGenerator
             case Weapon.Crossbow:
                 break;
             case Weapon.Dagger:
-                DaggerAttribute(eq, tier);
+                DaggerAttribute(eq);
                 break;
             case Weapon.Shield:
                 break;
@@ -134,56 +144,17 @@ public class EquipmentGenerator
         }
     }
 
-    void GenerateName(Equipment eq, int tier)
+    void DaggerBonus(Equipment eq)
     {
-        //TODO to be determined
-        switch (tier)
-        {
-            case 1:
-                eq.name = "Iron " + eq.weapon.ToString();
-                break;
-            case 2:
-                eq.name = "Steel " + eq.weapon.ToString();
-                break;
-            default:
-                eq.name = tier.ToString() + " tiered " + eq.weapon.ToString();
-                break;
-        }
-        int seed = Random.Range(0, 5);
-        switch (seed)
-        {
-            case 0:
-                eq.name += " of swiftness";
-                break;
-            case 1:
-                eq.name = "Sharp " + eq.name;
-                break;
-            case 2:
-                eq.name = "Fine " + eq.name;
-                break;
-            case 3:
-                eq.name = "Heavy " + eq.name;
-                break;
-            case 4:
-                eq.name = "Dull " + eq.name;
-                break;
-            case 5:
-                eq.name = "Jagged " + eq.name;
-                break;
-        }
-    }
-
-    void DaggerBonus(Equipment eq, int tier)
-    {
-        eq.battle.basePAtk = Random.Range(((tier - 1) * 2) + 1, 3 + (tier * 2));
-        eq.battle.basePDef= Random.Range(tier - 1, tier);
+        eq.battle.basePAtk = Random.Range(((genTier - 1) * 2) + 1, 3 + (genTier * 2));
+        eq.battle.basePDef= Random.Range(genTier - 1, genTier);
         eq.battle.baseMDef = Random.Range(0, 1);
-        eq.battle.baseMatk= Random.Range(tier - 1, tier * 2);
+        eq.battle.baseMatk= Random.Range(genTier - 1, genTier * 2);
     }
 
-    void DaggerAttribute(Equipment eq, int tier)
+    void DaggerAttribute(Equipment eq)
     {
-        eq.attribute.agi = Random.Range(tier, tier + 2);
+        eq.attribute.agi = Random.Range(genTier, genTier + 2);
         eq.attribute.speed = 2;
     }
     //===================================================================== END OF WEAPON GENERATOR =============================================================================================
