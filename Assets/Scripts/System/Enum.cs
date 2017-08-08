@@ -63,3 +63,8 @@ public enum Rarity : int
 {
     Normal, Uncommon, Rare, Epic, Legendary, Unique
 }
+
+public class BuildIndex
+{
+    public const int BATTLE_SCENE = 2;
+}

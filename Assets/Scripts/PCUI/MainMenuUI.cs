@@ -16,7 +16,6 @@ public interface ConfirmationDialogInterface
 
 public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInterface, EquipmentUIInterface, EquipmentUILevelUpInterface, InventoryItemShowInterface, TooltipInterface, ConsumableInterface, ConfirmationDialogInterface
 {
-
     public CharCreationUI charCreate;
     public PartyManager partyManager;
     public RecruitmentManager recruitmentManager;
@@ -126,7 +125,25 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
 
     public void StartMockupBattle()
     {
+        InitializeBattleMembers();
         SceneManager.LoadScene(1);
+    }
+
+    void InitializeBattleMembers()
+    {
+        PlayerSession.GetProfile().characters[0].GenerateBasicBattleAttribute();
+        if (PlayerSession.GetProfile().party.member1 > 0)
+        {
+            PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member1].GenerateBasicBattleAttribute();
+        }
+        if (PlayerSession.GetProfile().party.member2 > 0)
+        {
+            PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member2].GenerateBasicBattleAttribute();
+        }
+        if (PlayerSession.GetProfile().party.member3 > 0)
+        {
+            PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member3].GenerateBasicBattleAttribute();
+        }
     }
 
     public void ShowRecruitWindow()

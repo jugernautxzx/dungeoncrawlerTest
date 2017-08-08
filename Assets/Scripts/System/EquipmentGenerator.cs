@@ -60,6 +60,8 @@ public class EquipmentGenerator
         generated.rarity = (int)setRarity;
         generated.battle = new BattleAttribute();
         generated.attribute = new Attribute();
+        DaggerBonus(generated);//TODO Delete
+        DaggerAttribute(generated);
         return generated;
     }
 

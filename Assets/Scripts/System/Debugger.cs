@@ -8,6 +8,7 @@ public class Debugger
     public static void GenerateMainHand()
     {
         EquipmentGenerator gen = new EquipmentGenerator();
+        gen.SetTier(99).SetRarity(Rarity.Unique).SetName("Bugbuster");
         PlayerSession.GetInventory().list.Add(gen.Generate());
     }
 

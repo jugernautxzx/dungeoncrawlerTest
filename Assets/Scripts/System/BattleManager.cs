@@ -69,27 +69,24 @@ public class BattleManager : BattleManagerLog
         if (PlayerSession.GetProfile().party.member1 > 0)
         {
             player2 = PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member1];
-            player2.GenerateBasicBattleAttribute();
         }
         if (PlayerSession.GetProfile().party.member2 > 0)
         {
             player3 = PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member2];
-            player3.GenerateBasicBattleAttribute();
         }
         if (PlayerSession.GetProfile().party.member3 > 0)
         {
             player4 = PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member3];
-            player4.GenerateBasicBattleAttribute();
         }
 
         enemy1 = MonsterLoader.LoadMonsterData(DungeonModel.enemy1, DungeonModel.lvEnemy1);
-        enemy2 = MonsterLoader.LoadMonsterData(DungeonModel.enemy2, DungeonModel.lvEnemy2);
-        enemy3 = MonsterLoader.LoadMonsterData(DungeonModel.enemy3, DungeonModel.lvEnemy3);
-        enemy4 = MonsterLoader.LoadMonsterData(DungeonModel.enemy4, DungeonModel.lvEnemy4);
+        //enemy2 = MonsterLoader.LoadMonsterData(DungeonModel.enemy2, DungeonModel.lvEnemy2);
+        //enemy3 = MonsterLoader.LoadMonsterData(DungeonModel.enemy3, DungeonModel.lvEnemy3);
+        //enemy4 = MonsterLoader.LoadMonsterData(DungeonModel.enemy4, DungeonModel.lvEnemy4);
         InitEnemy(enemy1);
-        InitEnemy(enemy2);
-        InitEnemy(enemy3);
-        InitEnemy(enemy4);
+        //InitEnemy(enemy2);
+        //InitEnemy(enemy3);
+        //InitEnemy(enemy4);
     }
 
     void InitEnemy(CharacterModel model)
