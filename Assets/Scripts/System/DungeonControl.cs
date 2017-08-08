@@ -356,7 +356,7 @@ public class DungeonControl
 
     }
 
-    public void ItemLoot(Text Log, Button[] DungeonRoom, GameObject TreasureActionPanel, Text itemText)
+    public void ItemLoot(Text Log, Button[] DungeonRoom, GameObject TreasureActionPanel)
     {
         int totalChance = 0;
         string getItemText = "";
@@ -406,8 +406,8 @@ public class DungeonControl
             for (int itemIndex = 0; itemIndex < getItem.Count; itemIndex++)
             {
                 //PlayerSession.GetProfile().AddItem(getItem[itemIndex], getAmount[itemIndex]);
-                
-                dungeonInventory.getLoot(getItem[itemIndex],getAmount[itemIndex],itemText);
+
+                dungeonInventory.getLoot(getItem[itemIndex],getAmount[itemIndex], ItemManager.GetInstance().GetItem(getItem[itemIndex]).item);
                 getItemText += "You get " + ItemManager.GetInstance().GetItem(getItem[itemIndex]).name + " x" + getAmount[itemIndex] + "\n";
             }
             Log.text = getItemText;

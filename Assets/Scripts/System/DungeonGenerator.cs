@@ -21,6 +21,11 @@ public class DungeonGenerator : MonoBehaviour {
     public Button surrender;
     public Button win;
     public Text item;
+    public Button consumableItem;
+    public RectTransform consumableContent;
+    public Button treasureTab;
+    public Button consumableTab;
+    public RectTransform consumable;
     DungeonControl dungeonControl;
 
     int randPos;
@@ -38,6 +43,7 @@ public class DungeonGenerator : MonoBehaviour {
     void Start () {
         GenerateDungeon();
         GenerateActionButton();
+        SetInventoryObject();
     }
 
     void Update()
@@ -486,7 +492,7 @@ public class DungeonGenerator : MonoBehaviour {
         {
             dungeonControl.ItemLoot(Log, DungeonRoom, TreasureActionPanel,item);
         }*/
-        dungeonControl.ItemLoot(Log, DungeonRoom, TreasureActionPanel, item);
+        dungeonControl.ItemLoot(Log, DungeonRoom, TreasureActionPanel);
     }
 
     public void Surrender()
@@ -501,6 +507,27 @@ public class DungeonGenerator : MonoBehaviour {
         Time.timeScale = 0;
         dungeonControl.DungeonWin();
     }
+
+    public void SetInventoryObject() {
+        DungeonModel.inventoryTreasureText = item;
+        DungeonModel.consumableContent = consumableContent;
+        DungeonModel.consumableItem = consumableItem;
+        treasureTab.onClick.AddListener(ChangeToTreasureTab);
+        consumableTab.onClick.AddListener(ChangeToConsumableTab);
+    }
+
+    public void ChangeToConsumableTab()
+    {
+        consumable.gameObject.SetActive(true);
+        item.gameObject.SetActive(false);
+    }
+
+    public void ChangeToTreasureTab()
+    {
+        item.gameObject.SetActive(true);
+        consumable.gameObject.SetActive(false);
+    }
+
 
 }
 

@@ -92,6 +92,9 @@ public class EquipList
     public static GameObject currentTreasureActionPanel;
     public static GameObject currentTrapActionPanel;
     public static Text CurrentLog;
+    public static Text inventoryTreasureText;
+    public static Button consumableItem;
+    public static RectTransform consumableContent;
     public static string enemy1;
     public static int lvEnemy1;
     public static string enemy2;
@@ -107,10 +110,12 @@ public class Loot
 {
     public string itemId;
     public int amount;
+    public ItemType type;
 
-    public Loot(string newItemId, int newAmount){
+    public Loot(string newItemId, int newAmount, ItemType newType){
         itemId = newItemId;
         amount = newAmount;
+        type = newType;
     }
 
 
