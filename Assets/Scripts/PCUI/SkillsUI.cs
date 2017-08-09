@@ -14,7 +14,7 @@ public class SkillsUI : MonoBehaviour, SkillItemInterface
     public GameObject prefab;
     public Transform container;
 
-    List<string> names = new List<string>();
+    List<string> ids = new List<string>();
     List<string> desc = new List<string>();
 
     SetSkillInterface setInterface;
@@ -41,7 +41,7 @@ public class SkillsUI : MonoBehaviour, SkillItemInterface
     public void LoadAllAvailableActives(List<string> learned, List<string> equiped)
     {
         ClearList();
-        names.Add("None");
+        ids.Add("None");
         desc.Add("Remove active skill");
 
         if (learned != null)
@@ -49,17 +49,17 @@ public class SkillsUI : MonoBehaviour, SkillItemInterface
             {
                 if (!equiped.Contains(id))
                 {
-                    names.Add(ActiveSkillManager.GetInstance().GetActive(id).name);
+                    ids.Add(id);
                     desc.Add(ActiveSkillManager.GetInstance().GetActive(id).info);
                 }
             }
 
-        for (int i = 0; i < names.Count; i++)
+        for (int i = 0; i < ids.Count; i++)
         {
             if (i < container.transform.childCount)
-                UpdateItem(names[i], desc[i], i);
+                UpdateItem(ids[i], desc[i], i);
             else
-                PopulateList(names[i], desc[i]);
+                PopulateList(ids[i], desc[i]);
         }
     }
 
@@ -70,7 +70,7 @@ public class SkillsUI : MonoBehaviour, SkillItemInterface
 
     public void ClearList()
     {
-        names.Clear();
+        ids.Clear();
         desc.Clear();
         foreach (Transform child in container)
         {

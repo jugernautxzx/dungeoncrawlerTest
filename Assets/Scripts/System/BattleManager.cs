@@ -468,8 +468,30 @@ public class BattleManager : BattleManagerLog
 
     void OnBattleFinished()
     {
+        ClearAllPlayerBuffs();
         listener.WriteLog("Battle completed!", false);
         AllPlayerGetExperience();
+    }
+
+    void ClearAllPlayerBuffs()
+    {
+        ClearAllBuffs(player1);
+        ClearAllBuffs(player2);
+        ClearAllBuffs(player3);
+        ClearAllBuffs(player4);
+    }
+
+    void ClearAllBuffs(CharacterModel model)
+    {
+        if (model != null)
+        {
+            foreach(BattleBuff buff in model.battleAttribute.buffs)
+            {
+                buff.BuffOnRemove();
+            }
+            model.battleAttribute.buffs.Clear();
+        }
+
     }
 
     void AllPlayerGetExperience()

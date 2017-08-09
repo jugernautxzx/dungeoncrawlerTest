@@ -1,7 +1,7 @@
 <Items>
   <Item Id="Pot1" Name="Potion" Type="Consumable" Value="HP|10" Description="Heal user hp by 10." Weight="1" Gold="1"/>
   <Item Id="Pot2" Name="High Potion" Type="Consumable" Value="HP|50" Description="Heal user hp by 50." Weight="1" Gold="1"/>
-  <Item Id="Skill1" Name="Fireball scroll" Type="SkillBook" Value="Fireball" Description="Allow the user to learn fireball spell." Weight="2" Gold="5"/>
+  <Item Id="Skill1" Name="Fireball scroll" Type="SkillBook" Value="MuscleUp" Description="Allow the user to learn fireball spell." Weight="2" Gold="5"/>
   <Item Id="OldPaint" Name="Old Painting" Type="Treasure" Gold="10"/>
   <Item Id="OldPot" Name="Old Pot" Type="Treasure" Gold="10"/>
 </Items>

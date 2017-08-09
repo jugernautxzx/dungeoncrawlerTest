@@ -50,6 +50,7 @@ public class RecruitmentManager : MonoBehaviour
         model.attribute.speed = 1;
         model.battleSetting = new BattleSetting();
         model.elemental = new ElementAttribute();
+        model.learnActive = new List<string>();
         model.actives = new List<string>();
         model.actives.Add("");
         model.actives.Add("");
@@ -69,7 +70,7 @@ public class RecruitmentManager : MonoBehaviour
     public void Debug2()
     {
         //Debugger.GenerateOffHand();
-        //GenerateSkillBook();
+        GenerateSkillBook();
     }
 
     void GeneratePotion()

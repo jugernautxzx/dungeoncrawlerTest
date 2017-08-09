@@ -180,7 +180,7 @@ public class ConsumableItemUI : MonoBehaviour, ConsumableItemInterface, CharList
 
     void DialogUseSkillBook()
     {
-        dialog.RequestConfirmationDialog("Teach this character " + ItemManager.GetItemFromPlayer(selectedItemIndex).value + "?"
+        dialog.RequestConfirmationDialog("Teach this character " + ActiveSkillManager.GetInstance().GetName(ItemManager.GetItemFromPlayer(selectedItemIndex).value) + "?"
             , OnSkillBookUseYes, null, null);
     }
 
