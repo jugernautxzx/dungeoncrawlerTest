@@ -26,7 +26,7 @@ public class DungeonGenerator : MonoBehaviour {
     public Button treasureTab;
     public Button consumableTab;
     public RectTransform consumable;
-    DungeonControl dungeonControl;
+    public static DungeonControl dungeonControl;
 
     int randPos;
     float panelTop = 0;
@@ -527,7 +527,6 @@ public class DungeonGenerator : MonoBehaviour {
         item.gameObject.SetActive(true);
         consumable.gameObject.SetActive(false);
     }
-
 
 }
 

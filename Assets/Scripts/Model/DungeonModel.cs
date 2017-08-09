@@ -111,11 +111,13 @@ public class Loot
     public string itemId;
     public int amount;
     public ItemType type;
+    public int index;
 
-    public Loot(string newItemId, int newAmount, ItemType newType){
+    public Loot(string newItemId, int newAmount, ItemType newType, int newIndex){
         itemId = newItemId;
         amount = newAmount;
         type = newType;
+        index = newIndex;
     }
 
 
