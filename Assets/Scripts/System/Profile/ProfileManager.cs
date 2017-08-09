@@ -1,4 +1,7 @@
 ﻿
+using FlatBuffers;
+using System.IO;
+
 public class ProfileManager{
 
 	public PlayerProfileModel CreateNewProfile(CharacterModel mainChara)
@@ -19,6 +22,7 @@ public class ProfileManager{
     public void SaveProfile(PlayerProfileModel model)
     {
         XmlSaver.SaveXmlToFile<PlayerProfileModel>("/MainSave.xml", model);
+        //SaveProfileToFlat(model);
     }
 
     public PlayerProfileModel LoadProfile()
@@ -34,5 +38,19 @@ public class ProfileManager{
     public PlayerEquipments LoadEquipments()
     {
         return XmlLoader.LoadFromXmlSave<PlayerEquipments>("/MainEquips.xml");
+    }
+
+    //TODO Once finished use flatbuffer to save player game data
+    public void SaveProfileToFlat(PlayerProfileModel prof)
+    {
+        FlatBufferBuilder fbb = new FlatBufferBuilder(1);
+        StringOffset item = fbb.CreateString(prof.itemString);
+        PlayerProfileFlat.StartPlayerProfileFlat(fbb);
+        PlayerProfileFlat.AddGold(fbb, prof.Gold);
+        PlayerProfileFlat.AddItems(fbb, item);
+        Offset<PlayerProfileFlat> offset  = PlayerProfileFlat.EndPlayerProfileFlat(fbb);
+        PlayerProfileFlat.FinishPlayerProfileFlatBuffer(fbb, offset);
+        MemoryStream ms = new MemoryStream(fbb.DataBuffer.Data, fbb.DataBuffer.Position, fbb.Offset);
+        File.WriteAllBytes(XmlSaver.PersistentDataPath() + "/SAVEDATA", ms.ToArray());
     }
 }

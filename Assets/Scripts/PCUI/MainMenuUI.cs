@@ -16,6 +16,7 @@ public interface ConfirmationDialogInterface
 
 public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInterface, EquipmentUIInterface, EquipmentUILevelUpInterface, InventoryItemShowInterface, TooltipInterface, ConsumableInterface, ConfirmationDialogInterface
 {
+    public DungeonSelectUI dungeonSelect;
     public CharCreationUI charCreate;
     public PartyManager partyManager;
     public RecruitmentManager recruitmentManager;
@@ -125,8 +126,9 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
 
     public void StartMockupBattle()
     {
-        InitializeBattleMembers();
-        SceneManager.LoadScene(1);
+        ShowDungeonSelectMenu();
+        //InitializeBattleMembers();
+        //SceneManager.LoadScene(1);
     }
 
     void InitializeBattleMembers()
@@ -159,6 +161,12 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         PlayerSession.GetInstance().SaveSession();
     }
 
+    public void ShowDungeonSelectMenu()
+    {
+        HideAllWindow();
+        dungeonSelect.gameObject.SetActive(true);
+    }
+
     public void ShowOwnedItems()
     {
         HideAllWindow();
@@ -181,6 +189,7 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         equipmentUI.gameObject.SetActive(false);
         inventoryUI.gameObject.SetActive(false);
         consumableUI.gameObject.SetActive(false);
+        dungeonSelect.gameObject.SetActive(false);
     }
 
     void LevelUpCharacter(CharacterModel model)
