@@ -260,7 +260,7 @@ public class DungeonControl
             EnemyEncounter();
             if(DungeonModel.battleWon==false)
             {
-                SceneManager.LoadScene(2, LoadSceneMode.Additive);
+                //SceneManager.LoadScene(2, LoadSceneMode.Additive);
             }
             else if (DungeonRoom[DungeonModel.PlayerInRoom].tag.Contains("Treasure"))
             {
@@ -407,7 +407,7 @@ public class DungeonControl
             {
                 //PlayerSession.GetProfile().AddItem(getItem[itemIndex], getAmount[itemIndex]);
 
-                dungeonInventory.getLoot(getItem[itemIndex],getAmount[itemIndex], ItemManager.GetInstance().GetItem(getItem[itemIndex]).item);
+                getLootControl(getItem[itemIndex],getAmount[itemIndex], ItemManager.GetInstance().GetItem(getItem[itemIndex]).item);
                 getItemText += "You get " + ItemManager.GetInstance().GetItem(getItem[itemIndex]).name + " x" + getAmount[itemIndex] + "\n";
             }
             Log.text = getItemText;
@@ -454,6 +454,11 @@ public class DungeonControl
 
     }
 
+    public void getLootControl(string itemId, int amount, ItemType type)
+    {
+        dungeonInventory.getLoot(itemId,amount,type);
+    }
+
     public void ClearRoomTag(Button[] DungeonRoom)
     {
         DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.green;
@@ -463,6 +468,16 @@ public class DungeonControl
     public void DungeonWin()
     {
         dungeonInventory.WinDungeonLoot();
+    }
+
+    public void DropItemControl(string itemId)
+    {
+        dungeonInventory.DropAction(itemId);
+    }
+
+    public void DropAllItemControl(string itemId)
+    {
+        dungeonInventory.DropAllAction(itemId);
     }
 
 }
