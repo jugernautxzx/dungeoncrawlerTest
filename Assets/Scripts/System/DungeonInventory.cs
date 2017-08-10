@@ -9,25 +9,37 @@ public class DungeonInventory {
     string itemText;
     List<Loot> itemLoot = new List<Loot>();
     public Button[] consumableButton = new Button[10];
+    public Text[] treasureItem = new Text[20];
     int countButtonConsumable = 0;
+    int countTreasureItem = 0;
 
     public void getLoot(string itemId, int amount, ItemType type)
     {
         if (itemLoot.Exists(t=>t.itemId==itemId))
         {
-            itemLoot.Find(t=>t.itemId.Contains(itemId)).amount+=amount;
+            itemLoot.Find(t=>t.itemId.Equals(itemId)).amount+=amount;
             
         }
         else
         {
-            itemLoot.Add(new Loot(itemId, amount, type, countButtonConsumable));
             if(type==ItemType.Consumable)
             {
+                itemLoot.Add(new Loot(itemId, amount, type, countButtonConsumable));
                 consumableButton[countButtonConsumable] = Button.Instantiate(DungeonModel.consumableItem);
                 consumableButton[countButtonConsumable].transform.SetParent(DungeonModel.consumableContent);
                 consumableButton[countButtonConsumable].transform.localScale = new Vector2(1,1);
                 consumableButton[countButtonConsumable].name = itemId;
+                consumableButton[countButtonConsumable].onClick.AddListener(useItem);
                 countButtonConsumable += 1;
+            }
+            else
+            {
+                itemLoot.Add(new Loot(itemId, amount, type, countTreasureItem));
+                treasureItem[countTreasureItem] = Text.Instantiate(DungeonModel.treasureItem);
+                treasureItem[countTreasureItem].transform.SetParent(DungeonModel.treasureContent);
+                treasureItem[countTreasureItem].transform.localScale = new Vector2(1, 1);
+                treasureItem[countTreasureItem].name = itemId;
+                countTreasureItem += 1;
             }
         }
 
@@ -55,8 +67,6 @@ public class DungeonInventory {
 
     public void UpdateItemText()
     {
-        DungeonModel.inventoryTreasureText.text = "";
-        itemText = "";
         foreach (Loot loot in itemLoot)
         {
             if (loot.type == ItemType.Consumable)
@@ -66,21 +76,33 @@ public class DungeonInventory {
             }
             else
             {
-                itemText += ItemManager.GetInstance().GetItem(loot.itemId).name + " x " + loot.amount + "\n";
+                treasureItem[loot.index].text = ItemManager.GetInstance().GetItem(loot.itemId).name + " x " + loot.amount;
+                treasureItem[loot.index].GetComponentInChildren<Text>().fontSize = 25;
             }
 
         }
-
-        DungeonModel.inventoryTreasureText.text = itemText;
     }
 
     public void CheckItemQuantity(string itemId)
     {
         if (itemLoot.Exists(t => t.itemId == itemId) && itemLoot.Find(t => t.itemId.Equals(itemId)).amount == 0)
         {
-            UnityEngine.Object.Destroy(consumableButton[itemLoot.Find(t => t.itemId.Equals(itemId)).index].gameObject);
+            if (itemLoot.Find(t => t.itemId.Equals(itemId)).type==ItemType.Consumable)
+            {
+                UnityEngine.Object.Destroy(consumableButton[itemLoot.Find(t => t.itemId.Equals(itemId)).index].gameObject);
+            }
+            else
+            {
+                UnityEngine.Object.Destroy(treasureItem[itemLoot.Find(t => t.itemId.Equals(itemId)).index].gameObject);
+            }
+            
             itemLoot.RemoveAt(itemLoot.FindIndex(t => t.itemId.Equals(itemId)));
         }
+    }
+
+    public void useItem()
+    {
+        Debug.Log("use something");
     }
 
     public void WinDungeonLoot()

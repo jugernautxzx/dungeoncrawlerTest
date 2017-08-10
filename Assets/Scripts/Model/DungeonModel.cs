@@ -92,9 +92,11 @@ public class EquipList
     public static GameObject currentTreasureActionPanel;
     public static GameObject currentTrapActionPanel;
     public static Text CurrentLog;
-    public static Text inventoryTreasureText;
+    public static Text treasureItem;
+    public static RectTransform treasureContent;
     public static Button consumableItem;
     public static RectTransform consumableContent;
+    public static RectTransform inventoryContent;
     public static string enemy1;
     public static int lvEnemy1;
     public static string enemy2;
