@@ -122,25 +122,98 @@ public struct CharacterModelFlat : IFlatbufferObject
   public ArraySegment<byte>? GetNameBytes() { return __p.__vector_as_arraysegment(4); }
   public int Level { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int Exp { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public bool LevelUp { get { int o = __p.__offset(10); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
+  public string LearnActive { get { int o = __p.__offset(12); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
+  public ArraySegment<byte>? GetLearnActiveBytes() { return __p.__vector_as_arraysegment(12); }
+  public string Actives { get { int o = __p.__offset(14); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
+  public ArraySegment<byte>? GetActivesBytes() { return __p.__vector_as_arraysegment(14); }
+  public string Traits { get { int o = __p.__offset(16); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
+  public ArraySegment<byte>? GetTraitsBytes() { return __p.__vector_as_arraysegment(16); }
+  public AttributeFlat? Att { get { int o = __p.__offset(18); return o != 0 ? (AttributeFlat?)(new AttributeFlat()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
 
   public static Offset<CharacterModelFlat> CreateCharacterModelFlat(FlatBufferBuilder builder,
       StringOffset nameOffset = default(StringOffset),
       int level = 0,
-      int exp = 0) {
-    builder.StartObject(3);
+      int exp = 0,
+      bool levelUp = false,
+      StringOffset learnActiveOffset = default(StringOffset),
+      StringOffset activesOffset = default(StringOffset),
+      StringOffset traitsOffset = default(StringOffset),
+      Offset<AttributeFlat> attOffset = default(Offset<AttributeFlat>)) {
+    builder.StartObject(8);
+    CharacterModelFlat.AddAtt(builder, attOffset);
+    CharacterModelFlat.AddTraits(builder, traitsOffset);
+    CharacterModelFlat.AddActives(builder, activesOffset);
+    CharacterModelFlat.AddLearnActive(builder, learnActiveOffset);
     CharacterModelFlat.AddExp(builder, exp);
     CharacterModelFlat.AddLevel(builder, level);
     CharacterModelFlat.AddName(builder, nameOffset);
+    CharacterModelFlat.AddLevelUp(builder, levelUp);
     return CharacterModelFlat.EndCharacterModelFlat(builder);
   }
 
-  public static void StartCharacterModelFlat(FlatBufferBuilder builder) { builder.StartObject(3); }
+  public static void StartCharacterModelFlat(FlatBufferBuilder builder) { builder.StartObject(8); }
   public static void AddName(FlatBufferBuilder builder, StringOffset nameOffset) { builder.AddOffset(0, nameOffset.Value, 0); }
   public static void AddLevel(FlatBufferBuilder builder, int level) { builder.AddInt(1, level, 0); }
   public static void AddExp(FlatBufferBuilder builder, int exp) { builder.AddInt(2, exp, 0); }
+  public static void AddLevelUp(FlatBufferBuilder builder, bool levelUp) { builder.AddBool(3, levelUp, false); }
+  public static void AddLearnActive(FlatBufferBuilder builder, StringOffset learnActiveOffset) { builder.AddOffset(4, learnActiveOffset.Value, 0); }
+  public static void AddActives(FlatBufferBuilder builder, StringOffset activesOffset) { builder.AddOffset(5, activesOffset.Value, 0); }
+  public static void AddTraits(FlatBufferBuilder builder, StringOffset traitsOffset) { builder.AddOffset(6, traitsOffset.Value, 0); }
+  public static void AddAtt(FlatBufferBuilder builder, Offset<AttributeFlat> attOffset) { builder.AddOffset(7, attOffset.Value, 0); }
   public static Offset<CharacterModelFlat> EndCharacterModelFlat(FlatBufferBuilder builder) {
     int o = builder.EndObject();
     return new Offset<CharacterModelFlat>(o);
+  }
+};
+
+public struct AttributeFlat : IFlatbufferObject
+{
+  private Table __p;
+  public ByteBuffer ByteBuffer { get { return __p.bb; } }
+  public static AttributeFlat GetRootAsAttributeFlat(ByteBuffer _bb) { return GetRootAsAttributeFlat(_bb, new AttributeFlat()); }
+  public static AttributeFlat GetRootAsAttributeFlat(ByteBuffer _bb, AttributeFlat obj) { return (obj.__assign(_bb.GetInt(_bb.Position) + _bb.Position, _bb)); }
+  public void __init(int _i, ByteBuffer _bb) { __p.bb_pos = _i; __p.bb = _bb; }
+  public AttributeFlat __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
+
+  public int Str { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int Agi { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int Intel { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int End { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int Wisdom { get { int o = __p.__offset(12); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int Cons { get { int o = __p.__offset(14); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int Speed { get { int o = __p.__offset(16); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+
+  public static Offset<AttributeFlat> CreateAttributeFlat(FlatBufferBuilder builder,
+      int str = 0,
+      int agi = 0,
+      int intel = 0,
+      int end = 0,
+      int wisdom = 0,
+      int cons = 0,
+      int speed = 0) {
+    builder.StartObject(7);
+    AttributeFlat.AddSpeed(builder, speed);
+    AttributeFlat.AddCons(builder, cons);
+    AttributeFlat.AddWisdom(builder, wisdom);
+    AttributeFlat.AddEnd(builder, end);
+    AttributeFlat.AddIntel(builder, intel);
+    AttributeFlat.AddAgi(builder, agi);
+    AttributeFlat.AddStr(builder, str);
+    return AttributeFlat.EndAttributeFlat(builder);
+  }
+
+  public static void StartAttributeFlat(FlatBufferBuilder builder) { builder.StartObject(7); }
+  public static void AddStr(FlatBufferBuilder builder, int str) { builder.AddInt(0, str, 0); }
+  public static void AddAgi(FlatBufferBuilder builder, int agi) { builder.AddInt(1, agi, 0); }
+  public static void AddIntel(FlatBufferBuilder builder, int intel) { builder.AddInt(2, intel, 0); }
+  public static void AddEnd(FlatBufferBuilder builder, int end) { builder.AddInt(3, end, 0); }
+  public static void AddWisdom(FlatBufferBuilder builder, int wisdom) { builder.AddInt(4, wisdom, 0); }
+  public static void AddCons(FlatBufferBuilder builder, int cons) { builder.AddInt(5, cons, 0); }
+  public static void AddSpeed(FlatBufferBuilder builder, int speed) { builder.AddInt(6, speed, 0); }
+  public static Offset<AttributeFlat> EndAttributeFlat(FlatBufferBuilder builder) {
+    int o = builder.EndObject();
+    return new Offset<AttributeFlat>(o);
   }
 };
 
