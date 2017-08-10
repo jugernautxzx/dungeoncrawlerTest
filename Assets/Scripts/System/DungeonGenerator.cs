@@ -20,12 +20,15 @@ public class DungeonGenerator : MonoBehaviour {
     public Text completeDungeon;
     public Button surrender;
     public Button win;
-    public Text item;
+    public Text treasureItem;
+    public RectTransform treasureContent;
     public Button consumableItem;
     public RectTransform consumableContent;
+    public RectTransform treasure;
     public Button treasureTab;
     public Button consumableTab;
     public RectTransform consumable;
+    public RectTransform inventoryContent;
     public static DungeonControl dungeonControl;
 
     int randPos;
@@ -42,6 +45,7 @@ public class DungeonGenerator : MonoBehaviour {
 
     void Start () {
         GenerateDungeon();
+        StartInitialize();
         GenerateActionButton();
         SetInventoryObject();
     }
@@ -62,10 +66,6 @@ public class DungeonGenerator : MonoBehaviour {
         info = DungeonManager.DungeonLoad("Stage1_1");
         bool RoomPosition = true;
         DungeonModel.IndexCoridor = 0;
-
-        dungeonName.text = info.name;
-        item.text = "";
-        completeDungeon.gameObject.SetActive(false);
 
         SpawnEntrancePoint();
         float RoomPositionX = DungeonRoom[0].GetComponent<RectTransform>().offsetMin.x;
@@ -509,22 +509,36 @@ public class DungeonGenerator : MonoBehaviour {
     }
 
     public void SetInventoryObject() {
-        DungeonModel.inventoryTreasureText = item;
+        DungeonModel.treasureItem = treasureItem;
+        DungeonModel.treasureContent = treasureContent;
         DungeonModel.consumableContent = consumableContent;
         DungeonModel.consumableItem = consumableItem;
+        DungeonModel.inventoryContent = inventoryContent;
         treasureTab.onClick.AddListener(ChangeToTreasureTab);
         consumableTab.onClick.AddListener(ChangeToConsumableTab);
     }
 
+    public void StartInitialize()
+    {
+        dungeonName.text = info.name;
+        completeDungeon.gameObject.SetActive(false);
+        treasureTab.interactable = false;
+        consumableTab.interactable = true;
+    }
+
     public void ChangeToConsumableTab()
     {
+        consumableTab.interactable = false;
+        treasureTab.interactable = true;
         consumable.gameObject.SetActive(true);
-        item.gameObject.SetActive(false);
+        treasure.gameObject.SetActive(false);
     }
 
     public void ChangeToTreasureTab()
     {
-        item.gameObject.SetActive(true);
+        consumableTab.interactable = true;
+        treasureTab.interactable = false;
+        treasure.gameObject.SetActive(true);
         consumable.gameObject.SetActive(false);
     }
 

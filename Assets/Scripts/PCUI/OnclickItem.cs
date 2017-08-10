@@ -9,6 +9,13 @@ public class OnclickItem : MonoBehaviour, IPointerClickHandler
     DungeonControl dungeonControl;
     public RectTransform alertDropAll;
 
+    RectTransform dropAllAlert = new RectTransform();
+
+    OnclickItem()
+    {
+        dungeonControl = DungeonGenerator.dungeonControl;
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Right)
@@ -21,30 +28,37 @@ public class OnclickItem : MonoBehaviour, IPointerClickHandler
             {
                 gameObject.transform.GetChild(1).gameObject.SetActive(true);
             }
+            
         }
        
     }
 
     public void DropItem()
     {
-        dungeonControl = DungeonGenerator.dungeonControl;
         dungeonControl.DropItemControl(gameObject.name);
         gameObject.transform.GetChild(1).gameObject.SetActive(false);
     }
 
     public void DropAllItem()
     {
-        dungeonControl = DungeonGenerator.dungeonControl;
         dungeonControl.DropAllItemControl(gameObject.name);
     }
 
     public void PopAlertDropAll()
     {
-        alertDropAll.gameObject.SetActive(true);
+        dropAllAlert = Instantiate(alertDropAll);
+        dropAllAlert.transform.SetParent(DungeonModel.inventoryContent.transform,false);
+    }
+
+    public void YesDropAll()
+    {
+        //Destroy(dropAllAlert.gameObject);
+        Debug.Log(gameObject.name);
+        DropAllItem();
     }
 
     public void NoDropAll()
     {
-        alertDropAll.gameObject.SetActive(false);
+        //Destroy(dropAllAlert.gameObject);
     }
 }

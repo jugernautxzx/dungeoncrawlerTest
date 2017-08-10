@@ -22,7 +22,7 @@ public class ProfileManager{
     public void SaveProfile(PlayerProfileModel model)
     {
         XmlSaver.SaveXmlToFile<PlayerProfileModel>("/MainSave.xml", model);
-        SaveProfileToFlat(model);
+        //SaveProfileToFlat(model);
     }
 
     public PlayerProfileModel LoadProfile()
