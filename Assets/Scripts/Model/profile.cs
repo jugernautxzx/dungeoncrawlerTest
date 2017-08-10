@@ -18,12 +18,13 @@ public struct PlayerProfileFlat : IFlatbufferObject
   public int Gold { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public string Items { get { int o = __p.__offset(6); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
   public ArraySegment<byte>? GetItemsBytes() { return __p.__vector_as_arraysegment(6); }
-  public CharacterModelFlat? Characters { get { int o = __p.__offset(8); return o != 0 ? (CharacterModelFlat?)(new CharacterModelFlat()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
+  public CharacterModelFlat? Characters(int j) { int o = __p.__offset(8); return o != 0 ? (CharacterModelFlat?)(new CharacterModelFlat()).__assign(__p.__indirect(__p.__vector(o) + j * 4), __p.bb) : null; }
+  public int CharactersLength { get { int o = __p.__offset(8); return o != 0 ? __p.__vector_len(o) : 0; } }
 
   public static Offset<PlayerProfileFlat> CreatePlayerProfileFlat(FlatBufferBuilder builder,
       int gold = 0,
       StringOffset itemsOffset = default(StringOffset),
-      Offset<CharacterModelFlat> charactersOffset = default(Offset<CharacterModelFlat>)) {
+      VectorOffset charactersOffset = default(VectorOffset)) {
     builder.StartObject(3);
     PlayerProfileFlat.AddCharacters(builder, charactersOffset);
     PlayerProfileFlat.AddItems(builder, itemsOffset);
@@ -34,7 +35,9 @@ public struct PlayerProfileFlat : IFlatbufferObject
   public static void StartPlayerProfileFlat(FlatBufferBuilder builder) { builder.StartObject(3); }
   public static void AddGold(FlatBufferBuilder builder, int gold) { builder.AddInt(0, gold, 0); }
   public static void AddItems(FlatBufferBuilder builder, StringOffset itemsOffset) { builder.AddOffset(1, itemsOffset.Value, 0); }
-  public static void AddCharacters(FlatBufferBuilder builder, Offset<CharacterModelFlat> charactersOffset) { builder.AddOffset(2, charactersOffset.Value, 0); }
+  public static void AddCharacters(FlatBufferBuilder builder, VectorOffset charactersOffset) { builder.AddOffset(2, charactersOffset.Value, 0); }
+  public static VectorOffset CreateCharactersVector(FlatBufferBuilder builder, Offset<CharacterModelFlat>[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
+  public static void StartCharactersVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
   public static Offset<PlayerProfileFlat> EndPlayerProfileFlat(FlatBufferBuilder builder) {
     int o = builder.EndObject();
     return new Offset<PlayerProfileFlat>(o);

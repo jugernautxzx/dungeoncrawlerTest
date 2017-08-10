@@ -1,6 +1,8 @@
 ﻿
 using FlatBuffers;
+using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 public class ProfileManager{
 
@@ -22,11 +24,12 @@ public class ProfileManager{
     public void SaveProfile(PlayerProfileModel model)
     {
         XmlSaver.SaveXmlToFile<PlayerProfileModel>("/MainSave.xml", model);
-        SaveProfileToFlat(model);
+        //SaveProfileToFlat(model);
     }
 
     public PlayerProfileModel LoadProfile()
     {
+        //LoadFlatProfile();
         return XmlLoader.LoadFromXmlSave<PlayerProfileModel>("/MainSave.xml");
     }
 
@@ -40,22 +43,30 @@ public class ProfileManager{
         return XmlLoader.LoadFromXmlSave<PlayerEquipments>("/MainEquips.xml");
     }
 
+    public void LoadFlatProfile()
+    {
+        ByteBuffer bb = new ByteBuffer(File.ReadAllBytes(XmlSaver.PersistentDataPath() + "/SAVEDATA"));
+        PlayerProfileFlat flat = PlayerProfileFlat.GetRootAsPlayerProfileFlat(bb);
+        Debug.Log("Printing  " + flat.Characters(0).Value.Name);
+        Debug.Log("Printing  " + flat.Characters(1).Value.Name);
+    }
+
     //TODO Once finished use flatbuffer to save player game data
     public void SaveProfileToFlat(PlayerProfileModel prof)
     {
+        List<Offset<CharacterModelFlat>> charList = new List<Offset<CharacterModelFlat>>();
+
         FlatBufferBuilder fbb = new FlatBufferBuilder(1);
         StringOffset item = fbb.CreateString(prof.itemString);
-        StringOffset name1 = fbb.CreateString(prof.characters[0].name);
-        StringOffset name2 = fbb.CreateString(prof.characters[1].name);
-
-        Offset<CharacterModelFlat> char1 = GetCMFlat1(fbb, prof.characters[0], name1);
-        Offset<CharacterModelFlat> char2 = GetCMFlat1(fbb, prof.characters[0], name2);
-
+        foreach(CharacterModel model in prof.characters)
+        {
+            charList.Add(AddCharacterToFlat(fbb, model));
+        }
+        VectorOffset charVector = fbb.CreateVectorOfTables<CharacterModelFlat>(charList.ToArray());
         PlayerProfileFlat.StartPlayerProfileFlat(fbb);
         PlayerProfileFlat.AddGold(fbb, prof.Gold);
         PlayerProfileFlat.AddItems(fbb, item);
-        PlayerProfileFlat.AddCharacters(fbb, char1);
-        PlayerProfileFlat.AddCharacters(fbb, char2);
+        PlayerProfileFlat.AddCharacters(fbb, charVector);
         Offset<PlayerProfileFlat> offset  = PlayerProfileFlat.EndPlayerProfileFlat(fbb);
         PlayerProfileFlat.FinishPlayerProfileFlatBuffer(fbb, offset);
         MemoryStream ms = new MemoryStream(fbb.DataBuffer.Data, fbb.DataBuffer.Position, fbb.Offset);
@@ -64,6 +75,16 @@ public class ProfileManager{
 
     Offset<CharacterModelFlat> GetCMFlat1(FlatBufferBuilder fbb, CharacterModel model, StringOffset nameOffset)
     {
+        CharacterModelFlat.StartCharacterModelFlat(fbb);
+        CharacterModelFlat.AddName(fbb, nameOffset);
+        CharacterModelFlat.AddLevel(fbb, model.level);
+        CharacterModelFlat.AddExp(fbb, model.exp);
+        return CharacterModelFlat.EndCharacterModelFlat(fbb);
+    }
+
+    Offset<CharacterModelFlat> AddCharacterToFlat(FlatBufferBuilder fbb, CharacterModel model)
+    {
+        StringOffset nameOffset = fbb.CreateString(model.name);
         CharacterModelFlat.StartCharacterModelFlat(fbb);
         CharacterModelFlat.AddName(fbb, nameOffset);
         CharacterModelFlat.AddLevel(fbb, model.level);
