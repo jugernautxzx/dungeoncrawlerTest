@@ -3052,6 +3052,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8ee2d44d3990b4b9a5ae05e3af305f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dungeonSelect: {fileID: 1438830129}
   charCreate: {fileID: 788083349}
   partyManager: {fileID: 146312116}
   recruitmentManager: {fileID: 32595027}
