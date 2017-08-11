@@ -301,7 +301,7 @@ public class DungeonGenerator : MonoBehaviour {
 
                 if (ScrollPanel.verticalNormalizedPosition <= DungeonModel.VerticalNormalPosition)
                 {
-                    ScrollPanel.verticalNormalizedPosition = Mathf.Lerp(ScrollPanel.verticalNormalizedPosition, DungeonModel.VerticalNormalPosition, Time.deltaTime / lerptime);
+                    ScrollPanel.verticalNormalizedPosition = Mathf.Clamp01(DungeonModel.VerticalNormalPosition);
                 }
             }
             else
@@ -310,7 +310,7 @@ public class DungeonGenerator : MonoBehaviour {
 
                 if (ScrollPanel.verticalNormalizedPosition >= DungeonModel.VerticalNormalPosition)
                 { 
-                    ScrollPanel.verticalNormalizedPosition = Mathf.Lerp(ScrollPanel.verticalNormalizedPosition, DungeonModel.VerticalNormalPosition, Time.deltaTime / lerptime);
+                    ScrollPanel.verticalNormalizedPosition = Mathf.Clamp01(DungeonModel.VerticalNormalPosition);
                 }
             }
         }
@@ -323,7 +323,7 @@ public class DungeonGenerator : MonoBehaviour {
 
                 if (ScrollPanel.horizontalNormalizedPosition <= DungeonModel.HorizontalNormalPosition)
                 {
-                    ScrollPanel.horizontalNormalizedPosition = Mathf.Lerp(ScrollPanel.horizontalNormalizedPosition, DungeonModel.HorizontalNormalPosition, Time.deltaTime / lerptime);
+                    ScrollPanel.horizontalNormalizedPosition = Mathf.Clamp01(DungeonModel.HorizontalNormalPosition);
                 }
             }
             else
@@ -332,7 +332,7 @@ public class DungeonGenerator : MonoBehaviour {
 
                 if (ScrollPanel.horizontalNormalizedPosition >= DungeonModel.HorizontalNormalPosition)
                 {
-                    ScrollPanel.horizontalNormalizedPosition = Mathf.Lerp(ScrollPanel.horizontalNormalizedPosition, DungeonModel.HorizontalNormalPosition, Time.deltaTime / lerptime);
+                    ScrollPanel.horizontalNormalizedPosition = Mathf.Clamp01(DungeonModel.HorizontalNormalPosition);
                 }
             }
         }
