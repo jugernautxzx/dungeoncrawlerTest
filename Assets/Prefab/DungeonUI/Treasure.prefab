@@ -144,6 +144,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alertDropAll: {fileID: 224030185496964452, guid: eacb4b93eba0015489a8a7157f216a31,
     type: 2}
+  dropAllYes: {fileID: 114633220677914036, guid: 4de9390278f1a7c49bddd6879e29fc57,
+    type: 2}
+  dropAllNo: {fileID: 114060254838685448, guid: f05829bdcf8cc954a852ce0fce62fa41,
+    type: 2}
 --- !u!114 &114290853101384086
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -329,7 +333,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114097010891941118}
-        m_MethodName: DropAllItem
+        m_MethodName: PopAlertDropAll
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
