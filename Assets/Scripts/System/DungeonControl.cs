@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class DungeonControl
 {
-    BattleManager battleManager;
     DungeonInventory dungeonInventory;
     List<Button> activeRoom = new List<Button>();
 
@@ -260,7 +259,7 @@ public class DungeonControl
             EnemyEncounter();
             if(DungeonModel.battleWon==false)
             {
-                //SceneManager.LoadScene(2, LoadSceneMode.Additive);
+                SceneManager.LoadScene(2, LoadSceneMode.Additive);
             }
             else if (DungeonRoom[DungeonModel.PlayerInRoom].tag.Contains("Treasure"))
             {

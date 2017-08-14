@@ -32,6 +32,21 @@ public class CharList : MonoBehaviour, OnCharacterUIClicked {
         }
     }
 
+    public void FilterActiveMembers()
+    {
+        filteredList.Clear();
+        filteredList.Add(0);
+        filteredList.Add(PlayerSession.GetProfile().party.member1);
+        filteredList.Add(PlayerSession.GetProfile().party.member2);
+        filteredList.Add(PlayerSession.GetProfile().party.member3);
+    }
+
+    void AddToFilteredList(int i)
+    {
+        if (i > 0)
+            filteredList.Add(i);
+    }
+
     public void FilterActiveLearnable(string activeId)
     {
         filteredList.Clear();

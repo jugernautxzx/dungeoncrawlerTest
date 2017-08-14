@@ -1,0 +1,41 @@
+table PlayerProfileFlat {
+	gold:int;
+	items:string;
+	characters:[CharacterModelFlat];
+	mainCharacter:MainCharacter;
+}
+
+table MainCharacter{
+	fame:int;
+	leadership:int;
+}
+
+table Party{
+	one:int;
+	two:int;
+	three:int;
+}
+
+table CharacterModelFlat{
+	name:string;
+	level:int;
+	exp:int;
+	levelUp:bool;
+	learnActive:string;
+	actives:string;
+	traits:string;
+	att:AttributeFlat;
+}
+
+table AttributeFlat{
+	str:int;
+	agi:int;
+	intel:int;
+	end:int;
+	wisdom:int;
+	cons:int;
+	speed:int;
+}
+
+root_type PlayerProfileFlat;
+file_identifier "FPCS";

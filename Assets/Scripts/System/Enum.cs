@@ -53,6 +53,11 @@ public enum ItemType
     Treasure, Consumable, KeyItem, SkillBook
 }
 
+public enum Consumable : int
+{
+    HP
+}
+
 public class MouseInput
 {
     public const int MOUSE_LEFT = 0;

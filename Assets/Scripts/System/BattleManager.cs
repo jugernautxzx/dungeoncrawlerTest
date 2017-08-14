@@ -23,8 +23,7 @@ public interface BattleManagerLog
 
 public class BattleManager : BattleManagerLog
 {
-
-    CharacterModel player1, player2, player3, player4, enemy1, enemy2, enemy3, enemy4;
+    List<CharacterModel> playerList, enemyList;
 
     CharacterModel turnTaker;
     int turnTakerIndex;
@@ -45,6 +44,8 @@ public class BattleManager : BattleManagerLog
         passiveSkill = new PassiveManager();
         active = new ActiveUse(this);
         enemyAI = new EnemyAI(this);
+        playerList = new List<CharacterModel>();
+        enemyList = new List<CharacterModel>();
     }
 
     public void BattleStart()
@@ -57,33 +58,33 @@ public class BattleManager : BattleManagerLog
 
     public void UpdateAllTeam()
     {
-        listener.UpdatePlayerTeam(player1, player2, player3, player4);
-        listener.UpdateEnemyTeam(enemy1, enemy2, enemy3, enemy4);
+        listener.UpdatePlayerTeam(GetPlayer(0), GetPlayer(1), GetPlayer(2), GetPlayer(3));
+        listener.UpdateEnemyTeam(GetEnemy(0), GetEnemy(1), GetEnemy(2), GetEnemy(3));
     }
 
     void InitiateActors()
     {
         //TODO Debugging purpose
-        player1 = PlayerSession.GetProfile().characters[0];
-        player1.GenerateBasicBattleAttribute();
+        playerList.Add(PlayerSession.GetProfile().characters[0]);
+        playerList[0].GenerateBasicBattleAttribute();
         if (PlayerSession.GetProfile().party.member1 > 0)
         {
-            player2 = PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member1];
+            playerList.Add(PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member1]);
         }
         if (PlayerSession.GetProfile().party.member2 > 0)
         {
-            player3 = PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member2];
+            playerList.Add(PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member2]);
         }
         if (PlayerSession.GetProfile().party.member3 > 0)
         {
-            player4 = PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member3];
+            playerList.Add(PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member3]);
         }
 
-        enemy1 = MonsterLoader.LoadMonsterData(DungeonModel.enemy1, DungeonModel.lvEnemy1);
+        enemyList.Add(MonsterLoader.LoadMonsterData(DungeonModel.enemy1, DungeonModel.lvEnemy1));
         //enemy2 = MonsterLoader.LoadMonsterData(DungeonModel.enemy2, DungeonModel.lvEnemy2);
         //enemy3 = MonsterLoader.LoadMonsterData(DungeonModel.enemy3, DungeonModel.lvEnemy3);
         //enemy4 = MonsterLoader.LoadMonsterData(DungeonModel.enemy4, DungeonModel.lvEnemy4);
-        InitEnemy(enemy1);
+        InitEnemy(enemyList[0]);
         //InitEnemy(enemy2);
         //InitEnemy(enemy3);
         //InitEnemy(enemy4);
@@ -249,13 +250,13 @@ public class BattleManager : BattleManagerLog
             yield return new WaitUntil(() => timer);
             yield return new WaitForFixedUpdate();
             AllActorsActionBarFill();
-            listener.UpdateTimer(GetTimer(player1), GetTimer(player2), GetTimer(player3), GetTimer(player4));
+            listener.UpdateTimer(GetTimer(GetPlayer(0)), GetTimer(GetPlayer(1)), GetTimer(GetPlayer(2)), GetTimer(GetPlayer(3)));
             while (AnyActorCanMove() && CheckAllActorStillAlive())
             {
                 timer = false;
                 ActorTakeTurn();
                 yield return new WaitUntil(() => timer);
-                listener.UpdateTimer(GetTimer(player1), GetTimer(player2), GetTimer(player3), GetTimer(player4));
+                listener.UpdateTimer(GetTimer(GetPlayer(0)), GetTimer(GetPlayer(1)), GetTimer(GetPlayer(2)), GetTimer(GetPlayer(3)));
             }
         }
         OnBattleFinished();
@@ -275,14 +276,8 @@ public class BattleManager : BattleManagerLog
 
     void AllActorsActionBarFill()
     {
-        ActorActionBarFill(player1);
-        ActorActionBarFill(player2);
-        ActorActionBarFill(player3);
-        ActorActionBarFill(player4);
-        ActorActionBarFill(enemy1);
-        ActorActionBarFill(enemy2);
-        ActorActionBarFill(enemy3);
-        ActorActionBarFill(enemy4);
+        playerList.ForEach(player => ActorActionBarFill(player));
+        enemyList.ForEach(enemy => ActorActionBarFill(enemy));
     }
 
     void ActorActionBarFill(CharacterModel actor)//TODO Calculation needed
@@ -367,20 +362,29 @@ public class BattleManager : BattleManagerLog
             return false;
     }
 
+    void TurnTakerBuffOnTurn2()
+    {
+        turnTaker.battleAttribute.buffs.ForEach(buff => buff.CharaTakeTurn());
+        turnTaker.battleAttribute.buffs.RemoveAll(buff => buff.IsExpired());
+        WriteActorStillAlive(turnTaker);
+    }
+
     void TurnTakerBuffOnTurn()
     {
-        List<BattleBuff> toRemove = new List<BattleBuff>();
-        foreach (BattleBuff buff in turnTaker.battleAttribute.buffs)
-        {
-            buff.CharaTakeTurn();
-            if (buff.IsExpired())
-                toRemove.Add(buff);
-        }
-        foreach (BattleBuff buff in toRemove)
-        {
-            turnTaker.battleAttribute.buffs.Remove(buff);
-        }
-        WriteActorStillAlive(turnTaker);
+        TurnTakerBuffOnTurn2();
+        //TODO Remove this later
+        //List<BattleBuff> toRemove = new List<BattleBuff>();
+        //foreach (BattleBuff buff in turnTaker.battleAttribute.buffs)
+        //{
+        //    buff.CharaTakeTurn();
+        //    if (buff.IsExpired())
+        //        toRemove.Add(buff);
+        //}
+        //foreach (BattleBuff buff in toRemove)
+        //{
+        //    turnTaker.battleAttribute.buffs.Remove(buff);
+        //}
+        //WriteActorStillAlive(turnTaker);
     }
 
     public bool IsValid(CharacterModel model)
@@ -414,36 +418,18 @@ public class BattleManager : BattleManagerLog
 
     public CharacterModel GetPlayer(int index)
     {
-        switch (index)
-        {
-            case 0:
-                return player1;
-            case 1:
-                return player2;
-            case 2:
-                return player3;
-            case 3:
-                return player4;
-            default:
-                return null;
-        }
+        if (index < playerList.Count)
+            return playerList[index];
+        else
+            return null;
     }
 
     public CharacterModel GetEnemy(int index)
     {
-        switch (index)
-        {
-            case 0:
-                return enemy1;
-            case 1:
-                return enemy2;
-            case 2:
-                return enemy3;
-            case 3:
-                return enemy4;
-            default:
-                return null;
-        }
+        if (index < enemyList.Count)
+            return enemyList[index];
+        else
+            return null;
     }
 
     void WriteActorStillAlive(CharacterModel model)
@@ -458,12 +444,17 @@ public class BattleManager : BattleManagerLog
     bool CheckAllActorStillAlive()
     {
         //TODO More to do
-        return (IsValid(enemy1) || IsValid(enemy2)) && IsPlayerAlive();
+        return IsAnyEnemyAlive() && IsAnyPlayerAlive();
     }
 
-    public bool IsPlayerAlive()
+    bool IsAnyEnemyAlive()
     {
-        return IsValid(player1) || IsValid(player2);
+        return IsValid(GetEnemy(0)) || IsValid(GetEnemy(1)) || IsValid(GetEnemy(2)) || IsValid(GetEnemy(3));
+    }
+
+    public bool IsAnyPlayerAlive()
+    {
+        return IsValid(GetPlayer(0)) || IsValid(GetPlayer(1)) || IsValid(GetPlayer(2)) || IsValid(GetPlayer(3));
     }
 
     void OnBattleFinished()
@@ -475,49 +466,25 @@ public class BattleManager : BattleManagerLog
 
     void ClearAllPlayerBuffs()
     {
-        ClearAllBuffs(player1);
-        ClearAllBuffs(player2);
-        ClearAllBuffs(player3);
-        ClearAllBuffs(player4);
+        playerList.ForEach(player => ClearAllBuffs(player));
     }
 
     void ClearAllBuffs(CharacterModel model)
     {
-        if (model != null)
-        {
-            foreach(BattleBuff buff in model.battleAttribute.buffs)
-            {
-                buff.BuffOnRemove();
-            }
-            model.battleAttribute.buffs.Clear();
-        }
-
+        model.battleAttribute.buffs.ForEach(buff => buff.BuffOnRemove());
+        model.battleAttribute.buffs.Clear();
     }
 
     void AllPlayerGetExperience()
     {
-        if (IsValid(player1))
-            player1.GetExperience(GetAllMonsterExperience());
-        if (IsValid(player2))
-            player2.GetExperience(GetAllMonsterExperience());
-        if (IsValid(player3))
-            player3.GetExperience(GetAllMonsterExperience());
-        if (IsValid(player4))
-            player4.GetExperience(GetAllMonsterExperience());
+        playerList.ForEach(player => player.GetExperience(GetAllMonsterExperience()));
         PlayerSession.GetInstance().SaveSession();
     }
 
     int GetAllMonsterExperience()
     {
         int total = 0;
-        if (enemy1 != null)
-            total += enemy1.exp;
-        if (enemy2 != null)
-            total += enemy2.exp;
-        if (enemy3 != null)
-            total += enemy3.exp;
-        if (enemy4 != null)
-            total += enemy4.exp;
+        enemyList.ForEach(enemy => total += enemy.exp);
         return total;
     }
 

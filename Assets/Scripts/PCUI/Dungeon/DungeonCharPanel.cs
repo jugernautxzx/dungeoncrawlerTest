@@ -1,18 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class DungeonCharPanel : MonoBehaviour {
+public interface IDungeonUseItem
+{
+    void SelectCharacterToUseItem(ItemModel item);
+}
+
+public class DungeonCharPanel : MonoBehaviour, IDungeonUseItem
+{
 
     public PlayerCharaUI[] cUI;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         UpdateAllCharacterInfo();
         SceneManager.sceneUnloaded += OnActiveSceneChanged;
-	}
-	
+        cUI[0].AddClickListener(delegate { OnCharacterClicked(0); });
+        cUI[1].AddClickListener(delegate { OnCharacterClicked(1); });
+        cUI[2].AddClickListener(delegate { OnCharacterClicked(2); });
+        cUI[3].AddClickListener(delegate { OnCharacterClicked(3); });
+    }
+
     void UpdateAllCharacterInfo()
     {
         cUI[0].UpdateCharacter(PlayerSession.GetProfile().characters[0]);
@@ -21,9 +30,26 @@ public class DungeonCharPanel : MonoBehaviour {
         cUI[3].UpdateCharacter(PlayerSession.GetProfile().GetCharacter(PlayerSession.GetProfile().party.member3));
     }
 
+    void EnableSelection(bool enable)
+    {
+        cUI[0].EnableSelection(enable);
+        cUI[1].EnableSelection(enable);
+        cUI[2].EnableSelection(enable);
+        cUI[3].EnableSelection(enable);
+    }
+
+    void OnCharacterClicked(int index)
+    {
+    }
+
     void OnActiveSceneChanged(Scene arg0)
     {
         if (arg0.buildIndex == BuildIndex.BATTLE_SCENE)
             UpdateAllCharacterInfo();
+    }
+
+    public void SelectCharacterToUseItem(ItemModel item)
+    {
+
     }
 }

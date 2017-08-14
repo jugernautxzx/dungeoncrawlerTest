@@ -42,6 +42,8 @@ public class MonsterLoader
 
     public static CharacterModel LoadMonsterData(string id, int level)
     {
+        if (id == null || id.Length == 0)
+            return null;
         CharacterModel monster = XmlLoader.LoadFromXmlResource<CharacterModel>("Xml/Monster/" + id);
         monster.level = level;
         monster.name = "Lv. " + level + " " + monster.name;

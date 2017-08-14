@@ -28,9 +28,11 @@ public class OnclickItem : MonoBehaviour, IPointerClickHandler
             {
                 gameObject.transform.GetChild(1).gameObject.SetActive(true);
             }
-            
         }
-       
+        else if (eventData.button == PointerEventData.InputButton.Left)
+        {
+
+        }
     }
 
     public void DropItem()
@@ -47,7 +49,7 @@ public class OnclickItem : MonoBehaviour, IPointerClickHandler
     public void PopAlertDropAll()
     {
         dropAllAlert = Instantiate(alertDropAll);
-        dropAllAlert.transform.SetParent(DungeonModel.inventoryContent.transform,false);
+        dropAllAlert.transform.SetParent(DungeonModel.inventoryContent.transform, false);
     }
 
     public void YesDropAll()
