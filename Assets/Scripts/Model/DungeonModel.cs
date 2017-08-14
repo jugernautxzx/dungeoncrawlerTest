@@ -55,6 +55,10 @@ public class EnemyList
     public string enemyId;
     [XmlAttribute("Lv")]
     public int enemyLv;
+    [XmlAttribute("Weight")]
+    public int enemyWeight;
+    [XmlAttribute("Chance")]
+    public int enemyMeetChance;
 }
 
 [XmlRoot("Item")]

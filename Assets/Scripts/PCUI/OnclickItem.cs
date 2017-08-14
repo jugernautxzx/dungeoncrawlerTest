@@ -8,8 +8,13 @@ public class OnclickItem : MonoBehaviour, IPointerClickHandler
 {
     DungeonControl dungeonControl;
     public RectTransform alertDropAll;
+    public Button dropAllYes;
+    public Button dropAllNo;
 
-    RectTransform dropAllAlert = new RectTransform();
+    RectTransform alertDropAllObj;
+    Button dropAllYesObj;
+    Button dropAllNoObj;
+
 
     OnclickItem()
     {
@@ -28,11 +33,9 @@ public class OnclickItem : MonoBehaviour, IPointerClickHandler
             {
                 gameObject.transform.GetChild(1).gameObject.SetActive(true);
             }
+            
         }
-        else if (eventData.button == PointerEventData.InputButton.Left)
-        {
-
-        }
+       
     }
 
     public void DropItem()
@@ -48,19 +51,24 @@ public class OnclickItem : MonoBehaviour, IPointerClickHandler
 
     public void PopAlertDropAll()
     {
-        dropAllAlert = Instantiate(alertDropAll);
-        dropAllAlert.transform.SetParent(DungeonModel.inventoryContent.transform, false);
+        alertDropAllObj = Instantiate(alertDropAll);
+        alertDropAllObj.transform.SetParent(DungeonModel.inventoryContent.transform,false);
+        dropAllYesObj = Instantiate(dropAllYes);
+        dropAllYesObj.transform.SetParent(alertDropAllObj.transform.GetChild(0),false);
+        dropAllYesObj.onClick.AddListener(YesDropAll);
+        dropAllNoObj = Instantiate(dropAllNo);
+        dropAllNoObj.transform.SetParent(alertDropAllObj.transform.GetChild(0), false);
+        dropAllNoObj.onClick.AddListener(NoDropAll);
     }
 
     public void YesDropAll()
     {
-        //Destroy(dropAllAlert.gameObject);
-        Debug.Log(gameObject.name);
         DropAllItem();
+        Destroy(alertDropAllObj.gameObject);
     }
 
     public void NoDropAll()
     {
-        //Destroy(dropAllAlert.gameObject);
+        Destroy(alertDropAllObj.gameObject);
     }
 }

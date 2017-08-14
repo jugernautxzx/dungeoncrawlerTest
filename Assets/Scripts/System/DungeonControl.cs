@@ -337,21 +337,74 @@ public class DungeonControl
 
     public void EnemyEncounter()
     {
-        int[] randEnemy=new int[4];
+        string[] choosenEnemy=new string[4];
+        int[] enemyLv = new int[4];
+        int totalChance = 0;
+        int totalEnemyWeight = 0;
 
-        for (int enemy=0;enemy<4;enemy++)
+        foreach (EnemyList enemyList in DungeonGenerator.info.enemy)
         {
-            randEnemy[enemy] = Random.Range(0,DungeonGenerator.info.enemy.Count);
+            totalChance += enemyList.enemyMeetChance;
+        }
+
+        for (int enemy=0; totalEnemyWeight < 4;enemy++)
+        {
+            int currentChance = 0;
+            int randEnemy = Random.Range(0,totalChance);
+            foreach (EnemyList enemyList in DungeonGenerator.info.enemy)
+            {
+                currentChance += enemyList.enemyMeetChance;
+                if (randEnemy<=currentChance)
+                {
+                    choosenEnemy[enemy] = enemyList.enemyId;
+                    enemyLv[enemy] = enemyList.enemyLv;
+                    totalEnemyWeight += enemyList.enemyWeight;
+
+                    if (totalEnemyWeight>4)
+                    {
+                        totalEnemyWeight -= enemyList.enemyWeight;
+                        enemy -= 1;
+                    }
+                    break;
+                }
+            }
            
         }
-        DungeonModel.enemy1 = DungeonGenerator.info.enemy[randEnemy[0]].enemyId;
-        DungeonModel.lvEnemy1 = DungeonGenerator.info.enemy[randEnemy[0]].enemyLv;
-        DungeonModel.enemy2 = DungeonGenerator.info.enemy[randEnemy[1]].enemyId;
-        DungeonModel.lvEnemy2 = DungeonGenerator.info.enemy[randEnemy[1]].enemyLv;
-        DungeonModel.enemy3 = DungeonGenerator.info.enemy[randEnemy[2]].enemyId;
-        DungeonModel.lvEnemy3 = DungeonGenerator.info.enemy[randEnemy[2]].enemyLv;
-        DungeonModel.enemy4 = DungeonGenerator.info.enemy[randEnemy[3]].enemyId;
-        DungeonModel.lvEnemy4 = DungeonGenerator.info.enemy[randEnemy[3]].enemyLv;
+
+        DungeonModel.enemy1 = choosenEnemy[0];
+        DungeonModel.lvEnemy1 = enemyLv[0];
+        if (choosenEnemy[1]==null)
+        {
+            DungeonModel.enemy2 = null;
+            DungeonModel.lvEnemy2 = 0;
+        }
+        else
+        {
+            DungeonModel.enemy2 = choosenEnemy[1];
+            DungeonModel.lvEnemy2 = enemyLv[1];
+        }
+
+        if(choosenEnemy[2]==null)
+        {
+            DungeonModel.enemy3 = null;
+            DungeonModel.lvEnemy3 = 0;
+        }
+        else
+        {
+            DungeonModel.enemy3 = choosenEnemy[2];
+            DungeonModel.lvEnemy3 = enemyLv[2];
+        }
+
+        if (choosenEnemy[3]==null)
+        {
+            DungeonModel.enemy4 = null;
+            DungeonModel.lvEnemy4 = 0;
+        }
+        else
+        {
+            DungeonModel.enemy4 = choosenEnemy[3];
+            DungeonModel.lvEnemy4 = enemyLv[3];
+        }
 
     }
 
@@ -371,7 +424,7 @@ public class DungeonControl
 
         if (getTreasure == 0)
         {
-            Log.text = "Unfotunetly the chest is empty";
+            Log.text = "Unfortunetly the chest is empty";
 
         }
         else
@@ -427,7 +480,7 @@ public class DungeonControl
 
         if (getEquipment == 0)
         {
-            Log.text = "Unfotunetly the chest is empty";
+            Log.text = "Unfortunetly the chest is empty";
 
         }
         else

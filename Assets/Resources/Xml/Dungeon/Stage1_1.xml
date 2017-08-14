@@ -3,14 +3,15 @@
 <Dungeon Name="Testing" Room="30" TreasureRoom="10" TrapRoom="5" EnemyRoom="5" MinGetTreasure="1" MaxGetTreasure="1" 
          ChanceGetEquipment="50" MinGetEquipment="1" MaxGetEquipment="2" MinEquipmentLv="1" MaxEquipmentLv="2">
   <EnemyType>
-    <Enemy Id="Skeleton" Lv="1"></Enemy>
-    <Enemy Id="Goblin" Lv="1"></Enemy>
+    <Enemy Id="Skeleton" Lv="1" Weight="1" Chance="20"></Enemy>
+    <Enemy Id="Goblin" Lv="1" Weight="1" Chance="20"></Enemy>
+    <Enemy Id="BoneCaster" Lv="1" Weight="2" Chance="50"></Enemy>
   </EnemyType>
   <Treasure>
     <Item ItemId="OldPaint" Chance="50" AmountMin="2" AmountMax="3"/>
     <Item ItemId="OldPot" Chance="50" AmountMin="1" AmountMax="3"/>
-    <Item ItemId="Pot1" Chance="50" AmountMin="1" AmountMax="1"/>
-    <Item ItemId="Pot2" Chance="50" AmountMin="1" AmountMax="1"/>
+    <Item ItemId="Pot1" Chance="1" AmountMin="1" AmountMax="1"/>
+    <Item ItemId="Pot2" Chance="1" AmountMin="1" AmountMax="1"/>
   </Treasure>
   <Equipment>
     <Equip Tier="1" Chance="50"/>
