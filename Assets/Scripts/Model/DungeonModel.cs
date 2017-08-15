@@ -45,6 +45,9 @@ public class DungeonInfo {
     [XmlArray("Equipment")]
     [XmlArrayItem("Equip")]
     public List<EquipList> equip;
+    [XmlArray("DungeonBoss")]
+    [XmlArrayItem("Boss")]
+    public List<Boss> boss;
 
 }
 
@@ -84,18 +87,27 @@ public class EquipList
     public int chance;
 }
 
-    public class DungeonModel {
-    public static int IndexCoridor=0;
-    public static float MaxPanelTopBottom = 0;
-    public static float MaxPanelRightLeft = 0;
-    public static float VerticalNormalPosition;
-    public static float HorizontalNormalPosition;
-    public static int PlayerInRoom = 0;
+[XmlRoot("Boss")]
+public class Boss
+{
+    [XmlAttribute("Id")]
+    public string bossId;
+    [XmlAttribute("Lv")]
+    public int bossLv;
+}
+
+public class DungeonModel {
+    public static int indexCoridor=0;
+    public static float maxPanelTopBottom = 0;
+    public static float maxPanelRightLeft = 0;
+    public static float verticalNormalPosition;
+    public static float horizontalNormalPosition;
+    public static int playerInRoom = 0;
     public static bool battleWon;
     public static Button[] currentDungeonRoom;
     public static GameObject currentTreasureActionPanel;
     public static GameObject currentTrapActionPanel;
-    public static Text CurrentLog;
+    public static Text currentLog;
     public static Text treasureItem;
     public static RectTransform treasureContent;
     public static Button consumableItem;

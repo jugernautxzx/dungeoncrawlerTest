@@ -17,5 +17,8 @@
     <Equip Tier="1" Chance="50"/>
     <Equip Tier="2" Chance="30"/>
   </Equipment>
+  <DungeonBoss>
+    <Boss Id="" Lv=""/>
+  </DungeonBoss>
 </Dungeon>
 

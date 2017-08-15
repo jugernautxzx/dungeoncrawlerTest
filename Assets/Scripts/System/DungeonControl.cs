@@ -44,7 +44,7 @@ public class DungeonControl
         bool west = false;
 
         //Check coridor
-        for (int coridor = 0; coridor < DungeonModel.IndexCoridor; coridor++)
+        for (int coridor = 0; coridor < DungeonModel.indexCoridor; coridor++)
         {
             if (PlayerPosition.y + 65 == DungeonCoridor[coridor].offsetMax.y
                 && PlayerPosition.x + 25 == DungeonCoridor[coridor].offsetMin.x) //North
@@ -140,22 +140,22 @@ public class DungeonControl
         float NormalizeRoomPositionY = 0.5f;
         float NormalizeRoomPositionX = 0.5f;
 
-        if (DungeonModel.MaxPanelTopBottom >= 0)
+        if (DungeonModel.maxPanelTopBottom >= 0)
         {
-            PositionPerRoomTopBottom = 0.5f / ((DungeonModel.MaxPanelTopBottom - 200) / 150f);
+            PositionPerRoomTopBottom = 0.5f / ((DungeonModel.maxPanelTopBottom - 200) / 150f);
         }
         else
         {
-            PositionPerRoomTopBottom = 0.5f / ((DungeonModel.MaxPanelTopBottom + 200) / 150f);
+            PositionPerRoomTopBottom = 0.5f / ((DungeonModel.maxPanelTopBottom + 200) / 150f);
         }
 
-        if (DungeonModel.MaxPanelRightLeft >= 0)
+        if (DungeonModel.maxPanelRightLeft >= 0)
         {
-            PositionPerRoomRightLeft = 0.5f / ((DungeonModel.MaxPanelRightLeft - 200) / 150f);
+            PositionPerRoomRightLeft = 0.5f / ((DungeonModel.maxPanelRightLeft - 200) / 150f);
         }
         else
         {
-            PositionPerRoomRightLeft = 0.5f / ((DungeonModel.MaxPanelRightLeft + 200) / 150f);
+            PositionPerRoomRightLeft = 0.5f / ((DungeonModel.maxPanelRightLeft + 200) / 150f);
         }
 
         PositionRoomY = (PlayerPosition.y / 150) * PositionPerRoomTopBottom;
@@ -211,33 +211,33 @@ public class DungeonControl
             ScrollPanel.horizontalNormalizedPosition = NormalizeRoomPositionX;
         }
 
-        if (DungeonModel.VerticalNormalPosition > 0.5f)
+        if (DungeonModel.verticalNormalPosition > 0.5f)
         {
-            if (NormalizeRoomPositionY > DungeonModel.VerticalNormalPosition)
+            if (NormalizeRoomPositionY > DungeonModel.verticalNormalPosition)
             {
-                ScrollPanel.verticalNormalizedPosition = DungeonModel.VerticalNormalPosition;
+                ScrollPanel.verticalNormalizedPosition = DungeonModel.verticalNormalPosition;
             }
         }
-        else if (DungeonModel.VerticalNormalPosition < 0.5f)
+        else if (DungeonModel.verticalNormalPosition < 0.5f)
         {
-            if (NormalizeRoomPositionY < DungeonModel.VerticalNormalPosition)
+            if (NormalizeRoomPositionY < DungeonModel.verticalNormalPosition)
             {
-                ScrollPanel.verticalNormalizedPosition = DungeonModel.VerticalNormalPosition;
+                ScrollPanel.verticalNormalizedPosition = DungeonModel.verticalNormalPosition;
             }
         }
 
-        if (DungeonModel.HorizontalNormalPosition > 0.5f)
+        if (DungeonModel.horizontalNormalPosition > 0.5f)
         {
-            if (NormalizeRoomPositionX > DungeonModel.HorizontalNormalPosition)
+            if (NormalizeRoomPositionX > DungeonModel.horizontalNormalPosition)
             {
-                ScrollPanel.horizontalNormalizedPosition = DungeonModel.HorizontalNormalPosition;
+                ScrollPanel.horizontalNormalizedPosition = DungeonModel.horizontalNormalPosition;
             }
         }
-        else if (DungeonModel.HorizontalNormalPosition < 0.5f)
+        else if (DungeonModel.horizontalNormalPosition < 0.5f)
         {
-            if (NormalizeRoomPositionX < DungeonModel.HorizontalNormalPosition)
+            if (NormalizeRoomPositionX < DungeonModel.horizontalNormalPosition)
             {
-                ScrollPanel.horizontalNormalizedPosition = DungeonModel.HorizontalNormalPosition;
+                ScrollPanel.horizontalNormalizedPosition = DungeonModel.horizontalNormalPosition;
             }
         }
     }
@@ -247,24 +247,24 @@ public class DungeonControl
         DungeonModel.currentDungeonRoom = DungeonRoom;
         DungeonModel.currentTreasureActionPanel = TreasureActionPanel;
         DungeonModel.currentTrapActionPanel = TrapActionPanel;
-        DungeonModel.CurrentLog = Log;
+        DungeonModel.currentLog = Log;
 
         if (EventSystem.current.currentSelectedGameObject!=null)
         {
-            DungeonModel.PlayerInRoom = int.Parse(EventSystem.current.currentSelectedGameObject.name);
+            DungeonModel.playerInRoom = int.Parse(EventSystem.current.currentSelectedGameObject.name);
         }
 
-        if (DungeonRoom[DungeonModel.PlayerInRoom].tag.Contains("Enemy"))
+        if (DungeonRoom[DungeonModel.playerInRoom].tag.Contains("Enemy"))
         {
             EnemyEncounter();
             if(DungeonModel.battleWon==false)
             {
                 SceneManager.LoadScene(2, LoadSceneMode.Additive);
             }
-            else if (DungeonRoom[DungeonModel.PlayerInRoom].tag.Contains("Treasure"))
+            else if (DungeonRoom[DungeonModel.playerInRoom].tag.Contains("Treasure"))
             {
-                DungeonRoom[DungeonModel.PlayerInRoom].tag = "Treasure";
-                DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.yellow;
+                DungeonRoom[DungeonModel.playerInRoom].tag = "Treasure";
+                DungeonRoom[DungeonModel.playerInRoom].GetComponent<Image>().color = Color.yellow;
                 ClickRoomAction(DungeonRoom, TreasureActionPanel, TrapActionPanel,Log);
                 DungeonModel.battleWon = false;
             }
@@ -295,7 +295,7 @@ public class DungeonControl
 
             }*/
 
-        if (DungeonRoom[DungeonModel.PlayerInRoom].tag == "Treasure")
+        if (DungeonRoom[DungeonModel.playerInRoom].tag == "Treasure")
         {
             TreasureActionPanel.SetActive(true);
         }
@@ -305,13 +305,13 @@ public class DungeonControl
 
         }
 
-        if (DungeonRoom[DungeonModel.PlayerInRoom].tag.Contains("Boss"))
+        if (DungeonRoom[DungeonModel.playerInRoom].tag.Contains("Boss"))
         {
             //do something
             ClearRoomTag(DungeonRoom);
         }
 
-        if (DungeonRoom[DungeonModel.PlayerInRoom].tag == "Untagged")
+        if (DungeonRoom[DungeonModel.playerInRoom].tag == "Untagged")
         {
             ClearRoomTag(DungeonRoom);
         }
@@ -321,11 +321,11 @@ public class DungeonControl
 
     public void WriteLog(Text Log, Button[] DungeonRoom)
     {
-        if (DungeonRoom[DungeonModel.PlayerInRoom].tag == "Treasure")
+        if (DungeonRoom[DungeonModel.playerInRoom].tag == "Treasure")
         {
             Log.text = "You see chest in this room";
         }
-        else if (DungeonRoom[DungeonModel.PlayerInRoom].tag.Contains("Enemy"))
+        else if (DungeonRoom[DungeonModel.playerInRoom].tag.Contains("Enemy"))
         {
             Log.text = "Encountered enemy";
         }
@@ -513,8 +513,8 @@ public class DungeonControl
 
     public void ClearRoomTag(Button[] DungeonRoom)
     {
-        DungeonRoom[DungeonModel.PlayerInRoom].GetComponent<Image>().color = Color.green;
-        DungeonRoom[DungeonModel.PlayerInRoom].tag = "ClearRoom";
+        DungeonRoom[DungeonModel.playerInRoom].GetComponent<Image>().color = Color.green;
+        DungeonRoom[DungeonModel.playerInRoom].tag = "ClearRoom";
     }
 
     public void DungeonWin()
