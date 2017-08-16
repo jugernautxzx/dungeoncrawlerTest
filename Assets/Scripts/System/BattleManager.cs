@@ -489,7 +489,7 @@ public class BattleManager : BattleManagerLog
     void UnloadScene()
     {
         DungeonControl dungeonControl = new DungeonControl();
-        dungeonControl.ClickRoomAction(DungeonModel.currentDungeonRoom, DungeonModel.currentTreasureActionPanel, DungeonModel.currentTrapActionPanel, DungeonModel.CurrentLog);
+        dungeonControl.ClickRoomAction(DungeonModel.currentDungeonRoom, DungeonModel.currentTreasureActionPanel, DungeonModel.currentTrapActionPanel, DungeonModel.currentLog);
         SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(1));
         SceneManager.UnloadSceneAsync(2);
     }

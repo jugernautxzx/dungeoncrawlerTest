@@ -65,7 +65,7 @@ public class DungeonGenerator : MonoBehaviour {
     {
         info = DungeonManager.DungeonLoad("Stage1_1");
         bool RoomPosition = true;
-        DungeonModel.IndexCoridor = 0;
+        DungeonModel.indexCoridor = 0;
 
         SpawnEntrancePoint();
         float RoomPositionX = DungeonRoom[0].GetComponent<RectTransform>().offsetMin.x;
@@ -85,15 +85,15 @@ public class DungeonGenerator : MonoBehaviour {
 
                 RoomPosition = CheckRoom(RoomIndex, RoomPosition);
 
-                SpawnCoridor(DungeonModel.IndexCoridor, RoomPositionX, RoomPositionY);
+                SpawnCoridor(DungeonModel.indexCoridor, RoomPositionX, RoomPositionY);
 
-                for (int K = 0; K < DungeonModel.IndexCoridor; K++) //Check Coridor
+                for (int K = 0; K < DungeonModel.indexCoridor; K++) //Check Coridor
                 {
 
-                    if (DungeonCoridor[K].offsetMin == DungeonCoridor[DungeonModel.IndexCoridor].offsetMin)
+                    if (DungeonCoridor[K].offsetMin == DungeonCoridor[DungeonModel.indexCoridor].offsetMin)
                     {
-                        Destroy(DungeonCoridor[DungeonModel.IndexCoridor].gameObject);
-                        DungeonModel.IndexCoridor -= 1;
+                        Destroy(DungeonCoridor[DungeonModel.indexCoridor].gameObject);
+                        DungeonModel.indexCoridor -= 1;
                         break;
                     }
 
@@ -101,8 +101,8 @@ public class DungeonGenerator : MonoBehaviour {
 
                 RoomPositionX = DungeonRoom[RoomIndex].GetComponent<RectTransform>().offsetMin.x;
                 RoomPositionY = DungeonRoom[RoomIndex].GetComponent<RectTransform>().offsetMin.y;
-                DungeonCoridor[DungeonModel.IndexCoridor].gameObject.SetActive(false);
-                DungeonModel.IndexCoridor += 1;
+                DungeonCoridor[DungeonModel.indexCoridor].gameObject.SetActive(false);
+                DungeonModel.indexCoridor += 1;
 
             } while (!RoomPosition);
 
@@ -238,6 +238,7 @@ public class DungeonGenerator : MonoBehaviour {
 
         }
 
+        //Balance between Top Bottom, Right Left
         float MaxPanelTop = panelTop;
         float MaxPanelBottom = panelBottom;
         float MaxPanelRight = panelRight;
@@ -245,23 +246,23 @@ public class DungeonGenerator : MonoBehaviour {
 
         if (panelTop > Mathf.Abs(panelBottom))
         {
-            DungeonModel.MaxPanelTopBottom = panelTop;
+            DungeonModel.maxPanelTopBottom = panelTop;
             MaxPanelBottom = -panelTop;
         }
         else
         {
-            DungeonModel.MaxPanelTopBottom = panelBottom;
+            DungeonModel.maxPanelTopBottom = panelBottom;
             MaxPanelTop = Mathf.Abs(panelBottom);
         }
 
         if (panelRight > Mathf.Abs(panelLeft))
         {
-            DungeonModel.MaxPanelRightLeft = panelRight;
+            DungeonModel.maxPanelRightLeft = panelRight;
             MaxPanelLeft = -panelRight;
         }
         else
         {
-            DungeonModel.MaxPanelRightLeft = panelLeft;
+            DungeonModel.maxPanelRightLeft = panelLeft;
             MaxPanelRight = Mathf.Abs(panelLeft);
         }
 
@@ -273,44 +274,43 @@ public class DungeonGenerator : MonoBehaviour {
     {
         float PositionPerRoomTopBottom;
         float PositionPerRoomRightLeft;
-        float lerptime = 0.5f;
 
-        if (DungeonModel.MaxPanelTopBottom >= 0)
+        if (DungeonModel.maxPanelTopBottom >= 0)
         {
-            PositionPerRoomTopBottom = 0.5f / ((DungeonModel.MaxPanelTopBottom - 200) / 150f);
+            PositionPerRoomTopBottom = 0.5f / ((DungeonModel.maxPanelTopBottom - 200) / 150f);
         }
         else
         {
-            PositionPerRoomTopBottom = 0.5f / ((DungeonModel.MaxPanelTopBottom + 200) / 150f);
+            PositionPerRoomTopBottom = 0.5f / ((DungeonModel.maxPanelTopBottom + 200) / 150f);
         }
 
-        if (DungeonModel.MaxPanelRightLeft >= 0)
+        if (DungeonModel.maxPanelRightLeft >= 0)
         {
-            PositionPerRoomRightLeft = 0.5f / ((DungeonModel.MaxPanelRightLeft - 200) / 150f);
+            PositionPerRoomRightLeft = 0.5f / ((DungeonModel.maxPanelRightLeft - 200) / 150f);
         }
         else
         {
-            PositionPerRoomRightLeft = 0.5f / ((DungeonModel.MaxPanelRightLeft + 200) / 150f);
+            PositionPerRoomRightLeft = 0.5f / ((DungeonModel.maxPanelRightLeft + 200) / 150f);
         }
 
         if (panelTop != Mathf.Abs(panelBottom))
         {
             if (PositionPerRoomTopBottom >= 0)
             {
-                DungeonModel.VerticalNormalPosition = 0.5f - (PositionPerRoomTopBottom * (Mathf.Abs(panelBottom + 200) / 150f));
+                DungeonModel.verticalNormalPosition = 0.5f - (PositionPerRoomTopBottom * (Mathf.Abs(panelBottom + 200) / 150f));
 
-                if (ScrollPanel.verticalNormalizedPosition <= DungeonModel.VerticalNormalPosition)
+                if (ScrollPanel.verticalNormalizedPosition <= DungeonModel.verticalNormalPosition)
                 {
-                    ScrollPanel.verticalNormalizedPosition = Mathf.Clamp01(DungeonModel.VerticalNormalPosition);
+                    ScrollPanel.verticalNormalizedPosition = Mathf.Clamp01(DungeonModel.verticalNormalPosition);
                 }
             }
             else
             {
-                DungeonModel.VerticalNormalPosition = 0.5f - (PositionPerRoomTopBottom * (Mathf.Abs(panelTop - 200) / 150f));
+                DungeonModel.verticalNormalPosition = 0.5f - (PositionPerRoomTopBottom * (Mathf.Abs(panelTop - 200) / 150f));
 
-                if (ScrollPanel.verticalNormalizedPosition >= DungeonModel.VerticalNormalPosition)
+                if (ScrollPanel.verticalNormalizedPosition >= DungeonModel.verticalNormalPosition)
                 { 
-                    ScrollPanel.verticalNormalizedPosition = Mathf.Clamp01(DungeonModel.VerticalNormalPosition);
+                    ScrollPanel.verticalNormalizedPosition = Mathf.Clamp01(DungeonModel.verticalNormalPosition);
                 }
             }
         }
@@ -319,20 +319,20 @@ public class DungeonGenerator : MonoBehaviour {
         {
             if (PositionPerRoomRightLeft >= 0)
             {
-                DungeonModel.HorizontalNormalPosition = 0.5f - (PositionPerRoomRightLeft * (Mathf.Abs(panelLeft + 200) / 150f));
+                DungeonModel.horizontalNormalPosition = 0.5f - (PositionPerRoomRightLeft * (Mathf.Abs(panelLeft + 200) / 150f));
 
-                if (ScrollPanel.horizontalNormalizedPosition <= DungeonModel.HorizontalNormalPosition)
+                if (ScrollPanel.horizontalNormalizedPosition <= DungeonModel.horizontalNormalPosition)
                 {
-                    ScrollPanel.horizontalNormalizedPosition = Mathf.Clamp01(DungeonModel.HorizontalNormalPosition);
+                    ScrollPanel.horizontalNormalizedPosition = Mathf.Clamp01(DungeonModel.horizontalNormalPosition);
                 }
             }
             else
             {
-                DungeonModel.HorizontalNormalPosition = 0.5f - (PositionPerRoomRightLeft * (Mathf.Abs(panelRight - 200) / 150f));
+                DungeonModel.horizontalNormalPosition = 0.5f - (PositionPerRoomRightLeft * (Mathf.Abs(panelRight - 200) / 150f));
 
-                if (ScrollPanel.horizontalNormalizedPosition >= DungeonModel.HorizontalNormalPosition)
+                if (ScrollPanel.horizontalNormalizedPosition >= DungeonModel.horizontalNormalPosition)
                 {
-                    ScrollPanel.horizontalNormalizedPosition = Mathf.Clamp01(DungeonModel.HorizontalNormalPosition);
+                    ScrollPanel.horizontalNormalizedPosition = Mathf.Clamp01(DungeonModel.horizontalNormalPosition);
                 }
             }
         }
@@ -340,31 +340,30 @@ public class DungeonGenerator : MonoBehaviour {
 
     public void RandomRoomTag()
     {
-        RandomBossRoom();
+        BossRoom();
         RandomEnemyRoom();
         RandomTrapRoom();
         RandomTreasureRoom();
 
     }
 
-    public void RandomBossRoom()
+    public void BossRoom()
     {
-        int MaxBoss = 1;
+        Vector2 mostFarRoom=new Vector2(0,0);
         int AddBoss = 0;
-        List<int> BossRoom;
 
-        BossRoom = new List<int>();
-        for (int Boss = 0; Boss < MaxBoss; Boss++)
+        for (int boss = 0; boss <= info.allRoom; boss++)
         {
-            AddBoss = Random.Range(info.allRoom / 2, info.allRoom+1);
-            while (BossRoom.Contains(AddBoss))
+            if (Mathf.Abs(DungeonRoom[boss].GetComponent<RectTransform>().offsetMin.y)>mostFarRoom.y
+                && Mathf.Abs(DungeonRoom[boss].GetComponent<RectTransform>().offsetMin.x)>mostFarRoom.x)
             {
-                AddBoss = Random.Range(info.allRoom / 2, info.allRoom+1);
+                mostFarRoom.y = DungeonRoom[boss].GetComponent<RectTransform>().offsetMin.y;
+                mostFarRoom.x = DungeonRoom[boss].GetComponent<RectTransform>().offsetMin.x;
+                AddBoss = boss;
             }
-            BossRoom.Add(AddBoss);
-            DungeonRoom[AddBoss].tag = "Boss";
-            DungeonRoom[AddBoss].GetComponent<Image>().color = Color.red;
         }
+        DungeonRoom[AddBoss].tag = "Boss";
+        DungeonRoom[AddBoss].GetComponent<Image>().color = Color.red;
 
     }
 
