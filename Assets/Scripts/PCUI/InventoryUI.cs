@@ -134,7 +134,6 @@ public class InventoryUI : MonoBehaviour, InventoryItemInterface
             eqItem.GetComponent<InventoryItemUI>().SetInterface(this);
         eqItem.GetComponent<InventoryItemUI>().SetShowInterface(showImpl);
     }
-
   
     public void OnItemClicked(int index, int mouseIndex)
     {
@@ -147,7 +146,6 @@ public class InventoryUI : MonoBehaviour, InventoryItemInterface
         sorting.Clear();
         foreach (Transform child in viewPort.transform)
         {
-            //Destroy(child.gameObject);
             child.gameObject.SetActive(false);
         }
     }

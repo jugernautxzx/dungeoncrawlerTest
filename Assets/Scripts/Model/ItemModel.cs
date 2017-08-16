@@ -49,9 +49,11 @@ public class ItemManager
             return itemList.Get(id);
         else
         {
-            ItemModel error = new ItemModel();
-            error.name = "ITEM NOT FOUND";
-            error.description = "ITEM ID DOES NOT EXIST";
+            ItemModel error = new ItemModel
+            {
+                name = "ITEM NOT FOUND",
+                description = "ITEM ID DOES NOT EXIST"
+            };
             return error;
         }
     }

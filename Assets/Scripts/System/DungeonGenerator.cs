@@ -503,7 +503,7 @@ public class DungeonGenerator : MonoBehaviour {
     public void WinUI()
     {
         completeDungeon.gameObject.SetActive(true);
-        Time.timeScale = 0;
+        //Time.timeScale = 0;
         dungeonControl.DungeonWin();
     }
 

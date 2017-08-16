@@ -44,7 +44,6 @@ public class MainMenuUI : MonoBehaviour, CharCreationInterface, RecruitmentInter
         consumableUI.SetListener(this);
         ItemManager.GetInstance();
         LoadGameSession();
-
     }
 
     void LoadGameSession()

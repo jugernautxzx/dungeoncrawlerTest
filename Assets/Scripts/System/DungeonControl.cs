@@ -520,6 +520,7 @@ public class DungeonControl
     public void DungeonWin()
     {
         dungeonInventory.WinDungeonLoot();
+        SceneManager.LoadScene(0);
     }
 
     public void DropItemControl(string itemId)
@@ -531,5 +532,4 @@ public class DungeonControl
     {
         dungeonInventory.DropAllAction(itemId);
     }
-
 }
