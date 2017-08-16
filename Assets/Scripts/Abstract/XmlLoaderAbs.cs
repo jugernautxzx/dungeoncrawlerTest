@@ -24,7 +24,6 @@ public abstract class RealListWithDictionary<T> where T : ClassWithId
                 Debug.Log("Duplicate id: " + list[i].id);
             }
         }
-        Debug.Log("Completed");
     }
 
     public T Get(string id)
@@ -62,7 +61,7 @@ public abstract class ListWithDictionary<T>
 
 }
 
-public class XmlLoader
+public static class XmlLoader
 {
     public static string PersistentDataPath()
     {

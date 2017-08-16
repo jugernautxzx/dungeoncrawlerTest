@@ -13,7 +13,15 @@ public class TextModel : ClassWithId
 
 public class TextManager
 {
+    static TextManager instance;
     TextModelList list;
+
+    public static TextManager GetInstance()
+    {
+        if (instance == null)
+            instance = new TextManager();
+        return instance;
+    }
 
     public TextManager()
     {

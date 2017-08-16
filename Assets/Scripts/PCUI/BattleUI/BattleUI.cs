@@ -42,7 +42,7 @@ public class BattleUI : MonoBehaviour, BattleInterface
             int j = i;
             activeBtns[i].onValueChanged.AddListener(delegate { OnActiveSkillButtonClicked(j); });
         }
-        textManager = new TextManager();
+        textManager = TextManager.GetInstance();
         battleManager = new BattleManager(this);
         battleManager.BattleStart();
     }

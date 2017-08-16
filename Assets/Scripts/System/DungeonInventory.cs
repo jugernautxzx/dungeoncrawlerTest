@@ -4,32 +4,33 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class DungeonInventory {
+public class DungeonInventory
+{
 
-    string itemText;
     List<Loot> itemLoot = new List<Loot>();
     public Button[] consumableButton = new Button[10];
     public Text[] treasureItem = new Text[20];
     int countButtonConsumable = 0;
     int countTreasureItem = 0;
+    IDungeonUseItem useItemInterface;
 
     public void getLoot(string itemId, int amount, ItemType type)
     {
-        if (itemLoot.Exists(t=>t.itemId==itemId))
+        if (itemLoot.Exists(t => t.itemId == itemId))
         {
-            itemLoot.Find(t=>t.itemId.Equals(itemId)).amount+=amount;
-            
+            itemLoot.Find(t => t.itemId.Equals(itemId)).amount += amount;
+
         }
         else
         {
-            if(type==ItemType.Consumable)
+            if (type == ItemType.Consumable)
             {
                 itemLoot.Add(new Loot(itemId, amount, type, countButtonConsumable));
                 consumableButton[countButtonConsumable] = Button.Instantiate(DungeonModel.consumableItem);
                 consumableButton[countButtonConsumable].transform.SetParent(DungeonModel.consumableContent);
-                consumableButton[countButtonConsumable].transform.localScale = new Vector2(1,1);
+                consumableButton[countButtonConsumable].transform.localScale = new Vector2(1, 1);
                 consumableButton[countButtonConsumable].name = itemId;
-                consumableButton[countButtonConsumable].onClick.AddListener(useItem);
+                consumableButton[countButtonConsumable].onClick.AddListener(delegate { useItem(itemId); });
                 countButtonConsumable += 1;
             }
             else
@@ -87,7 +88,7 @@ public class DungeonInventory {
     {
         if (itemLoot.Exists(t => t.itemId == itemId) && itemLoot.Find(t => t.itemId.Equals(itemId)).amount == 0)
         {
-            if (itemLoot.Find(t => t.itemId.Equals(itemId)).type==ItemType.Consumable)
+            if (itemLoot.Find(t => t.itemId.Equals(itemId)).type == ItemType.Consumable)
             {
                 UnityEngine.Object.Destroy(consumableButton[itemLoot.Find(t => t.itemId.Equals(itemId)).index].gameObject);
             }
@@ -95,14 +96,15 @@ public class DungeonInventory {
             {
                 UnityEngine.Object.Destroy(treasureItem[itemLoot.Find(t => t.itemId.Equals(itemId)).index].gameObject);
             }
-            
+
             itemLoot.RemoveAt(itemLoot.FindIndex(t => t.itemId.Equals(itemId)));
         }
     }
 
-    public void useItem()
+    public void useItem(string id)
     {
         Debug.Log("use something");
+        useItemInterface.SelectCharacterToUseItem(ItemManager.GetInstance().GetItem(id));
     }
 
     public void WinDungeonLoot()

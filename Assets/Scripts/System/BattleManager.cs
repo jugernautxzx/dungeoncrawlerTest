@@ -400,8 +400,6 @@ public class BattleManager : BattleManagerLog
     {
         Debug.Log("Waiting for " + turnTaker.name);
         yield return new WaitForSeconds(0.5f);
-        //TODO Insert EnemyAI
-        //ActorAttackTarget(0, true);
         turnTaker.monster.TakeTurn();
         yield return new WaitForSeconds(0.25f);
         Debug.Log("Done waiting for " + turnTaker.name);
