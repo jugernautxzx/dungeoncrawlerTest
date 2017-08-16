@@ -12,7 +12,6 @@ public class DungeonInventory
     public Text[] treasureItem = new Text[20];
     int countButtonConsumable = 0;
     int countTreasureItem = 0;
-    IDungeonUseItem useItemInterface;
 
     public void getLoot(string itemId, int amount, ItemType type)
     {
@@ -30,7 +29,7 @@ public class DungeonInventory
                 consumableButton[countButtonConsumable].transform.SetParent(DungeonModel.consumableContent);
                 consumableButton[countButtonConsumable].transform.localScale = new Vector2(1, 1);
                 consumableButton[countButtonConsumable].name = itemId;
-                consumableButton[countButtonConsumable].onClick.AddListener(delegate { useItem(itemId); });
+                //consumableButton[countButtonConsumable].onClick.AddListener(delegate { useItem(itemId); });
                 countButtonConsumable += 1;
             }
             else
@@ -104,7 +103,6 @@ public class DungeonInventory
     public void useItem(string id)
     {
         Debug.Log("use something");
-        useItemInterface.SelectCharacterToUseItem(ItemManager.GetInstance().GetItem(id));
     }
 
     public void WinDungeonLoot()

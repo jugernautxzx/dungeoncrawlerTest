@@ -1,12 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-public interface IDungeonUseItem
-{
-    void SelectCharacterToUseItem(ItemModel item);
-}
-
-public class DungeonCharPanel : MonoBehaviour, IDungeonUseItem
+public class DungeonCharPanel : MonoBehaviour
 {
 
     public PlayerCharaUI[] cUI;
@@ -50,6 +46,6 @@ public class DungeonCharPanel : MonoBehaviour, IDungeonUseItem
 
     public void SelectCharacterToUseItem(ItemModel item)
     {
-
+        EnableSelection(true);
     }
 }

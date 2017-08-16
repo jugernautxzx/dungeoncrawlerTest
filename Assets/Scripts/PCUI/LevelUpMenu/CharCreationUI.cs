@@ -60,7 +60,7 @@ public class CharCreationUI : MonoBehaviour, AttributeFieldInterface
         else
             bonusValue = 15;
         //pName.interactable = false;
-        initialAttr = (Attribute)model.attribute.Clone();
+        initialAttr = model.attribute.DeepCopy();
         pName.text = model.name;
         toLevelUp = model;
         LoadModelAttribute(model.attribute);

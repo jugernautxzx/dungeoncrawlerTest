@@ -45,7 +45,7 @@ public class ProfileManager
     }
 
     public void LoadFlatProfile()
-    {
+    {//TODO Finish this in final version, convert to useable ProfileManager
         float start = Time.realtimeSinceStartup;
         if (!File.Exists(XmlSaver.PersistentDataPath() + "/SAVEDATA"))
             return;
@@ -53,7 +53,7 @@ public class ProfileManager
         if (!PlayerProfileFlat.PlayerProfileFlatBufferHasIdentifier(bb))
             return;
         PlayerProfileFlat flat = PlayerProfileFlat.GetRootAsPlayerProfileFlat(bb);
-        Debug.Log("Flat Loading time  " + (Time.realtimeSinceStartup - start));
+        Debug.Log("Flat Loading time  " + (Time.realtimeSinceStartup - start) + " " + flat.Characters(0).Value.Name);
     }
 
     //TODO Once finished use flatbuffer to save player game data

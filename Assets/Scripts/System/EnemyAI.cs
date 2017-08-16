@@ -8,8 +8,8 @@ public interface BaseMonster
 
 public class SimpleMonster : BaseMonster
 {
-    CharacterModel self;
-    BattleManager manager;
+    protected CharacterModel self;
+    protected BattleManager manager;
 
     public SimpleMonster(CharacterModel model, BattleManager manager)
     {
@@ -17,7 +17,7 @@ public class SimpleMonster : BaseMonster
         this.manager = manager;
     }
 
-    public void TakeTurn()
+    public virtual void TakeTurn()
     {
         int i = Random.Range(0, 4);
         while (!manager.IsValid(manager.GetPlayer(i)))

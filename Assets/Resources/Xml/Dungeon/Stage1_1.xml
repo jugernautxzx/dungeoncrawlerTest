@@ -8,9 +8,9 @@
     <Enemy Id="BoneCaster" Lv="1" Weight="2" Chance="50"></Enemy>
   </EnemyType>
   <Treasure>
-    <Item ItemId="OldPaint" Chance="50" AmountMin="2" AmountMax="3"/>
-    <Item ItemId="OldPot" Chance="50" AmountMin="1" AmountMax="3"/>
-    <Item ItemId="Pot1" Chance="1" AmountMin="1" AmountMax="1"/>
+    <Item ItemId="OldPaint" Chance="5" AmountMin="2" AmountMax="3"/>
+    <Item ItemId="OldPot" Chance="5" AmountMin="1" AmountMax="3"/>
+    <Item ItemId="Pot1" Chance="100" AmountMin="1" AmountMax="1"/>
     <Item ItemId="Pot2" Chance="1" AmountMin="1" AmountMax="1"/>
   </Treasure>
   <Equipment>
@@ -18,7 +18,7 @@
     <Equip Tier="2" Chance="30"/>
   </Equipment>
   <DungeonBoss>
-    <Boss Id="" Lv=""/>
+    <Boss Id="Skeleton" Lv="10" Name="Skeleton Master"/>
   </DungeonBoss>
 </Dungeon>
 

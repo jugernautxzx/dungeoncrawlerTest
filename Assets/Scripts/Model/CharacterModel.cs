@@ -87,17 +87,7 @@ public class CharacterModel
 
     public void CalculateEqAttribute()
     {
-        if (eqAttribute == null)
-        {
-            eqAttribute = new Attribute();
-            equipBAttribute = new BattleAttribute();
-        }
-
-        else
-        {
-            eqAttribute.Reset();
-            equipBAttribute.Reset();
-        }
+        ResetEquipmentAttribute();
         AddAllEquipmentAttrib(PlayerSession.GetEquipment(battleSetting.mainHand));
         AddAllEquipmentAttrib(PlayerSession.GetEquipment(battleSetting.offHand));
         AddAllEquipmentAttrib(PlayerSession.GetEquipment(battleSetting.head));
@@ -106,28 +96,30 @@ public class CharacterModel
         AddAllEquipmentAttrib(PlayerSession.GetEquipment(battleSetting.acc2));
     }
 
+    void ResetEquipmentAttribute()
+    {
+        if (eqAttribute == null)
+        {
+            eqAttribute = new Attribute();
+            equipBAttribute = new BattleAttribute();
+        }
+        else
+        {
+            eqAttribute.Reset();
+            equipBAttribute.Reset();
+        }
+    }
+
     void AddAllEquipmentAttrib(Equipment model)
     {
         if (model == null)
             return;
-        eqAttribute.str += model.attribute.str;
-        eqAttribute.agi += model.attribute.agi;
-        eqAttribute.cons += model.attribute.cons;
-        eqAttribute.endurance += model.attribute.endurance;
-        eqAttribute.intel += model.attribute.intel;
-        eqAttribute.wisdom += model.attribute.wisdom;
-        eqAttribute.speed += model.attribute.speed;
-        equipBAttribute.basePAtk += model.battle.basePAtk;
-        equipBAttribute.basePDef += model.battle.basePDef;
-        equipBAttribute.baseMatk += model.battle.baseMatk;
-        equipBAttribute.baseMDef += model.battle.baseMDef;
-        equipBAttribute.hp += model.battle.hp;
-        equipBAttribute.mp += model.battle.mp;
-        equipBAttribute.stamina += model.battle.stamina;
+        eqAttribute.Add(model.attribute);
+        equipBAttribute.AddBase(model.battle);
     }
 }
 
-public class Attribute : ICloneable
+public class Attribute
 {
     [DefaultValue(0)]
     [XmlElement("Str")]//PAtk PDef
@@ -162,7 +154,18 @@ public class Attribute : ICloneable
         cons = 0;
     }
 
-    public object Clone()
+    public void Add(Attribute toAdd)
+    {
+        str += toAdd.str;
+        agi += toAdd.agi;
+        intel += toAdd.intel;
+        endurance += toAdd.endurance;
+        wisdom += toAdd.wisdom;
+        cons += toAdd.cons;
+        speed += toAdd.speed;
+    }
+
+    public Attribute DeepCopy()
     {
         Attribute attr = new Attribute();
         attr.str = str;
@@ -225,6 +228,18 @@ public class BattleAttribute
     public int actionBar;
     [XmlIgnore]
     public List<BattleBuff> buffs = new List<BattleBuff>();
+
+    public void AddBase(BattleAttribute toAdd)
+    {
+        basePAtk += toAdd.basePAtk;
+        basePDef += toAdd.basePDef;
+        baseMatk += toAdd.baseMatk;
+        baseMDef += toAdd.baseMDef;
+        hp += toAdd.hp;
+        mp += toAdd.mp;
+        stamina += toAdd.stamina;
+        speed += toAdd.speed;
+    }
 
     public void ModifyHp(int number)
     {

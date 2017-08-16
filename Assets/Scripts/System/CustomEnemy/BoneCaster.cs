@@ -2,18 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoneCaster : BaseMonster
+public class BoneCaster : SimpleMonster
 {
-    CharacterModel self;
-    BattleManager manager;
-
-    public BoneCaster(CharacterModel model, BattleManager manager)
+    public BoneCaster(CharacterModel model, BattleManager manager) : base(model, manager)
     {
-        self = model;
-        this.manager = manager;
     }
 
-    public void TakeTurn()
+    public override void TakeTurn()
     {
         int i = Random.Range(0, 4);
         while (!manager.IsValid(manager.GetPlayer(i)))

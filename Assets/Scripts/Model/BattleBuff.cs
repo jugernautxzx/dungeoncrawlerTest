@@ -46,19 +46,7 @@ public class BuffManager
     public static BattleBuff CreateBuff(string bType, string form)
     {
         string[] forms = form.Split('|');
-        BattleBuff buff;
-        switch (bType)
-        {
-            case "AtkBuff":
-                buff = new AtkBuff(forms[4]);
-                break;
-            case "PoisonBuff":
-                buff = new PoisonBuff(forms[4]);
-                break;
-            default:
-                new NotImplementedException("Buff formula does not exist: " + bType);
-                return null;
-        }
+        BattleBuff buff = GetBuffClass(bType, ref forms);
         buff.turn = int.Parse(forms[0]);
         buff.id = forms[1];
         buff.nameInfo = forms[2];
@@ -66,6 +54,19 @@ public class BuffManager
         return buff;
     }
 
+    static BattleBuff GetBuffClass(string bType, ref string[] forms)
+    {
+        switch (bType)
+        {
+            case "AtkBuff":
+                return new AtkBuff(forms[4]);
+            case "PoisonBuff":
+                return new PoisonBuff(forms[4]);
+            default:
+                new NotImplementedException("Buff formula does not exist: " + bType);
+                return null;
+        }
+    }
 }
 
 public class AtkBuff : BattleBuff

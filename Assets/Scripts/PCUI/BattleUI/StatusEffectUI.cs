@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class StatusEffectUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
 {
     string infoId="InfoPoison";
-    string text;
 
     public void SetInfoId(string text, string id)
     {

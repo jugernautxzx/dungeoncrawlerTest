@@ -13,15 +13,12 @@ public class PartyManager : MonoBehaviour, PartySelectionInterface
 
     int[] partyIndex = new int[3];
 
-    List<GameObject> allMembers;
-
     EquipmentUIInterface eqImpl;
     bool requireUpdate;
 
     // Use this for initialization
     void Start()
     {
-        allMembers = new List<GameObject>();
         requireUpdate = true;
     }
 

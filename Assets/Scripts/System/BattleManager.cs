@@ -64,30 +64,21 @@ public class BattleManager : BattleManagerLog
 
     void InitiateActors()
     {
-        //TODO Debugging purpose
-        playerList.Add(PlayerSession.GetProfile().characters[0]);
-        playerList[0].GenerateBasicBattleAttribute();
-        if (PlayerSession.GetProfile().party.member1 > 0)
-        {
-            playerList.Add(PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member1]);
-        }
-        if (PlayerSession.GetProfile().party.member2 > 0)
-        {
-            playerList.Add(PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member2]);
-        }
-        if (PlayerSession.GetProfile().party.member3 > 0)
-        {
-            playerList.Add(PlayerSession.GetProfile().characters[PlayerSession.GetProfile().party.member3]);
-        }
+        AddModelToList(playerList, PlayerSession.GetProfile().GetCharacter(0));
+        AddModelToList(playerList, PlayerSession.GetProfile().GetCharacter(PlayerSession.GetProfile().party.member1));
+        AddModelToList(playerList, PlayerSession.GetProfile().GetCharacter(PlayerSession.GetProfile().party.member2));
+        AddModelToList(playerList, PlayerSession.GetProfile().GetCharacter(PlayerSession.GetProfile().party.member3));
+        AddModelToList(enemyList, MonsterLoader.LoadMonsterData(DungeonModel.enemy1, DungeonModel.lvEnemy1));
+        AddModelToList(enemyList, MonsterLoader.LoadMonsterData(DungeonModel.enemy2, DungeonModel.lvEnemy2));
+        AddModelToList(enemyList, MonsterLoader.LoadMonsterData(DungeonModel.enemy3, DungeonModel.lvEnemy3));
+        AddModelToList(enemyList, MonsterLoader.LoadMonsterData(DungeonModel.enemy4, DungeonModel.lvEnemy4));
+        enemyList.ForEach(enemy => InitEnemy(enemy));
+    }
 
-        enemyList.Add(MonsterLoader.LoadMonsterData(DungeonModel.enemy1, DungeonModel.lvEnemy1));
-        //enemy2 = MonsterLoader.LoadMonsterData(DungeonModel.enemy2, DungeonModel.lvEnemy2);
-        //enemy3 = MonsterLoader.LoadMonsterData(DungeonModel.enemy3, DungeonModel.lvEnemy3);
-        //enemy4 = MonsterLoader.LoadMonsterData(DungeonModel.enemy4, DungeonModel.lvEnemy4);
-        InitEnemy(enemyList[0]);
-        //InitEnemy(enemy2);
-        //InitEnemy(enemy3);
-        //InitEnemy(enemy4);
+    void AddModelToList(List<CharacterModel> list, CharacterModel model)
+    {
+        if (model != null)
+            list.Add(model);
     }
 
     void InitEnemy(CharacterModel model)
@@ -362,29 +353,11 @@ public class BattleManager : BattleManagerLog
             return false;
     }
 
-    void TurnTakerBuffOnTurn2()
+    void TurnTakerBuffOnTurn()
     {
         turnTaker.battleAttribute.buffs.ForEach(buff => buff.CharaTakeTurn());
         turnTaker.battleAttribute.buffs.RemoveAll(buff => buff.IsExpired());
         WriteActorStillAlive(turnTaker);
-    }
-
-    void TurnTakerBuffOnTurn()
-    {
-        TurnTakerBuffOnTurn2();
-        //TODO Remove this later
-        //List<BattleBuff> toRemove = new List<BattleBuff>();
-        //foreach (BattleBuff buff in turnTaker.battleAttribute.buffs)
-        //{
-        //    buff.CharaTakeTurn();
-        //    if (buff.IsExpired())
-        //        toRemove.Add(buff);
-        //}
-        //foreach (BattleBuff buff in toRemove)
-        //{
-        //    turnTaker.battleAttribute.buffs.Remove(buff);
-        //}
-        //WriteActorStillAlive(turnTaker);
     }
 
     public bool IsValid(CharacterModel model)
