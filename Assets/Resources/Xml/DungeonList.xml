@@ -1,0 +1,14 @@
+<Dungeon>
+  <Stages>
+    <Stage Id="1" Name="Dark Forest" LvMin="1" LvMax="5" >
+      <SubStages>
+        <SubStage Id="Forest_1" Name="Dark Forest Entrance" Lv="1"/>\
+      </SubStages>
+    </Stage>
+    <Stage Id="2" Name="Vlad Mansion" LvMin="3" LvMax="7" >
+      <SubStages>
+        <SubStage Id="Floor_1" Name="Mansion Entrance" Lv="3"/>
+      </SubStages>
+    </Stage>
+  </Stages>
+</Dungeon>

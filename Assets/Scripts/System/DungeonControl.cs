@@ -80,18 +80,15 @@ public class DungeonControl
             dungeon.interactable = false;
         }
         activeRoom.Clear();
+
         for (int room = 0; room <= DungeonGenerator.info.allRoom; room++)
         {
-            //DungeonRoom[room].interactable = false;
             if (north)
             {
                 if (PlayerPosition.y + 150 == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.y
                 && PlayerPosition.x == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.x)//North
                 {
-                    DungeonRoom[room].interactable = true;
-                    DungeonRoom[room].gameObject.SetActive(true);
-                    activeRoom.Add(DungeonRoom[room]);
-                    DungeonRoom[room].GetComponent<Animator>().SetBool("Animate", true);
+                    SetRoomToActive(DungeonRoom, room);
                 }
             }
 
@@ -100,10 +97,7 @@ public class DungeonControl
                 if (PlayerPosition.x + 150 == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.x
                 && PlayerPosition.y == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.y) //East
                 {
-                    DungeonRoom[room].interactable = true;
-                    DungeonRoom[room].gameObject.SetActive(true);
-                    activeRoom.Add(DungeonRoom[room]);
-                    DungeonRoom[room].GetComponent<Animator>().SetBool("Animate", true);
+                    SetRoomToActive(DungeonRoom, room);
                 }
             }
             if (south)
@@ -111,10 +105,7 @@ public class DungeonControl
                 if (PlayerPosition.x == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.x
                 && PlayerPosition.y - 150 == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.y) //South
                 {
-                    DungeonRoom[room].interactable = true;
-                    DungeonRoom[room].gameObject.SetActive(true);
-                    activeRoom.Add(DungeonRoom[room]);
-                    DungeonRoom[room].GetComponent<Animator>().SetBool("Animate", true);
+                    SetRoomToActive(DungeonRoom, room);
                 }
             }
             if (west)
@@ -122,13 +113,18 @@ public class DungeonControl
                 if (PlayerPosition.x - 150 == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.x
                 && PlayerPosition.y == DungeonRoom[room].GetComponent<RectTransform>().offsetMin.y) //West
                 {
-                    DungeonRoom[room].interactable = true;
-                    DungeonRoom[room].gameObject.SetActive(true);
-                    activeRoom.Add(DungeonRoom[room]);
-                    DungeonRoom[room].GetComponent<Animator>().SetBool("Animate", true);
+                    SetRoomToActive(DungeonRoom, room);
                 }
             }
         }
+    }
+
+    public void SetRoomToActive(Button[] DungeonRoom,int room)
+    {
+        DungeonRoom[room].interactable = true;
+        DungeonRoom[room].gameObject.SetActive(true);
+        activeRoom.Add(DungeonRoom[room]);
+        DungeonRoom[room].GetComponent<Animator>().SetBool("Animate", true);
     }
 
     public void CenterOnClick(Vector2 PlayerPosition, ScrollRect ScrollPanel)
@@ -257,24 +253,7 @@ public class DungeonControl
         if (DungeonRoom[DungeonModel.playerInRoom].tag.Contains("Enemy"))
         {
             EnemyEncounter();
-            if(DungeonModel.battleWon==false)
-            {
-                SceneManager.LoadScene(2, LoadSceneMode.Additive);
-            }
-            else if (DungeonRoom[DungeonModel.playerInRoom].tag.Contains("Treasure"))
-            {
-                DungeonRoom[DungeonModel.playerInRoom].tag = "Treasure";
-                DungeonRoom[DungeonModel.playerInRoom].GetComponent<Image>().color = Color.yellow;
-                ClickRoomAction(DungeonRoom, TreasureActionPanel, TrapActionPanel,Log);
-                DungeonModel.battleWon = false;
-            }
-            else
-            {
-                ClearRoomTag(DungeonRoom);
-                DungeonModel.battleWon = false;
-            }
-            //return;
-
+            BattleEnemy(DungeonRoom,TreasureActionPanel,TrapActionPanel,Log);
         }
             /*if (EventSystem.current.currentSelectedGameObject.tag.Contains("Trap"))
             {
@@ -307,8 +286,15 @@ public class DungeonControl
 
         if (DungeonRoom[DungeonModel.playerInRoom].tag.Contains("Boss"))
         {
-            //do something
-            ClearRoomTag(DungeonRoom);
+            BossEncounter();
+            if (DungeonModel.battleWon == false)
+            {
+                SceneManager.LoadScene(2, LoadSceneMode.Additive);
+            }
+            else
+            {
+                DungeonModel.battleWon = false;
+            }
         }
 
         if (DungeonRoom[DungeonModel.playerInRoom].tag == "Untagged")
@@ -317,6 +303,26 @@ public class DungeonControl
         }
         WriteLog(Log,DungeonRoom);
 
+    }
+
+    public void BattleEnemy(Button[] DungeonRoom, GameObject TreasureActionPanel, GameObject TrapActionPanel, Text Log)
+    {
+        if (DungeonModel.battleWon == false)
+        {
+            SceneManager.LoadScene(2, LoadSceneMode.Additive);
+        }
+        else if (DungeonRoom[DungeonModel.playerInRoom].tag.Contains("Treasure"))
+        {
+            DungeonRoom[DungeonModel.playerInRoom].tag = "Treasure";
+            DungeonRoom[DungeonModel.playerInRoom].GetComponent<Image>().color = Color.yellow;
+            ClickRoomAction(DungeonRoom, TreasureActionPanel, TrapActionPanel, Log);
+            DungeonModel.battleWon = false;
+        }
+        else
+        {
+            ClearRoomTag(DungeonRoom);
+            DungeonModel.battleWon = false;
+        }
     }
 
     public void WriteLog(Text Log, Button[] DungeonRoom)
@@ -370,10 +376,14 @@ public class DungeonControl
             }
            
         }
+        SetEnemy(choosenEnemy,enemyLv);
+    }
 
+    public void SetEnemy(string[] choosenEnemy,int[] enemyLv)
+    {
         DungeonModel.enemy1 = choosenEnemy[0];
         DungeonModel.lvEnemy1 = enemyLv[0];
-        if (choosenEnemy[1]==null)
+        if (choosenEnemy[1] == null)
         {
             DungeonModel.enemy2 = null;
             DungeonModel.lvEnemy2 = 0;
@@ -384,7 +394,7 @@ public class DungeonControl
             DungeonModel.lvEnemy2 = enemyLv[1];
         }
 
-        if(choosenEnemy[2]==null)
+        if (choosenEnemy[2] == null)
         {
             DungeonModel.enemy3 = null;
             DungeonModel.lvEnemy3 = 0;
@@ -395,7 +405,7 @@ public class DungeonControl
             DungeonModel.lvEnemy3 = enemyLv[2];
         }
 
-        if (choosenEnemy[3]==null)
+        if (choosenEnemy[3] == null)
         {
             DungeonModel.enemy4 = null;
             DungeonModel.lvEnemy4 = 0;
@@ -406,6 +416,16 @@ public class DungeonControl
             DungeonModel.lvEnemy4 = enemyLv[3];
         }
 
+    }
+
+    public void BossEncounter()
+    {
+        foreach (Boss boss in DungeonGenerator.info.boss)
+        {
+            DungeonModel.enemy1 = boss.bossId;
+            DungeonModel.lvEnemy1 = boss.bossLv;
+        }
+        
     }
 
     public void ItemLoot(Text Log, Button[] DungeonRoom, GameObject TreasureActionPanel)
