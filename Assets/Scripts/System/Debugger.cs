@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Debugger
 {
-
     public static void GenerateMainHand()
     {
         EquipmentGenerator gen = new EquipmentGenerator();
@@ -23,5 +23,4 @@ public class Debugger
         generated.attribute.speed = 2;
         PlayerSession.GetInventory().list.Add(generated);
     }
-
 }
