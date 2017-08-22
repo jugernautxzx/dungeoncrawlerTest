@@ -18,8 +18,8 @@ public class SetDungeonMap
         panelRight = generatedDungeon.Max(t => t.roomPosition.x); //find Right
         panelLeft = generatedDungeon.Min(t => t.roomPosition.x); //find Left
 
-        return (new Vector2(panelTop > Mathf.Abs(panelBottom) ? panelTop : Mathf.Abs(panelBottom),
-            panelRight > Mathf.Abs(panelLeft) ? panelRight : Mathf.Abs(panelLeft)));
+        return (new Vector2(panelRight > Mathf.Abs(panelLeft) ? panelRight : Mathf.Abs(panelLeft),
+            panelTop > Mathf.Abs(panelBottom) ? panelTop : Mathf.Abs(panelBottom)));
     }
 
     public Vector2 CalculateMaxScrollMap()
@@ -48,20 +48,20 @@ public class SetDungeonMap
 
         if (maxPanelTopBottom >= 0)
         {
-            PositionPerRoomTopBottom = 0.5f / ((maxPanelTopBottom) / 150f);
+            PositionPerRoomTopBottom = 0.5f / ((maxPanelTopBottom+50) / 150f);
         }
         else
         {
-            PositionPerRoomTopBottom = 0.5f / ((maxPanelTopBottom) / 150f);
+            PositionPerRoomTopBottom = 0.5f / ((maxPanelTopBottom-50) / 150f);
         }
 
         if (maxPanelRightLeft >= 0)
         {
-            PositionPerRoomRightLeft = 0.5f / ((maxPanelRightLeft) / 150f);
+            PositionPerRoomRightLeft = 0.5f / ((maxPanelRightLeft+50) / 150f);
         }
         else
         {
-            PositionPerRoomRightLeft = 0.5f / ((maxPanelRightLeft) / 150f);
+            PositionPerRoomRightLeft = 0.5f / ((maxPanelRightLeft-50) / 150f);
         }
 
         return new Vector2(PositionPerRoomRightLeft, PositionPerRoomTopBottom);
@@ -74,20 +74,20 @@ public class SetDungeonMap
 
         if (NormalizationPerRoom.y >= 0)
         {
-            verticalNormalPosition = 0.5f + (NormalizationPerRoom.y * (panelBottom / 150f));
+            verticalNormalPosition = 0.499f + (NormalizationPerRoom.y * ((panelBottom-50) / 150f));
         }
         else
         {
-            verticalNormalPosition = 0.5f + (NormalizationPerRoom.y * (panelTop / 150f));
+            verticalNormalPosition = 0.501f - (NormalizationPerRoom.y * ((panelTop+50) / 150f));
         }
 
         if (NormalizationPerRoom.x >= 0)
         {
-            horizontalNormalPosition = 0.5f + (NormalizationPerRoom.x * (panelLeft / 150f));
+            horizontalNormalPosition = 0.499f + (NormalizationPerRoom.x * ((panelLeft-50) / 150f));
         }
         else
         {
-            horizontalNormalPosition = 0.5f + (NormalizationPerRoom.x * (panelRight / 150f));
+            horizontalNormalPosition = 0.501f - (NormalizationPerRoom.x * ((panelRight+50) / 150f));
         }
 
         return new Vector2(horizontalNormalPosition, verticalNormalPosition);
