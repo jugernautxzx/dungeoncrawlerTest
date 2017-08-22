@@ -21,9 +21,14 @@ public class DungeonUI : MonoBehaviour {
         CreateNewRoom();
         CreateCoridor();
         SetMapSize();
-	}
-	
-	public void CreateNewRoom()
+    }
+
+    void Update()
+    {
+        SetScrollMaxNormalizePosition();
+    }
+
+    public void CreateNewRoom()
     {
         List<DungeonModelNew> generatedDungeon = dungeonControl.LoadDungeonRoomSession();
         foreach (DungeonModelNew dungeonModel in generatedDungeon)
@@ -60,10 +65,52 @@ public class DungeonUI : MonoBehaviour {
 
     public void SetMapSize()
     {
-        float height = dungeonControl.GetMapSize().y+50;
-        float width = dungeonControl.GetMapSize().x+50;
+        float height = dungeonControl.GetMapSize().y;
+        float width = dungeonControl.GetMapSize().x;
 
         dungeonMap.offsetMin= new Vector2(-width,-height); //Left Bottom
         dungeonMap.offsetMax= new Vector2(width, height); //Right Top
+    }
+
+    public void SetScrollMaxNormalizePosition()
+    {
+        float verticalNormalPosition;
+        float horizontalNormalPosition;
+
+        verticalNormalPosition = dungeonControl.GetScrollMaxNormalizePosition().y;
+        horizontalNormalPosition = dungeonControl.GetScrollMaxNormalizePosition().x;
+
+        Debug.Log(verticalNormalPosition);
+        Debug.Log(horizontalNormalPosition);
+
+        if (verticalNormalPosition>=0.5)
+        {
+            if (dungeonMapScroll.verticalNormalizedPosition >= verticalNormalPosition)
+            {
+                dungeonMapScroll.verticalNormalizedPosition = Mathf.Clamp01(verticalNormalPosition);
+            }
+        }
+        else
+        {
+            if (dungeonMapScroll.verticalNormalizedPosition <= verticalNormalPosition)
+            {
+                dungeonMapScroll.verticalNormalizedPosition= Mathf.Clamp01(verticalNormalPosition);
+            }
+        }
+
+        if (horizontalNormalPosition>=0.5)
+        {
+            if (dungeonMapScroll.horizontalNormalizedPosition >= horizontalNormalPosition)
+            {
+                dungeonMapScroll.horizontalNormalizedPosition= Mathf.Clamp01(horizontalNormalPosition);
+            }
+        }
+        else
+        {
+            if (dungeonMapScroll.horizontalNormalizedPosition<=horizontalNormalPosition)
+            {
+                dungeonMapScroll.horizontalNormalizedPosition= Mathf.Clamp01(horizontalNormalPosition);
+            }
+        }
     }
 }

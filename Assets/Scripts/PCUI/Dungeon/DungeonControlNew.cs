@@ -6,6 +6,7 @@ public class DungeonControlNew {
 
     public List<DungeonModelNew> dungeonModel;
     public List<DungeonCoridorModel> dungeonCoridorModel;
+    public SetDungeonMap dungeonMap;
 
 	public void InitializeDungeon(DungeonInfoNew dungeonInfo)
     {
@@ -34,8 +35,13 @@ public class DungeonControlNew {
 
     public Vector2 GetMapSize()
     {
-        SetDungeonMap dungeonMap = new SetDungeonMap();
+        dungeonMap = new SetDungeonMap();
         return dungeonMap.SetSize(LoadDungeonRoomSession());
+    }
+
+    public Vector2 GetScrollMaxNormalizePosition()
+    {
+        return dungeonMap.CalculateMaxScrollMap();
     }
 
 }
